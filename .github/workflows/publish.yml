@@ -41,7 +41,7 @@ jobs:
       #   run: npx lerna bootstrap
 
       # - name: Run testsnpx lerna bootstrap
-      #   run: npx lerna run test 
+      #   run: npx lerna run test
 
       - name: Publish packages
         run: npx lerna publish from-package --yes
