@@ -51,6 +51,8 @@ jobs:
       - name: Ensure package-lock.json is committed
         run: |
           git diff --quiet --exit-code packages/package-lock.json || (git add packages/package-lock.json && git commit -m "Fix package-lock.json before publish")
+        working-directory: ./packages
+
 
       - name: Publish packages
         run: npx lerna publish from-package --yes
