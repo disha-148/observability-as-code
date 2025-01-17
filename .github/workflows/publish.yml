@@ -30,9 +30,9 @@ jobs:
 #        run: npm ci
 
       - name: Install dependencies
-        run: |
-            npm install --package-lock-only
-            npm ci
+        run: npm install
+#            npm install --package-lock-only
+#            npm ci
 
       - name: Configure npm for lerna
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
@@ -48,11 +48,9 @@ jobs:
       # - name: Run testsnpx lerna bootstrap
       #   run: npx lerna run test
 
-      - name: Ensure package-lock.json is committed
-        run: |
-          git diff --quiet --exit-code packages/package-lock.json || (git add packages/package-lock.json && git commit -m "Fix package-lock.json before publish")
-        working-directory: ./packages
-
+#      - name: Ensure package-lock.json is committed
+#        run: |
+#          git diff --quiet --exit-code packages/package-lock.json || (git add packages/package-lock.json && git commit -m "Fix package-lock.json before publish")
 
       - name: Publish packages
         run: npx lerna publish from-package --yes
