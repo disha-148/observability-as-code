@@ -26,22 +26,32 @@ jobs:
           node-version: '18'
           registry-url: 'https://registry.npmjs.org'
 
+      # Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install --package-lock-only
+          npm ci
 
+      # Configure npm for lerna
       - name: Configure npm for lerna
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
+      # Set up Git user
       - name: Set up Git user
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Commit package-lock.json changes if needed
+      # Ensure package-lock.json is committed (if necessary)
+      - name: Ensure package-lock.json is committed
         run: |
-          git diff --quiet --exit-code -- packages/package-lock.json || (git add packages/package-lock.json && git commit -m "Fix package-lock.json before publish")
+          git pull --rebase # Ensure we are up-to-date with remote
+          git diff --quiet --exit-code -- packages/package-lock.json || (git add packages/package-lock.json && git commit --amend --no-edit || echo "No changes to commit")
+          git status # Debugging step to confirm the state of the repository
 
+      # Publish packages using Lerna
       - name: Publish packages
-        run: npx lerna publish from-package --yes
+        run: |
+          npx lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
