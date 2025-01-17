@@ -42,12 +42,25 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+      # Stash any unstaged changes before pulling
+      - name: Stash changes
+        run: |
+          git stash --include-untracked
+
+      # Pull the latest changes from the remote
+      - name: Pull latest changes from remote
+        run: git pull --rebase
+
       # Ensure package-lock.json is committed (if necessary)
       - name: Ensure package-lock.json is committed
         run: |
-          git pull --rebase # Ensure we are up-to-date with remote
-          git diff --quiet --exit-code -- packages/package-lock.json || (git add packages/package-lock.json && git commit --amend --no-edit || echo "No changes to commit")
+          git diff --quiet --exit-code -- packages/package-lock.json || (git add packages/package-lock.json && git commit --amend --no-edit)
           git status # Debugging step to confirm the state of the repository
+
+      # Apply stashed changes (if any)
+      - name: Apply stashed changes
+        run: |
+          git stash pop || echo "No stash to apply"
 
       # Publish packages using Lerna
       - name: Publish packages
