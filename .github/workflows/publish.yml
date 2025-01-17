@@ -26,45 +26,27 @@ jobs:
           node-version: '18'
           registry-url: 'https://registry.npmjs.org'
 
-      # Install dependencies
+#      - name: Check lockfile consistency
+#        run: npm install --package-lock-only
+#
       - name: Install dependencies
-        run: |
-          npm install --package-lock-only
-          npm ci
+        run: npm ci
 
-      # Configure npm for lerna
       - name: Configure npm for lerna
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-      # Set up Git user
       - name: Set up Git user
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      # Stash any unstaged changes before pulling
-      - name: Stash changes
-        run: |
-          git stash --include-untracked
+      # - name: Bootstrap packages
+      #   run: npx lerna bootstrap
 
-      # Pull the latest changes from the remote
-      - name: Pull latest changes from remote
-        run: git pull --rebase
+      # - name: Run testsnpx lerna bootstrap
+      #   run: npx lerna run test
 
-      # Ensure package-lock.json is committed (if necessary)
-      - name: Ensure package-lock.json is committed
-        run: |
-          git diff --quiet --exit-code -- packages/package-lock.json || (git add packages/package-lock.json && git commit --amend --no-edit)
-          git status # Debugging step to confirm the state of the repository
-
-      # Apply stashed changes (if any)
-      - name: Apply stashed changes
-        run: |
-          git stash pop || echo "No stash to apply"
-
-      # Publish packages using Lerna
       - name: Publish packages
-        run: |
-          npx lerna publish from-package --yes
+        run: npx lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
