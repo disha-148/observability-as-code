@@ -37,10 +37,9 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      # Commit the changes to package-lock.json if any
       - name: Commit package-lock.json changes if needed
         run: |
-          git diff --quiet --exit-code packages/package-lock.json || (git add packages/package-lock.json && git commit -m "Fix package-lock.json before publish")
+          git diff --quiet --exit-code -- packages/package-lock.json || (git add packages/package-lock.json && git commit -m "Fix package-lock.json before publish")
 
       - name: Publish packages
         run: npx lerna publish from-package --yes
