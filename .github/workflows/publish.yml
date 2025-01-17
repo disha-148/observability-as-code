@@ -34,12 +34,13 @@ jobs:
 
       - name: Install dependencies and update lock file
         run: |
-            npm install
+            npm install --package-lock-only
             git config --global user.name "github-actions[bot]"
             git config --global user.email "github-actions[bot]@users.noreply.github.com"
             git add package-lock.json
             git commit -m "Update package-lock.json" || echo "No changes to commit"
             git push
+            npm ci
 
       - name: Configure npm for lerna
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
