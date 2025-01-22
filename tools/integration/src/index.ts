@@ -107,6 +107,22 @@ const readPackageJson = (filePath: string) => {
     }
 };
 
+// Helper function to check and read README.md
+const readReadmeFile = (directoryPath: string) : string | null => {
+	const readmeFilePath = path.join(directoryPath, 'README.md');
+	try {
+		if(fs.existsSync(readmeFilePath)){
+			return fs.readFileSync(readmeFilePath, 'utf8');
+		} else {
+			logger.error('README.md is missing in the directory: ${directoryPath}');
+            return null;
+		}
+	} catch (error){
+		logger.error('Failed to read README.md:');
+        return null;
+	}
+};
+
 async function isUserLoggedIn() {
     const homeDir = process.env.HOME || process.env.USERPROFILE || '';
     const npmrcPath = path.join(homeDir, '.npmrc');
@@ -271,10 +287,110 @@ yargs
                 demandOption: true
             });
     }, handlePublish)
+	.command('lint', 'provides linting for package', (yargs) => {
+		return yargs
+        	.option('path', {
+    			alias: 'p',
+                describe: 'path of the package',
+                type: 'string',
+                demandOption: false
+            })
+	}, handleLint)
     .demandCommand(1, 'You need at least one command before moving on')
     .help()
     .alias('help', 'h')
     .argv;
+
+// Function to handle lint logic
+async function handleLint(argv: any) {
+    const currentDirectory = process.cwd();
+    console.log(`Current working directory: ${currentDirectory}`); // Use backticks for template literals
+
+    const requiredRuntimeFile = path.join(currentDirectory, 'dashboards/runtime.json');
+    const readmeContent = readReadmeFile(currentDirectory);
+    const packageData = readPackageJson(currentDirectory);
+
+    // Check if required files exist
+    const missingFiles: string[] = [];
+    if (!packageData) missingFiles.push('package.json');
+    if (!fs.existsSync(requiredRuntimeFile)) missingFiles.push('dashboards/runtime.json');
+    if (!readmeContent) missingFiles.push('README.md');
+
+    if (missingFiles.length > 0) {
+        console.error(`Missing required files: ${missingFiles.join(', ')}`); // Use backticks for template literals
+        return;
+    }
+
+    console.log('All required files exist.');
+
+    try {
+        // Validate `package.json` content
+        validatePackageJson(packageData);
+
+        // Validate access rules in `runtime.json`
+        validateAccessRules(requiredRuntimeFile);
+
+        console.log('Linting completed successfully.');
+    } catch (error) {
+        console.error('Error during linting');
+    }
+}
+
+// Helper function to validate `package.json`
+function validatePackageJson(packageData: any): void {
+    // Validate `name`
+    const namePattern = /^@instana-integration\/[a-zA-Z0-9-_]+$/;
+    if (!namePattern.test(packageData.name)) {
+        console.error(`Error: Invalid package name "${packageData.name}". The name must start with "@instana-integration/" followed by the package name.`); // Use backticks for template literals
+    } else {
+        console.log('Package name is valid.');
+    }
+    // Validate `version`
+    const versionPattern = /^\d+\.\d+\.\d+$/;
+    if (!versionPattern.test(packageData.version)) {
+        console.error(`Error: Invalid version "${packageData.version}". The version must follow the format "x.x.x" (e.g., 1.0.0).`); // Use backticks for template literals
+    } else {
+        console.log('Version is valid.');
+    }
+    // Check for required fields
+    const requiredFields = ['name', 'version', 'author', 'license'];
+    for (const field of requiredFields) {
+        if (!packageData[field]) {
+            console.error(`Error: Missing required field "${field}" in package.json.`); // Use backticks for template literals
+        } else {
+            console.log(`Required field "${field}" is present.`); // Use backticks for template literals
+        }
+    }
+    // Check for description
+    if (!packageData.description) {
+        console.warn('Warning: The "description" field is missing. Adding a description is recommended.');
+    } else {
+        console.log('Description is present.');
+    }
+}
+
+// Helper function to validate access rules
+function validateAccessRules(runtimeFilePath: string): void {
+    const runtimeContent = fs.readFileSync(runtimeFilePath, 'utf-8');
+    const dashboard = JSON.parse(runtimeContent);
+    const globalAccessRule = {
+        accessType: 'READ_WRITE',
+        relationType: 'GLOBAL',
+        relatedId: ''
+    };
+    const globalAccessRuleExists = dashboard.accessRules.some(
+        (rule: AccessRule) =>
+            rule.accessType === globalAccessRule.accessType &&
+            rule.relationType === globalAccessRule.relationType
+    );
+    if (globalAccessRuleExists) {
+        console.log('Global access rule is correctly defined in the dashboard.');
+    } else {
+        console.error('Global access rule is missing in the dashboard.');
+    }
+}
+
+
 
 // Function to handle download logic
 async function handleDownload(argv: any) {
