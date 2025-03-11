@@ -1,4 +1,7 @@
 {
     "packages": ["@instana-integration/*"], 
-    "version": "independent" 
+    "version": "independent",
+    "publishConfig": {
+        "access": "public"
+    }
 }
