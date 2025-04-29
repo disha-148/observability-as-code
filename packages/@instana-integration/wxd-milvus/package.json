@@ -1,0 +1,19 @@
+{
+  "name": "@disha-148/wxd-milvus",
+  "version": "1.0.0",
+  "description": "The integration package is used to support Python monitoring. Once you import this package into your Instana environment, you will be able to monitor Python runtime and the applications on various aspects by checking the dashboards, alerts, etc. included in this integration package.",
+  "author": "IBM",
+  "license": "MIT",
+  "scripts": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "ibm",
+    "instana",
+    "custom dashboard",
+    "opentelemetry",
+    "python",
+    "monitoring"
+  ]
+}
