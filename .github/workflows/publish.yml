@@ -29,8 +29,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-#      - name: Configure npm for lerna
-#        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLISHING_TOKEN }}" > ~/.npmrc
+      - name: Configure npm for lerna
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLISHING_TOKEN }}" > ~/.npmrc
 
       - name: Set up Git user
         run: |
