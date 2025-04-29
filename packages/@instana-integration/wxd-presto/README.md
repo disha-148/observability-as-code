@@ -1,4 +1,4 @@
-# @disha-148n/wxd-presto
+# @disha-148/wxd-presto
 
 The Instana integration package used to support Python monitoring. Once you import this package into your Instana environment, you will be able to monitor Python runtime and the applications on various aspects by checking the dashboards, alerts, etc. included in this integration package.
 
