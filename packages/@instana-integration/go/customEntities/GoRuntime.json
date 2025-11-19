@@ -640,7 +640,7 @@
   ],
   "metrics": [
     {
-      "type": "oTelGo",
+      "type": "otel",
       "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.used{go.memory.type=\"other\"}",
       "name": "go.memory.used",
       "section": "OTHERS",
@@ -650,7 +650,7 @@
       "formatter": "NUMBER"
     },
     {
-      "type": "oTelGo",
+      "type": "otel",
       "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.used{go.memory.type=\"stack\"}",
       "name": "",
       "section": "OTHERS",
@@ -660,17 +660,7 @@
       "formatter": "NUMBER"
     },
     {
-      "type": "oTelGo",
-      "source": "",
-      "name": "",
-      "section": "OTHERS",
-      "category": "OpenTelemetry Go Runtime",
-      "label": "",
-      "description": "",
-      "formatter": "NUMBER"
-    },
-    {
-      "type": "oTelGo",
+      "type": "otel",
       "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.limit{}",
       "name": "go.memory.limit",
       "section": "OTHERS",
@@ -680,7 +670,7 @@
       "formatter": "NUMBER"
     },
     {
-      "type": "oTelGo",
+      "type": "otel",
       "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.allocated{}",
       "name": "go.memory.allocated",
       "section": "OTHERS",
@@ -690,7 +680,7 @@
       "formatter": "NUMBER"
     },
     {
-      "type": "oTelGo",
+      "type": "otel",
       "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.allocations{}",
       "name": "go.memory.allocations",
       "section": "OTHERS",
@@ -700,7 +690,7 @@
       "formatter": "NUMBER"
     },
     {
-      "type": "oTelGo",
+      "type": "otel",
       "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.gc.goal{}",
       "name": "go.memory.gc.goal",
       "section": "OTHERS",
@@ -710,7 +700,7 @@
       "formatter": "NUMBER"
     },
     {
-      "type": "oTelGo",
+      "type": "otel",
       "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.goroutine.count{}",
       "name": "go.goroutine.count",
       "section": "OTHERS",
@@ -720,7 +710,7 @@
       "formatter": "NUMBER"
     },
     {
-      "type": "oTelGo",
+      "type": "otel",
       "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.processor.limit{}",
       "name": "go.processor.limit",
       "section": "OTHERS",
@@ -730,7 +720,7 @@
       "formatter": "NUMBER"
     },
     {
-      "type": "oTelGo",
+      "type": "otel",
       "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.config.gogc{}",
       "name": "go.config.gogc",
       "section": "OTHERS",
@@ -740,12 +730,5 @@
       "formatter": "NUMBER"
     }
   ],
-  "dependencies": [
-    {
-      "direction": "outgoing",
-      "name": "com.instana.forge.infrastructure.os.host.graph.HostIdDependency",
-      "type": "OF",
-      "identifiers": ["otel.attribute.hostname"]
-    }
-  ]
+  "dependencies": []
 }

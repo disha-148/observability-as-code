@@ -125,12 +125,5 @@
       "formatter": "NUMBER"
     }
   ],
-  "dependencies": [
-    {
-      "direction": "outgoing",
-      "name": "com.instana.forge.infrastructure.os.host.graph.HostIdDependency",
-      "type": "OF",
-      "identifiers": ["otel.attribute.hostname"]
-    }
-  ]
+  "dependencies": []
 }

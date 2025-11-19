@@ -144,12 +144,5 @@
       "formatter": "NUMBER"
     }
   ],
-  "dependencies": [
-    {
-      "direction": "outgoing",
-      "name": "com.instana.forge.infrastructure.custom.sensorsdk.k8s.graph.OTelK8sClusterDependency",
-      "type": "OF",
-      "identifiers": ["resource.k8s.cluster.uid"]
-    }
-  ]
+  "dependencies": []
 }
