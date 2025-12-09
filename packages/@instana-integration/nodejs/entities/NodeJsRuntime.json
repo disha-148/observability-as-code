@@ -1,0 +1,506 @@
+{
+  "data": {
+    "label": "Otel NodeJs Runtime",
+    "identifiers": ["otel.attribute.telemetry.sdk.language"],
+    "tagFilterExpression": {
+      "type": "TAG_FILTER",
+      "name": "otel.attribute.telemetry.sdk.language",
+      "stringValue": "nodejs",
+      "numberValue": null,
+      "booleanValue": null,
+      "floatValue": null,
+      "key": null,
+      "value": "nodejs",
+      "operator": "EQUALS",
+      "entity": "NOT_APPLICABLE"
+    },
+    "dashboards": [
+      {
+        "id": null,
+        "title": null,
+        "accessRules": null,
+        "widgets": [
+          {
+            "width": 12,
+            "x": 0,
+            "y": 17,
+            "id": "EQ3T-fAQXVHBhtPo",
+            "title": "Eventloop Delay",
+            "type": "chart",
+            "config": {
+              "shareMaxAxisDomain": false,
+              "y1": {
+                "formatter": "number.detailed",
+                "renderer": "line",
+                "metrics": [
+                  {
+                    "lastValue": false,
+                    "color": "",
+                    "compareToTimeShifted": false,
+                    "threshold": {
+                      "critical": "",
+                      "warning": "",
+                      "thresholdEnabled": false,
+                      "operator": ">="
+                    },
+                    "aggregation": "MEAN",
+                    "label": "Max Eventloop Delay ",
+                    "source": "INFRASTRUCTURE_METRICS",
+                    "type": "customEntity",
+                    "metricPath": ["Custom Entity", "Custom Entity"],
+                    "formatter": "number.detailed",
+                    "unit": "number",
+                    "metric": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.max{}",
+                    "timeShift": 0,
+                    "tagFilterExpression": {
+                      "logicalOperator": "AND",
+                      "elements": [],
+                      "type": "EXPRESSION"
+                    },
+                    "allowedCrossSeriesAggregations": [],
+                    "metricLabel": "OpenTelemetry gauge @opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.max",
+                    "crossSeriesAggregation": "MEAN"
+                  },
+                  {
+                    "lastValue": false,
+                    "color": "",
+                    "compareToTimeShifted": false,
+                    "threshold": {
+                      "critical": "",
+                      "warning": "",
+                      "thresholdEnabled": false,
+                      "operator": ">="
+                    },
+                    "aggregation": "MEAN",
+                    "label": "Mean Eventloop Delay",
+                    "source": "INFRASTRUCTURE_METRICS",
+                    "type": "customEntity",
+                    "metricPath": ["Custom Entity", "Custom Entity"],
+                    "formatter": "number.detailed",
+                    "unit": "number",
+                    "metric": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.mean{}",
+                    "timeShift": 0,
+                    "tagFilterExpression": {
+                      "logicalOperator": "AND",
+                      "elements": [],
+                      "type": "EXPRESSION"
+                    },
+                    "allowedCrossSeriesAggregations": [],
+                    "metricLabel": "OpenTelemetry gauge @opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.mean",
+                    "crossSeriesAggregation": "MEAN"
+                  },
+                  {
+                    "lastValue": false,
+                    "color": "",
+                    "compareToTimeShifted": false,
+                    "threshold": {
+                      "critical": "",
+                      "warning": "",
+                      "thresholdEnabled": false,
+                      "operator": ">="
+                    },
+                    "aggregation": "MEAN",
+                    "label": "Min Eventloop Dealy",
+                    "source": "INFRASTRUCTURE_METRICS",
+                    "type": "customEntity",
+                    "metricPath": ["Custom Entity", "Custom Entity"],
+                    "formatter": "number.detailed",
+                    "unit": "number",
+                    "metric": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.min{}",
+                    "timeShift": 0,
+                    "tagFilterExpression": {
+                      "logicalOperator": "AND",
+                      "elements": [],
+                      "type": "EXPRESSION"
+                    },
+                    "allowedCrossSeriesAggregations": [],
+                    "metricLabel": "OpenTelemetry gauge @opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.min",
+                    "crossSeriesAggregation": "MEAN"
+                  },
+                  {
+                    "lastValue": false,
+                    "color": "",
+                    "compareToTimeShifted": false,
+                    "threshold": {
+                      "critical": "",
+                      "warning": "",
+                      "thresholdEnabled": false,
+                      "operator": ">="
+                    },
+                    "aggregation": "MEAN",
+                    "label": "StdDev Eventloop Delay",
+                    "source": "INFRASTRUCTURE_METRICS",
+                    "type": "customEntity",
+                    "metricPath": ["Custom Entity", "Custom Entity"],
+                    "formatter": "number.detailed",
+                    "unit": "number",
+                    "metric": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.stddev{}",
+                    "timeShift": 0,
+                    "tagFilterExpression": {
+                      "logicalOperator": "AND",
+                      "elements": [],
+                      "type": "EXPRESSION"
+                    },
+                    "allowedCrossSeriesAggregations": [],
+                    "metricLabel": "OpenTelemetry gauge @opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.stddev",
+                    "crossSeriesAggregation": "MEAN"
+                  }
+                ],
+                "formatterSelected": false
+              },
+              "y2": {
+                "formatter": "number.detailed",
+                "renderer": "line",
+                "metrics": []
+              },
+              "type": "TIME_SERIES"
+            },
+            "height": 13
+          },
+          {
+            "width": 12,
+            "x": 0,
+            "y": 34,
+            "id": "rDwfYRAfzPGvarzk",
+            "title": "Eventloop Delay Percentiles",
+            "type": "chart",
+            "config": {
+              "shareMaxAxisDomain": false,
+              "y1": {
+                "formatter": "number.detailed",
+                "renderer": "line",
+                "metrics": [
+                  {
+                    "lastValue": false,
+                    "color": "",
+                    "compareToTimeShifted": false,
+                    "threshold": {
+                      "critical": "",
+                      "warning": "",
+                      "thresholdEnabled": false,
+                      "operator": ">="
+                    },
+                    "aggregation": "MEAN",
+                    "label": "Eventloop Delay 50 Percentile",
+                    "source": "INFRASTRUCTURE_METRICS",
+                    "type": "customEntity",
+                    "metricPath": ["Custom Entity", "Custom Entity"],
+                    "formatter": "number.detailed",
+                    "unit": "number",
+                    "metric": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p50{}",
+                    "timeShift": 0,
+                    "tagFilterExpression": {
+                      "logicalOperator": "AND",
+                      "elements": [],
+                      "type": "EXPRESSION"
+                    },
+                    "allowedCrossSeriesAggregations": [],
+                    "metricLabel": "OpenTelemetry gauge @opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p50",
+                    "crossSeriesAggregation": "MEAN"
+                  },
+                  {
+                    "lastValue": false,
+                    "color": "",
+                    "compareToTimeShifted": false,
+                    "threshold": {
+                      "critical": "",
+                      "warning": "",
+                      "thresholdEnabled": false,
+                      "operator": ">="
+                    },
+                    "aggregation": "MEAN",
+                    "label": "Eventloop Delay 90 Percentile",
+                    "source": "INFRASTRUCTURE_METRICS",
+                    "type": "customEntity",
+                    "metricPath": ["Custom Entity", "Custom Entity"],
+                    "formatter": "number.detailed",
+                    "unit": "number",
+                    "metric": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p90{}",
+                    "timeShift": 0,
+                    "tagFilterExpression": {
+                      "logicalOperator": "AND",
+                      "elements": [],
+                      "type": "EXPRESSION"
+                    },
+                    "allowedCrossSeriesAggregations": [],
+                    "metricLabel": "OpenTelemetry gauge @opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p90",
+                    "crossSeriesAggregation": "MEAN"
+                  },
+                  {
+                    "lastValue": false,
+                    "color": "",
+                    "compareToTimeShifted": false,
+                    "threshold": {
+                      "critical": "",
+                      "warning": "",
+                      "thresholdEnabled": false,
+                      "operator": ">="
+                    },
+                    "aggregation": "MEAN",
+                    "label": "Eventloop Delay 99 percentile",
+                    "source": "INFRASTRUCTURE_METRICS",
+                    "type": "customEntity",
+                    "metricPath": ["Custom Entity", "Custom Entity"],
+                    "formatter": "number.detailed",
+                    "unit": "number",
+                    "metric": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p99{}",
+                    "timeShift": 0,
+                    "tagFilterExpression": {
+                      "logicalOperator": "AND",
+                      "elements": [],
+                      "type": "EXPRESSION"
+                    },
+                    "allowedCrossSeriesAggregations": [],
+                    "metricLabel": "OpenTelemetry gauge @opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p99",
+                    "crossSeriesAggregation": "MEAN"
+                  }
+                ],
+                "formatterSelected": false
+              },
+              "y2": {
+                "formatter": "number.detailed",
+                "renderer": "line",
+                "metrics": []
+              },
+              "type": "TIME_SERIES"
+            },
+            "height": 13
+          },
+          {
+            "width": 12,
+            "x": 0,
+            "y": 4,
+            "id": "tNy10GBGVHbtsBO_",
+            "title": "Eventloop Time",
+            "type": "chart",
+            "config": {
+              "shareMaxAxisDomain": false,
+              "y1": {
+                "formatter": "number.detailed",
+                "renderer": "line",
+                "metrics": [
+                  {
+                    "lastValue": false,
+                    "color": "",
+                    "compareToTimeShifted": false,
+                    "threshold": {
+                      "critical": "",
+                      "warning": "",
+                      "thresholdEnabled": false,
+                      "operator": ">="
+                    },
+                    "aggregation": "MEAN",
+                    "label": "",
+                    "source": "INFRASTRUCTURE_METRICS",
+                    "type": "customEntity",
+                    "metricPath": ["Custom Entity", "Custom Entity"],
+                    "formatter": "number.detailed",
+                    "unit": "number",
+                    "metric": "metrics.sums.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state=\"active\"}",
+                    "timeShift": 0,
+                    "tagFilterExpression": {
+                      "logicalOperator": "AND",
+                      "elements": [],
+                      "type": "EXPRESSION"
+                    },
+                    "allowedCrossSeriesAggregations": [],
+                    "metricLabel": "metrics.sums.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state=\"active\"}",
+                    "crossSeriesAggregation": "MEAN"
+                  },
+                  {
+                    "lastValue": false,
+                    "color": "",
+                    "compareToTimeShifted": false,
+                    "threshold": {
+                      "critical": "",
+                      "warning": "",
+                      "thresholdEnabled": false,
+                      "operator": ">="
+                    },
+                    "aggregation": "MEAN",
+                    "label": "",
+                    "source": "INFRASTRUCTURE_METRICS",
+                    "type": "customEntity",
+                    "metricPath": ["Custom Entity", "Custom Entity"],
+                    "formatter": "number.detailed",
+                    "unit": "number",
+                    "metric": "metrics.sums.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state=\"idle\"}",
+                    "timeShift": 0,
+                    "tagFilterExpression": {
+                      "logicalOperator": "AND",
+                      "elements": [],
+                      "type": "EXPRESSION"
+                    },
+                    "allowedCrossSeriesAggregations": [],
+                    "metricLabel": "metrics.sums.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state=\"idle\"}",
+                    "crossSeriesAggregation": "MEAN"
+                  }
+                ],
+                "formatterSelected": false
+              },
+              "y2": {
+                "formatter": "number.detailed",
+                "renderer": "line",
+                "metrics": []
+              },
+              "type": "TIME_SERIES"
+            },
+            "height": 13
+          },
+          {
+            "width": 3,
+            "x": 0,
+            "y": 0,
+            "id": "MafdtvLAX_47h_t6",
+            "title": "Eventloop Utilization",
+            "type": "bigNumber",
+            "config": {
+              "formatter": "percentage.compact",
+              "comparisonDecreaseColor": "greenish",
+              "metricConfiguration": {
+                "lastValue": false,
+                "threshold": {
+                  "critical": "",
+                  "warning": "",
+                  "thresholdEnabled": false,
+                  "operator": ">="
+                },
+                "aggregation": "MEAN",
+                "source": "INFRASTRUCTURE_METRICS",
+                "type": "customEntity",
+                "metricPath": ["Custom Entity", "Custom Entity"],
+                "formatter": "number.detailed",
+                "unit": "percentage",
+                "metric": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.utilization{}",
+                "timeShift": 0,
+                "tagFilterExpression": {
+                  "logicalOperator": "AND",
+                  "elements": [],
+                  "type": "EXPRESSION"
+                },
+                "allowedCrossSeriesAggregations": [],
+                "crossSeriesAggregation": "MEAN"
+              },
+              "comparisonIncreaseColor": "redish",
+              "formatterSelected": true
+            },
+            "height": 4
+          }
+        ]
+      }
+    ],
+    "metrics": [
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.max{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.max{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop maximum delay.",
+        "description": "Event loop maximum delay.",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.mean{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.mean{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop standard deviation delay",
+        "description": "Event loop standard deviation delay",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.min{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.min{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop minimum delay",
+        "description": "Event loop minimum delay",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p50{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p50{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop 50 percentile delay",
+        "description": "Event loop 50 percentile delay",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p90{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p90{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop 90 percentile delay",
+        "description": "Event loop 90 percentile delay",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p99{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p99{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop 99 percentile delay",
+        "description": "Event loop 99 percentile delay",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.stddev{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.stddev{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop standard deviation delay",
+        "description": "Event loop standard deviation delay",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.utilization{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.utilization{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop utilization.",
+        "description": "Event loop utilization.",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state=\"active\"}",
+        "name": "metrics.sums.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state=\"active\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "The state of event loop time - active",
+        "description": "The state of event loop time - active",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state=\"idle\"}",
+        "name": "metrics.sums.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state=\"idle\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "The state of event loop time - idle",
+        "description": "The state of event loop time - idle",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      }
+    ],
+    "dependencies": []
+  }
+}

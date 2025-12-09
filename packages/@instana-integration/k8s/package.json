@@ -1,0 +1,20 @@
+{
+  "name": "@instana-integration/k8s",
+  "version": "1.0.0",
+  "description": "The integration package is used to support Kubernetes monitoring. Once you import this package into your Instana environment, you will be able to monitor Kubernetes Components.",
+  "author": "IBM",
+  "license": "MIT",
+  "scripts": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "ibm",
+    "instana",
+    "custom dashboard",
+    "opentelemetry",
+    "kubernetes",
+    "k8s",
+    "monitoring"
+  ]
+}
