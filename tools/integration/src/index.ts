@@ -1127,7 +1127,6 @@ function compareEntityData(existingEntity: any, newEntity: any): boolean {
 	const newStr = JSON.stringify(newSorted);
 	const isSame = existingStr === newStr;
 	
-	// Always log comparison for debugging (temporarily)
 	if (!isSame) {
 		// Find first difference
 		const minLen = Math.min(existingStr.length, newStr.length);
