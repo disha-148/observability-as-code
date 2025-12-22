@@ -882,18 +882,16 @@ async function handleImport(argv: any) {
                         if (error.response?.status === 409 && apiPath === 'api/custom-entitytypes') {
                             // Extract label from jsonContent
                             const entityLabel = jsonContent.label;
-                            if (!entityLabel) {
-                                logger.error(`Cannot find entity by label: label is missing in ${file}.`);
-                                failFileCount++;
-                                continue;
-                            }
-                            
                             logger.info(`Entity with label "${entityLabel}" already exists. Checking if update is needed ...`);
+
+                            // Check if backend provides conflicting entity ID in response (efficient path)
+                            const conflictingEntityId = error.response?.data?.conflictingEntityId || error.response?.data?.id;
                             
-                            // Find existing entity by label
-                            const existingEntity = await findEntityByLabel(server, token, entityLabel, axiosInstance);
+                            // Find existing entity - use ID if provided, otherwise fallback to label search
+                            const existingEntity = await findEntityByLabel(server, token, entityLabel, axiosInstance, conflictingEntityId);
+                            
                             if (!existingEntity) {
-                                logger.error(`Failed to find existing entity with label "${entityLabel}".`);
+                                logger.error(`Entity with label "${entityLabel}" conflicts with existing entity but could not be found for comparison.`);
                                 failFileCount++;
                                 continue;
                             }
@@ -1056,21 +1054,41 @@ function resolveDashboardReferences(dashboards: any[], dashboardsFolderPath: str
 	});
 }
 
-// Helper function to find entity by label
-async function findEntityByLabel(server: string, token: string, label: string, axiosInstance: any): Promise<any | null> {
-	try {
-		const entities = await getEntityList(server, token, axiosInstance);
-		// Entity from server can have label at top level or nested in data object
-		const entitiesFound = entities.find((entity: any) => {
-			const entityLabel = entity.label || entity.data?.label;
-			return entityLabel === label;
-		});
-		return entitiesFound || null;
-	}
-	catch (error){
-		logger.error(`Error finding entity with label "${label}": ${error}`);
-		return null;
-	}
+// Helper function to find entity by label or ID
+async function findEntityByLabel(server: string, token: string, label: string, axiosInstance: any, id?: string): Promise<any | null> {
+    try {
+        if (id) {
+            // Fetch entity directly by ID if provided
+            const url = `https://${server}/api/custom-entitytypes/${id}`;
+            logger.info(`Fetching entity by ID "${id}" at ${url} ...`);
+            const response = await axiosInstance.get(url, {
+                headers: {
+                    'Authorization': `apiToken ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (logger.isDebugEnabled()) {
+                logger.debug(`Response data: ${JSON.stringify(response.data)}`);
+            }
+            return response.data;
+        }
+
+        // fetch all entities and find by label
+        const entities = await getEntityList(server, token, axiosInstance);
+        const entitiesFound = entities.find((entity: any) => {
+            const entityLabel = entity.label || entity.data?.label;
+            return entityLabel === label;
+        });
+        if (!entitiesFound) {
+            logger.info(`No entity found with label "${label}".`);
+        }
+        return entitiesFound || null;
+    } catch (error) {
+        logger.error(
+            `Error finding entity${id ? ` with ID "${id}"` : ` with label "${label}"`}: ${error}`
+        );
+        return null;
+    }
 }
 
 // Helper function to compare entity data
@@ -1127,17 +1145,6 @@ function compareEntityData(existingEntity: any, newEntity: any): boolean {
 	const newStr = JSON.stringify(newSorted);
 	const isSame = existingStr === newStr;
 	
-	if (!isSame) {
-		// Find first difference
-		const minLen = Math.min(existingStr.length, newStr.length);
-		for (let i = 0; i < minLen; i++) {
-			if (existingStr[i] !== newStr[i]) {
-				const start = Math.max(0, i - 50);
-				const end = Math.min(existingStr.length, i + 50);
-				break;
-			}
-		}
-	}
 	
 	if (logger.isDebugEnabled()) {
 		logger.debug(`Comparing entities:`);
