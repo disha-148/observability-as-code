@@ -848,17 +848,22 @@ async function handleImport(argv: any) {
 				}
 
 				if (apiPath === 'api/custom-entitytypes' && Array.isArray(jsonContent.dashboards) && jsonContent.dashboards.length > 0) {
-                    const dashboardsFolderPath = path.join(packagePath, 'dashboards');
-                    logger.info(`Resolving entity dashboard references in file ${file} from: ${dashboardsFolderPath}...`);
-                    try {
-                        jsonContent.dashboards = resolveDashboardReferences(jsonContent.dashboards, dashboardsFolderPath);
-                    } catch (err) {
-                        logger.error(`Failed to resolve entity dashboards in file ${file}: ${err instanceof Error ? err.message : String(err)}`);
-                        continue;
-                    }
-                } else if (apiPath === 'api/custom-entitytypes') {
-                    logger.info(`No entity dashboards defined in file ${file}.`);
-                }
+					// Check if any dashboard reference that needs to be resolved
+				    const hasReferences = jsonContent.dashboards.some((dashboard: any) => dashboard.reference);
+				                
+				    if (hasReferences) {
+				    	const dashboardsFolderPath = path.join(packagePath, 'dashboards');
+				        logger.info(`Resolving entity dashboard references in file ${file} from: ${dashboardsFolderPath}...`);
+				        try {
+				        	jsonContent.dashboards = resolveDashboardReferences(jsonContent.dashboards, dashboardsFolderPath);
+				        } catch (err) {
+				        	logger.error(`Failed to resolve entity dashboards in file ${file}: ${err instanceof Error ? err.message : String(err)}.`);
+				            continue;
+				        }
+				    }
+				} else if (apiPath === 'api/custom-entitytypes') {
+					logger.info(`No entity dashboards defined in file ${file}.`);
+				}
 
                 try {
                     const url = `https://${server}/${apiPath}`;
@@ -867,22 +872,65 @@ async function handleImport(argv: any) {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `apiToken ${token}`
-						}
-                    });
-		    		logger.info(`Successfully applied ${file}: ${response.status}`);
-		    		successFileCount++;
+     					 }
+                	});
+					logger.info(`Successfully applied ${file}: ${response.status}`);
+        			successFileCount++;
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
-                        logger.error(`Failed to apply ${file}: ${error.message}`);
-                        if (error.response) {
-                            logger.error(`Response data: ${JSON.stringify(error.response.data)}`);
-                            logger.error(`Response status: ${error.response.status}`);
-                            logger.error(`Response headers: ${JSON.stringify(error.response.headers)}`);
+                        // Handle 409 conflict for entities only
+                        if (error.response?.status === 409 && apiPath === 'api/custom-entitytypes') {
+                            // Extract label from jsonContent
+                            const entityLabel = jsonContent.label;
+                            logger.info(`Entity with label "${entityLabel}" already exists. Checking if update is needed ...`);
+
+                            // Check if backend provides conflicting entity ID in response (efficient path)
+                            const conflictingEntityId = error.response?.data?.conflictingEntityId || error.response?.data?.id;
+                            
+                            // Find existing entity - use ID if provided, otherwise fallback to label search
+                            const existingEntity = await findEntityByLabel(server, token, entityLabel, axiosInstance, conflictingEntityId);
+                            
+                            if (!existingEntity) {
+                                logger.error(`Entity with label "${entityLabel}" conflicts with existing entity but could not be found for comparison.`);
+                                failFileCount++;
+                                continue;
+                            }
+                            
+                            logger.info(`Found existing entity with label "${entityLabel}" (id=${existingEntity.id}).`);
+                            
+                            // Compare data
+                            const isSame = compareEntityData(existingEntity, jsonContent);
+                            
+                            if (isSame) {
+                                logger.info(`Entity "${entityLabel}" already exists with the same data. Skipping import.`);
+                                successFileCount++;
+                            } else {
+                                logger.info(`Entity "${entityLabel}" exists but data is different. Updating ...`);
+                                const entityId = existingEntity.id;
+                                const updateSuccess = await updateEntity(server, token, entityId, jsonContent, axiosInstance);
+                                
+                                if (updateSuccess) {
+                                    logger.info(`Successfully updated entity "${entityLabel}" from ${file}.`);
+                                    successFileCount++;
+                                } else {
+                                    logger.error(`Failed to update entity "${entityLabel}" from ${file}.`);
+                                    failFileCount++;
+                                }
+                            }
+                        } else {
+                            // Handle other errors
+                            logger.error(`Failed to apply ${file}: ${error.message}`);
+                            if (error.response) {
+                                logger.error(`Response data: ${JSON.stringify(error.response.data)}`);
+                                logger.error(`Response status: ${error.response.status}`);
+                                logger.error(`Response headers: ${JSON.stringify(error.response.headers)}`);
+                            }
+                            failFileCount++;
                         }
                     } else {
                         logger.error(`Failed to apply ${file}: ${String(error)}`);
+                        failFileCount++;
                     }
-					failFileCount++;
                 }
             }
         }
@@ -1005,6 +1053,140 @@ function resolveDashboardReferences(dashboards: any[], dashboardsFolderPath: str
 		return dashboard;
 	});
 }
+
+// Helper function to find entity by label or ID
+async function findEntityByLabel(server: string, token: string, label: string, axiosInstance: any, id?: string): Promise<any | null> {
+    try {
+        if (id) {
+            // Fetch entity directly by ID if provided
+            const url = `https://${server}/api/custom-entitytypes/${id}`;
+            logger.info(`Fetching entity by ID "${id}" at ${url} ...`);
+            const response = await axiosInstance.get(url, {
+                headers: {
+                    'Authorization': `apiToken ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (logger.isDebugEnabled()) {
+                logger.debug(`Response data: ${JSON.stringify(response.data)}`);
+            }
+            return response.data;
+        }
+
+        // fetch all entities and find by label
+        const entities = await getEntityList(server, token, axiosInstance);
+        const entitiesFound = entities.find((entity: any) => {
+            const entityLabel = entity.label || entity.data?.label;
+            return entityLabel === label;
+        });
+        if (!entitiesFound) {
+            logger.info(`No entity found with label "${label}".`);
+        }
+        return entitiesFound || null;
+    } catch (error) {
+        logger.error(
+            `Error finding entity${id ? ` with ID "${id}"` : ` with label "${label}"`}: ${error}`
+        );
+        return null;
+    }
+}
+
+// Helper function to compare entity data
+function compareEntityData(existingEntity: any, newEntity: any): boolean {
+	// Remove system generated fields
+	const normalizeEntity = (entity: any) => {
+		const {id, version, created, ...rest} = entity;
+		return rest;
+	}
+	
+	// Handle both flattened and nested structures
+	let existingData = existingEntity;
+	let newData = newEntity;
+	
+	// If existing entity has nested structure, flatten it for comparison
+	if (existingEntity.data && typeof existingEntity.data === 'object') {
+		existingData = {
+			...existingEntity.data,
+			id: existingEntity.id,
+			version: existingEntity.version,
+			created: existingEntity.created
+		};
+	}
+	
+	const existingNormalized = normalizeEntity(existingData);
+	const newNormalized = normalizeEntity(newData);
+	
+	// Sort arrays and objects for consistent comparison
+	const sortObject = (obj: any): any => {
+		if (Array.isArray(obj)) {
+			// Sort array elements by their JSON string representation for consistent ordering
+			return obj
+				.map(sortObject)
+				.sort((a, b) => {
+					const aStr = JSON.stringify(a);
+					const bStr = JSON.stringify(b);
+					return aStr.localeCompare(bStr);
+				});
+		} else if (obj !== null && typeof obj === 'object') {
+			return Object.keys(obj)
+				.sort()
+				.reduce((result: any, key: string) => {
+					result[key] = sortObject(obj[key]);
+					return result;
+				}, {});
+		}
+		return obj;
+	};
+	
+	const existingSorted = sortObject(existingNormalized);
+	const newSorted = sortObject(newNormalized);
+	
+	const existingStr = JSON.stringify(existingSorted);
+	const newStr = JSON.stringify(newSorted);
+	const isSame = existingStr === newStr;
+	
+	
+	if (logger.isDebugEnabled()) {
+		logger.debug(`Comparing entities:`);
+		logger.debug(`Existing (normalized & sorted): ${JSON.stringify(existingSorted, null, 2)}`);
+		logger.debug(`New (normalized & sorted): ${JSON.stringify(newSorted, null, 2)}`);
+	}
+
+	return isSame;
+}
+
+// Helper function to update an existing entity using PUT API
+async function updateEntity(server: string, token: string, entityId: string, entityData: any, axiosInstance: any): Promise<boolean> {
+	try {
+		const url = `https://${server}/api/custom-entitytypes/${entityId}`;
+		logger.info(`Updating entity (id=${entityId}) at ${url} ...`);
+		
+		const response = await axiosInstance.put(url, entityData, {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `apiToken ${token}`
+			}
+		});
+		
+		logger.info(`Successfully updated entity (id=${entityId}): ${response.status}.`);
+		if (logger.isDebugEnabled()) {
+			logger.debug(`Response data: \n${JSON.stringify(response.data)}.`);
+		}
+		return true;
+	} catch (error) {
+		if (axios.isAxiosError(error)) {
+			logger.error(`Failed to update entity (id=${entityId}): ${error.message}.`);
+			if (error.response) {
+				logger.error(`Response data: ${JSON.stringify(error.response.data)}.`);
+				logger.error(`Response status: ${error.response.status}.`);
+			}
+		} else {
+			logger.error(`Failed to update entity (id=${entityId}): ${String(error)}.`);
+		}
+		return false;
+	}
+}
+
 
 // Function to handle export logic
 async function handleExport(argv: any) {
@@ -1144,6 +1326,7 @@ async function handleExport(argv: any) {
         logger.info(`Total event(s) processed: ${totalEventProcessed}`);
     }
 
+	// Entity export
 	if (parsedIncludes.some(inc => inc.type === "entity" || inc.type === "all")){
 		const allEntities = await getEntityList(server, token, axiosInstance);
 		let totalEntitiesProcessed = 0;
@@ -1198,7 +1381,7 @@ async function handleExport(argv: any) {
     }
 }
 
-// Helper functions for entity export
+// Helper functions for entity export and import
 async function getEntityList(server: string, token: string, axiosInstance: any): Promise<any[]> {
 	try {
 		const url = `https://${server}/api/custom-entitytypes`;
