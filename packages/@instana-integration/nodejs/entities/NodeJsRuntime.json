@@ -500,7 +500,6 @@
         "formatter": "NUMBER",
         "aggregation": "MEAN"
       }
-    ],
-    "dependencies": []
+    ]
   }
 }

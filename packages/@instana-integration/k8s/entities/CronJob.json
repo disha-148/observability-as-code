@@ -147,7 +147,6 @@
         "description": "Number of actively running jobs",
         "formatter": "NUMBER"
       }
-    ],
-    "dependencies": []
+    ]
   }
 }

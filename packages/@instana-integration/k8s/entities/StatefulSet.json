@@ -298,7 +298,6 @@
         "description": "Number of updated pods",
         "formatter": "NUMBER"
       }
-    ],
-    "dependencies": []
+    ]
   }
 }

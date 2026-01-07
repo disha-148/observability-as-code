@@ -328,7 +328,6 @@
         "description": "Minimum number of replica pods",
         "formatter": "NUMBER"
       }
-    ],
-    "dependencies": []
+    ]
   }
 }

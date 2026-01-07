@@ -191,7 +191,6 @@
         "description": "Number of available replica pods",
         "formatter": "NUMBER"
       }
-    ],
-    "dependencies": []
+    ]
   }
 }

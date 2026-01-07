@@ -1,3 +1,4 @@
 tools/integration/dist/
 tools/integration/node_modules/
 packages/node_modules/
+.DS_Store

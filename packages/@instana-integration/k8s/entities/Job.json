@@ -27,7 +27,7 @@
       {
         "type": "oTelK8sCluster",
         "source": "metrics.gauges.k8s.job.pod.active{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
-        "name": "k8s.job.job.active",
+        "name": "k8s.job.pod.active",
         "section": "OTHERS",
         "category": "OpenTelemetry Kubernetes Job",
         "label": "Number of currently running pods",
@@ -371,7 +371,6 @@
         "ownerId": "5ee8a3e8cd70020001ecb007",
         "writable": true
       }
-    ],
-    "dependencies": []
+    ]
   }
 }

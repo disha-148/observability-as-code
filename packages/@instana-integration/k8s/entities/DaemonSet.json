@@ -373,7 +373,6 @@
         "description": "Number of nodes with ready daemon pods",
         "formatter": "NUMBER"
       }
-    ],
-    "dependencies": []
+    ]
   }
 }
