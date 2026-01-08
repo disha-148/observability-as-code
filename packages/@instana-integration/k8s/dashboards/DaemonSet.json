@@ -1,0 +1,295 @@
+{
+  "rbacTags": [],
+  "accessRules": [
+    {
+      "accessType": "READ",
+      "relationType": "GLOBAL",
+      "relatedId": ""
+    }
+  ],
+  "id": "DaemonSetDashboardID",
+  "title": "Kubernetes DaemonSet",
+  "widgets": [
+    {
+      "width": 3,
+      "x": 0,
+      "y": 0,
+      "id": "DaemonSetWidget1",
+      "title": "Current Scheduled Nodes",
+      "type": "bigNumber",
+      "config": {
+        "formatter": "number.compact",
+        "comparisonDecreaseColor": "greenish",
+        "metricConfiguration": {
+          "lastValue": false,
+          "threshold": {
+            "critical": "",
+            "warning": "",
+            "thresholdEnabled": false,
+            "operator": ">="
+          },
+          "aggregation": "MEAN",
+          "source": "INFRASTRUCTURE_METRICS",
+          "type": "oTelK8sCluster",
+          "metricPath": ["Others", "OpenTelemetry Kubernetes DaemonSet"],
+          "formatter": "number.detailed",
+          "unit": "number",
+          "metric": "metrics.gauges.k8s.daemonset.current_scheduled_nodes",
+          "timeShift": 0,
+          "tagFilterExpression": {
+            "logicalOperator": "AND",
+            "elements": [],
+            "type": "EXPRESSION"
+          },
+          "allowedCrossSeriesAggregations": [],
+          "crossSeriesAggregation": "MEAN"
+        },
+        "comparisonIncreaseColor": "redish",
+        "formatterSelected": true
+      },
+      "height": 4
+    },
+    {
+      "width": 3,
+      "x": 3,
+      "y": 0,
+      "id": "DaemonSetWidget2",
+      "title": "Ready Nodes",
+      "type": "bigNumber",
+      "config": {
+        "formatter": "number.compact",
+        "comparisonDecreaseColor": "greenish",
+        "metricConfiguration": {
+          "lastValue": false,
+          "threshold": {
+            "critical": "",
+            "warning": "",
+            "thresholdEnabled": false,
+            "operator": ">="
+          },
+          "aggregation": "MEAN",
+          "source": "INFRASTRUCTURE_METRICS",
+          "type": "oTelK8sCluster",
+          "metricPath": ["Others", "OpenTelemetry Kubernetes DaemonSet"],
+          "formatter": "number.detailed",
+          "unit": "number",
+          "metric": "metrics.gauges.k8s.daemonset.ready_nodes",
+          "timeShift": 0,
+          "tagFilterExpression": {
+            "logicalOperator": "AND",
+            "elements": [],
+            "type": "EXPRESSION"
+          },
+          "allowedCrossSeriesAggregations": [],
+          "crossSeriesAggregation": "MEAN"
+        },
+        "comparisonIncreaseColor": "redish",
+        "formatterSelected": true
+      },
+      "height": 4
+    },
+    {
+      "width": 3,
+      "x": 6,
+      "y": 0,
+      "id": "DaemonSetWidget3",
+      "title": "Misscheduled Nodes",
+      "type": "bigNumber",
+      "config": {
+        "formatter": "number.compact",
+        "comparisonDecreaseColor": "greenish",
+        "metricConfiguration": {
+          "lastValue": false,
+          "threshold": {
+            "critical": "",
+            "warning": "",
+            "thresholdEnabled": false,
+            "operator": ">="
+          },
+          "aggregation": "MEAN",
+          "source": "INFRASTRUCTURE_METRICS",
+          "type": "oTelK8sCluster",
+          "metricPath": ["Others", "OpenTelemetry Kubernetes DaemonSet"],
+          "formatter": "number.detailed",
+          "unit": "number",
+          "metric": "metrics.gauges.k8s.daemonset.misscheduled_nodes",
+          "timeShift": 0,
+          "tagFilterExpression": {
+            "logicalOperator": "AND",
+            "elements": [],
+            "type": "EXPRESSION"
+          },
+          "allowedCrossSeriesAggregations": [],
+          "crossSeriesAggregation": "MEAN"
+        },
+        "comparisonIncreaseColor": "redish",
+        "formatterSelected": true
+      },
+      "height": 4
+    },
+    {
+      "width": 6,
+      "x": 0,
+      "y": 4,
+      "id": "DaemonSetWidget4",
+      "title": "Current vs Desired Scheduled Nodes",
+      "type": "chart",
+      "config": {
+        "shareMaxAxisDomain": false,
+        "y1": {
+          "formatter": "number.compact",
+          "renderer": "line",
+          "metrics": [
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "",
+              "source": "INFRASTRUCTURE_METRICS",
+              "type": "oTelK8sCluster",
+              "metricPath": ["Others", "OpenTelemetry Kubernetes DaemonSet"],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "metric": "metrics.gauges.k8s.daemonset.current_scheduled_nodes",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "OpenTelemetry gauge k8s.daemonset.current_scheduled_nodes",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "",
+              "source": "INFRASTRUCTURE_METRICS",
+              "type": "oTelK8sCluster",
+              "metricPath": ["Others", "OpenTelemetry Kubernetes DaemonSet"],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "metric": "metrics.gauges.k8s.daemonset.desired_scheduled_nodes",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "OpenTelemetry gauge k8s.daemonset.desired_scheduled_nodes",
+              "crossSeriesAggregation": "MEAN"
+            }
+          ],
+          "formatterSelected": true
+        },
+        "y2": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": []
+        },
+        "type": "TIME_SERIES"
+      },
+      "height": 13
+    },
+    {
+      "width": 6,
+      "x": 6,
+      "y": 4,
+      "id": "DaemonSetWidget5",
+      "title": "Ready vs Current Nodes",
+      "type": "chart",
+      "config": {
+        "shareMaxAxisDomain": false,
+        "y1": {
+          "formatter": "number.compact",
+          "renderer": "line",
+          "metrics": [
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "",
+              "source": "INFRASTRUCTURE_METRICS",
+              "type": "oTelK8sCluster",
+              "metricPath": ["Others", "OpenTelemetry Kubernetes DaemonSet"],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "metric": "metrics.gauges.k8s.daemonset.ready_nodes",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "OpenTelemetry gauge k8s.daemonset.ready_nodes",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "",
+              "source": "INFRASTRUCTURE_METRICS",
+              "type": "oTelK8sCluster",
+              "metricPath": ["Others", "OpenTelemetry Kubernetes DaemonSet"],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "metric": "metrics.gauges.k8s.daemonset.current_scheduled_nodes",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "OpenTelemetry gauge k8s.daemonset.current_scheduled_nodes",
+              "crossSeriesAggregation": "MEAN"
+            }
+          ],
+          "formatterSelected": true
+        },
+        "y2": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": []
+        },
+        "type": "TIME_SERIES"
+      },
+      "height": 13
+    }
+  ],
+  "ownerId": "5ee8a3e8cd70020001ecb007",
+  "writable": true
+}
