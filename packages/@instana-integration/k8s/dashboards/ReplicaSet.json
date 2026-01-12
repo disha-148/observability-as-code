@@ -8,7 +8,7 @@
     }
   ],
   "id": "ReplicaSetDashboardID",
-  "title": "Kubernetes ReplicaSets",
+  "title": "Kubernetes ReplicaSets (Custom Entity) Monitoring",
   "widgets": [
     {
       "width": 3,

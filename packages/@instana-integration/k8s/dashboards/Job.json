@@ -8,7 +8,7 @@
     }
   ],
   "id": "JobDashboardID",
-  "title": "Kubernetes Jobs",
+  "title": "Kubernetes Jobs (Custom Entity) Monitoring",
   "widgets": [
     {
       "width": 3,

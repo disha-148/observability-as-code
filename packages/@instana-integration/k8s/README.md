@@ -2,11 +2,26 @@
 
 The Instana integration package used to support monitoring of Kubernetes componentes. Once you import this package into your Instana environment, you will be able to monitor Kubernetes entities like ReplicaSet, StatefulSet, DaemonSet etc.
 
+## Dashboards
+
+Below are the dashboards that are currently supported by this integration package.
+
+| Dashboard Title                                     | Description                              |
+| --------------------------------------------------- | ---------------------------------------- |
+| Cron Job (Custom Entity) Monitoring                 | Dashboard for Cron Job                   |
+| DaemonSet (Custom Entity) Monitoring                | Dashboard for DaemonSet                  |
+| Deployment (Custom Entity) Monitoring               | Dashboard for Deployment                 |
+| HorizontalPod AutoScaler (Custom Entity) Monitoring | Dashboard for Horizontal Pod Auto Scaler |
+| Job (Custom Entity) Monitoring                      | Dashboard for Job                        |
+| ReplicaSet (Custom Entity) Monitoring               | Dashboard for ReplicaSet                 |
+| ReplicationController (Custom Entity) Monitoring    | Dashboard for Replication Controller     |
+| StatefulSet (Custom Entity) Monitoring              | Dashboard for StatefulSet                |
+
 ## Entities
 
 Below are the entities that are currently supported by this integration package.
 
-| Dashboard Title          | Description                                                  |
+| Custom Entity Title      | Description                                                  |
 | ------------------------ | ------------------------------------------------------------ |
 | Cron Job                 | Custom entities and dashboard for Cron Job                   |
 | DaemonSet                | Custom entities and dashboard for DaemonSet                  |
