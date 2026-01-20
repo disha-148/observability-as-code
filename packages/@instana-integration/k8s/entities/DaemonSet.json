@@ -3,7 +3,8 @@
     "label": "Kubernetes DaemonSet",
     "identifiers": [
       "otel.attribute.k8s.daemonset.name",
-      "otel.attribute.k8s.cluster.name"
+      "otel.attribute.k8s.cluster.name",
+      "otel.attribute.k8s.namespace.name"
     ],
     "tagFilterExpression": {
       "type": "EXPRESSION",

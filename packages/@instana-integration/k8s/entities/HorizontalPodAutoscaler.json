@@ -3,7 +3,8 @@
     "label": "Kubernetes HorizontalPodAutoscaler",
     "identifiers": [
       "otel.attribute.k8s.hpa.name",
-      "otel.attribute.k8s.cluster.name"
+      "otel.attribute.k8s.cluster.name",
+      "otel.attribute.k8s.namespace.name"
     ],
     "tagFilterExpression": {
       "type": "TAG_FILTER",

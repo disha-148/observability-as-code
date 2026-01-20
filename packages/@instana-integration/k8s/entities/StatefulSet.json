@@ -3,7 +3,8 @@
     "label": "Kubernetes StatefulSet",
     "identifiers": [
       "otel.attribute.k8s.statefulset.name",
-      "otel.attribute.k8s.cluster.name"
+      "otel.attribute.k8s.cluster.name",
+      "otel.attribute.k8s.namespace.name"
     ],
     "tagFilterExpression": {
       "type": "EXPRESSION",

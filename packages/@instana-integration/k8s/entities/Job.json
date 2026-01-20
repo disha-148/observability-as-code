@@ -3,7 +3,8 @@
     "label": "Kubernetes Job",
     "identifiers": [
       "otel.attribute.k8s.job.name",
-      "otel.attribute.k8s.cluster.name"
+      "otel.attribute.k8s.cluster.name",
+      "otel.attribute.k8s.namespace.name"
     ],
     "tagFilterExpression": {
       "type": "EXPRESSION",

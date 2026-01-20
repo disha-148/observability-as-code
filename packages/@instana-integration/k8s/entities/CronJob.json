@@ -3,7 +3,8 @@
     "label": "Kubernetes CronJob",
     "identifiers": [
       "otel.attribute.k8s.cronjob.name",
-      "otel.attribute.k8s.cluster.name"
+      "otel.attribute.k8s.cluster.name",
+      "otel.attribute.k8s.namespace.name"
     ],
     "tagFilterExpression": {
       "type": "EXPRESSION",
