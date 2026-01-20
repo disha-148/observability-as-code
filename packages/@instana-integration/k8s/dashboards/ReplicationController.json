@@ -8,7 +8,7 @@
     }
   ],
   "id": "ReplicationControllerDashboardID",
-  "title": "Kubernetes ReplicationController (Custom Entity) Monitoring",
+  "title": "Kubernetes ReplicationController Monitoring",
   "widgets": [
     {
       "width": 3,

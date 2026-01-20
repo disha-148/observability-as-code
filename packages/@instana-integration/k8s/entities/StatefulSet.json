@@ -1,6 +1,6 @@
 {
   "data": {
-    "label": "Otel Kubernetes StatefulSet",
+    "label": "Kubernetes StatefulSet",
     "identifiers": [
       "otel.attribute.k8s.statefulset.name",
       "otel.attribute.k8s.cluster.name"

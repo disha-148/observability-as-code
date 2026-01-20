@@ -1,6 +1,6 @@
 {
   "data": {
-    "label": "Otel Kubernetes ReplicationController",
+    "label": "Kubernetes ReplicationController",
     "identifiers": [
       "otel.attribute.k8s.replicationcontroller.name",
       "otel.attribute.k8s.cluster.name"

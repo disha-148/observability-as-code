@@ -1,6 +1,6 @@
 {
   "data": {
-    "label": "Otel Kubernetes ReplicaSet",
+    "label": "Kubernetes ReplicaSet",
     "identifiers": [
       "otel.attribute.k8s.replicaset.name",
       "otel.attribute.k8s.cluster.name"

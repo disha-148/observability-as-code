@@ -6,10 +6,10 @@ The Instana integration package used to support Python monitoring. Once you impo
 
 Below are the dashboards that are currently supported by this integration package.
 
-| Dashboard Title                           | Description                                                                               |
-| ----------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Python Runtime Metrics                    | Instana custom dashboard that displays runtime metrics for Python application             |
-| Python Runtime (Custom Entity) Monitoring | Instana custom dashboard that displays runtime metrics for Python Runtime (Custom Entity) |
+| Dashboard Title           | Description                                                                                                  |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Python Runtime Metrics    | Instana custom dashboard that displays runtime metrics for Python application                                |
+| Python Runtime Monitoring | Instana custom dashboard that displays runtime metrics for Python Runtime based on v1.39 Semantic Convention |
 
 ## Metrics
 

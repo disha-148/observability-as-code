@@ -8,7 +8,7 @@
     }
   ],
   "id": "HPADashboardID",
-  "title": "Kubernetes Horizontal Pod Scaler (Custom Entity) Monitoring",
+  "title": "Kubernetes Horizontal Pod Scaler Monitoring",
   "widgets": [
     {
       "width": 3,

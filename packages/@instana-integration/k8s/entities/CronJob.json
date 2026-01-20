@@ -1,6 +1,6 @@
 {
   "data": {
-    "label": "Otel Kubernetes CronJob",
+    "label": "Kubernetes CronJob",
     "identifiers": [
       "otel.attribute.k8s.cronjob.name",
       "otel.attribute.k8s.cluster.name"

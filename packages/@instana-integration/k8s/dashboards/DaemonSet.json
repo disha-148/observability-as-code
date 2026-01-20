@@ -8,7 +8,7 @@
     }
   ],
   "id": "DaemonSetDashboardID",
-  "title": "Kubernetes DaemonSet (Custom Entity) Monitoring",
+  "title": "Kubernetes DaemonSet Monitoring",
   "widgets": [
     {
       "width": 3,

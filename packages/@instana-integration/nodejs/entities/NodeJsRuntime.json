@@ -1,6 +1,6 @@
 {
   "data": {
-    "label": "Otel NodeJs Runtime",
+    "label": "NodeJs Runtime",
     "identifiers": ["otel.attribute.telemetry.sdk.language"],
     "tagFilterExpression": {
       "type": "TAG_FILTER",

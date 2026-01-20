@@ -1,6 +1,6 @@
 {
   "data": {
-    "label": "Otel Kubernetes HorizontalPodAutoscaler",
+    "label": "Kubernetes HorizontalPodAutoscaler",
     "identifiers": [
       "otel.attribute.k8s.hpa.name",
       "otel.attribute.k8s.cluster.name"

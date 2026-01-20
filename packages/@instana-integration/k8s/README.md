@@ -6,22 +6,22 @@ The Instana integration package used to support monitoring of Kubernetes compone
 
 Below are the dashboards that are currently supported by this integration package.
 
-| Dashboard Title                                     | Description                              |
-| --------------------------------------------------- | ---------------------------------------- |
-| Cron Job (Custom Entity) Monitoring                 | Dashboard for Cron Job                   |
-| DaemonSet (Custom Entity) Monitoring                | Dashboard for DaemonSet                  |
-| Deployment (Custom Entity) Monitoring               | Dashboard for Deployment                 |
-| HorizontalPod AutoScaler (Custom Entity) Monitoring | Dashboard for Horizontal Pod Auto Scaler |
-| Job (Custom Entity) Monitoring                      | Dashboard for Job                        |
-| ReplicaSet (Custom Entity) Monitoring               | Dashboard for ReplicaSet                 |
-| ReplicationController (Custom Entity) Monitoring    | Dashboard for Replication Controller     |
-| StatefulSet (Custom Entity) Monitoring              | Dashboard for StatefulSet                |
+| Dashboard Title                     | Description                              |
+| ----------------------------------- | ---------------------------------------- |
+| Cron Job Monitoring                 | Dashboard for Cron Job                   |
+| DaemonSet Monitoring                | Dashboard for DaemonSet                  |
+| Deployment Monitoring               | Dashboard for Deployment                 |
+| HorizontalPod AutoScaler Monitoring | Dashboard for Horizontal Pod Auto Scaler |
+| Job Monitoring                      | Dashboard for Job                        |
+| ReplicaSet Monitoring               | Dashboard for ReplicaSet                 |
+| ReplicationController Monitoring    | Dashboard for Replication Controller     |
+| StatefulSet Monitoring              | Dashboard for StatefulSet                |
 
 ## Entities
 
 Below are the entities that are currently supported by this integration package.
 
-| Custom Entity Title      | Description                                                  |
+| Title                    | Description                                                  |
 | ------------------------ | ------------------------------------------------------------ |
 | Cron Job                 | Custom entities and dashboard for Cron Job                   |
 | DaemonSet                | Custom entities and dashboard for DaemonSet                  |

@@ -1,6 +1,6 @@
 {
   "data": {
-    "label": "Otel Go Runtime",
+    "label": "Go Runtime",
     "identifiers": ["otel.attribute.service.name"],
     "tagFilterExpression": {
       "type": "TAG_FILTER",

@@ -8,7 +8,7 @@
     }
   ],
   "id": "CronJobDashboardID",
-  "title": "Kubernetes CronJob (Custom Entity) Monitoring",
+  "title": "Kubernetes CronJob Monitoring",
   "widgets": [
     {
       "width": 3,

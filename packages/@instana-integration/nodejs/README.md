@@ -6,10 +6,10 @@ The Instana integration package used to support Node.js monitoring. Once you imp
 
 Below are the dashboards that are currently supported by this integration package.
 
-| Dashboard Title                            | Description                                                                                |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| Node.js Runtime Metrics                    | Instana custom dashboard that displays runtime metrics for Node.js application             |
-| Node.js (Custom Entity) Runtime Monitoring | Instana custom dashboard that displays runtime metrics for Node.js Runtime - Custom Entity |
+| Dashboard Title            | Description                                                                                                   |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Node.js Runtime Metrics    | Instana custom dashboard that displays runtime metrics for Node.js application                                |
+| Node.js Runtime Monitoring | Instana custom dashboard that displays runtime metrics for Node.js Runtime based on v1.39 Semantic Convention |
 
 ## Metrics
 

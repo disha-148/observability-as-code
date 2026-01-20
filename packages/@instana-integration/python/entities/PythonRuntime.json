@@ -1,6 +1,6 @@
 {
   "data": {
-    "label": "Otel Python Runtime",
+    "label": "Python Runtime",
     "identifiers": ["otel.attribute.sdk.language"],
     "tagFilterExpression": {
       "type": "TAG_FILTER",

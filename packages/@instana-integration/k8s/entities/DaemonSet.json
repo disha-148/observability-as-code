@@ -1,6 +1,6 @@
 {
   "data": {
-    "label": "Otel Kubernetes DaemonSet",
+    "label": "Kubernetes DaemonSet",
     "identifiers": [
       "otel.attribute.k8s.daemonset.name",
       "otel.attribute.k8s.cluster.name"

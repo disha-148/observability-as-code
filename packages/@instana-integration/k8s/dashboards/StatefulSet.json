@@ -8,7 +8,7 @@
     }
   ],
   "id": "StatefulSetDashboardID",
-  "title": "Kubernetes StatefulSet (Custom Entity) Monitoring",
+  "title": "Kubernetes StatefulSet Monitoring",
   "widgets": [
     {
       "width": 3,

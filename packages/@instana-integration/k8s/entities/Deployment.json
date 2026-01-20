@@ -1,6 +1,6 @@
 {
   "data": {
-    "label": "Otel Kubernetes Deployment",
+    "label": "Kubernetes Deployment",
     "identifiers": [
       "otel.attribute.k8s.deployment.name",
       "otel.attribute.k8s.cluster.name"

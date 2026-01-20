@@ -1,6 +1,6 @@
 {
   "data": {
-    "label": "Otel Kubernetes Job",
+    "label": "Kubernetes Job",
     "identifiers": [
       "otel.attribute.k8s.job.name",
       "otel.attribute.k8s.cluster.name"
