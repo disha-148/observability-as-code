@@ -9,7 +9,7 @@ Below are the dashboards that are currently supported by this integration packag
 | Dashboard Title           | Description                                                                                                  |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | Python Runtime Metrics    | Instana custom dashboard that displays runtime metrics for Python application                                |
-| Python Runtime Monitoring | Instana custom dashboard that displays runtime metrics for Python Runtime based on v1.39 Semantic Convention |
+| Python Runtime Monitoring | Instana custom dashboard that displays runtime metrics for Python entity defined in this Integration package |
 
 ## Entities
 
@@ -23,24 +23,24 @@ Below are the entities that are currently supported by this integration package.
 
 ### Semantic Conventions
 
-The Python runtime metrics are obtained by OpenTelemetry auto-instrumentation:
-
-```
-pip install opentelemetry-instrumentation-system-metrics
-```
-
 Below are the Python runtime metrics that are currently supported by this integration package.
 
-| Metrics Name                             | Description       | Unit       |
-| ---------------------------------------- | ----------------- | ---------- |
-| process.runtime.cpython.context_switches | Context switching | Number     |
-| process.runtime.cpython.cpu.utilization  | CPU utilization   | Percentage |
-| process.runtime.cpython.thread_count     | Threads           | Number     |
-| process.runtime.cpython.cpu_time         | Time Spent        | S          |
-| process.runtime.cpython.gc_count         | GC activity       | Number     |
-| process.runtime.cpython.memory           | Memory usage      | Byte       |
-| system.disk.io                           | I/O               | Number     |
-| system.network.io                        | Events            | Number     |
+| Metric Name                                                                                                 | Type  | Description                                               | Unit        | Dashboard(s)                     |
+| ----------------------------------------------------------------------------------------------------------- | ----- | --------------------------------------------------------- | ----------- | -------------------------------- |
+| `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.memory{type="rss"}`                   | Sum   | Python runtime memory usage - Resident Set Size (RSS)     | number      | PythonRuntime.json               |
+| `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.memory{type="vms"}`                   | Sum   | Python runtime memory usage - Virtual Memory Size (VMS)   | number      | PythonRuntime.json               |
+| `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.memory`                               | Sum   | Python runtime memory usage (grouped by type)             | byte        | runtime.json                     |
+| `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.thread_count`                         | Sum   | Number of active threads in the Python runtime            | number      | PythonRuntime.json, runtime.json |
+| `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu_time{type="system"}`              | Sum   | CPU time spent in system mode                             | number      | PythonRuntime.json               |
+| `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu_time{type="user"}`                | Sum   | CPU time spent in user mode                               | number      | PythonRuntime.json               |
+| `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu_time`                             | Sum   | Total CPU time spent by the Python process                | millisecond | runtime.json                     |
+| `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu.utilization`                      | Gauge | CPU utilization percentage of the Python process          | percentage  | PythonRuntime.json, runtime.json |
+| `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.context_switches{type="voluntary"}`   | Sum   | Number of voluntary context switches                      | number      | PythonRuntime.json               |
+| `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.context_switches{type="involuntary"}` | Sum   | Number of involuntary context switches                    | number      | PythonRuntime.json               |
+| `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.context_switches`                     | Sum   | Total context switches (grouped by type)                  | number      | runtime.json                     |
+| `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc_count`                             | Sum   | Garbage collection count (grouped by generation: 0, 1, 2) | number      | runtime.json                     |
+| `opentelemetry.instrumentation.system_metrics/system.disk.io`                                               | Sum   | Disk I/O operations                                       | number      | runtime.json                     |
+| `opentelemetry.instrumentation.system_metrics/system.network.io`                                            | Sum   | Network I/O operations (grouped by direction)             | number      | runtime.json                     |
 
 ### Resource Attributes
 
