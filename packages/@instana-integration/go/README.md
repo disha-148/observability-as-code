@@ -21,6 +21,18 @@ Below are the entities that are currently supported by this integration package.
 
 ## Metrics
 
+### Semantic Conventions
+
+The Go runtime metrics are obtained by OpenTelemetry auto-instrumentation:
+
+```
+import "go.opentelemetry.io/contrib/instrumentation/runtime"
+err := runtime.Start(runtime.WithMinimumReadMemStatsInterval(time.Second))
+if err != nil {
+    log.Fatal(err)
+}
+```
+
 Below are the Go runtime metrics that are currently supported by this integration package.
 
 | Metrics Name                           | Description         | Unit   | Dashboard             |

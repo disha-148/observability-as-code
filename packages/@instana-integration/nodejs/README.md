@@ -21,6 +21,26 @@ Below are the entities that are currently supported by this integration package.
 
 ## Metrics
 
+### Semantic Conventions
+
+The Node.js runtime metrics are obtained by OpenTelemetry auto-instrumentation:
+
+```
+const {RuntimeNodeInstrumentation} = require('@opentelemetry/instrumentation-runtime-node')
+
+const sdk = new NodeSDK({
+  ...
+  instrumentations: [
+    new RuntimeNodeInstrumentation({
+      monitoringPrecision: 5000,
+    })
+  ],
+  ...
+});
+
+sdk.start()
+```
+
 Below are the Node.js runtime metrics that are currently supported by this integration package.
 
 | Metric Name                                                                                          | Type      | Description                                    | Unit       | Dashboard(s)                     |

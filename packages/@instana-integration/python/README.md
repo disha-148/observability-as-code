@@ -23,6 +23,12 @@ Below are the entities that are currently supported by this integration package.
 
 ### Semantic Conventions
 
+The Python runtime metrics are obtained by OpenTelemetry auto-instrumentation:
+
+```
+pip install opentelemetry-instrumentation-system-metrics
+```
+
 Below are the Python runtime metrics that are currently supported by this integration package.
 
 | Metric Name                                                                                                 | Type  | Description                                               | Unit        | Dashboard(s)                     |
@@ -41,6 +47,8 @@ Below are the Python runtime metrics that are currently supported by this integr
 | `opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc_count`                             | Sum   | Garbage collection count (grouped by generation: 0, 1, 2) | number      | runtime.json                     |
 | `opentelemetry.instrumentation.system_metrics/system.disk.io`                                               | Sum   | Disk I/O operations                                       | number      | runtime.json                     |
 | `opentelemetry.instrumentation.system_metrics/system.network.io`                                            | Sum   | Network I/O operations (grouped by direction)             | number      | runtime.json                     |
+
+### Semantic Conventions
 
 ### Resource Attributes
 
