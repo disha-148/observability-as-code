@@ -11,6 +11,14 @@ Below are the dashboards that are currently supported by this integration packag
 | Go Runtime Monitoring                           | Instana custom dashboard that displays runtime metrics for Go application                                    |
 | Go Runtime Monitoring (based on Semantic v1.39) | Instana custom dashboard that displays runtime metrics for Go application based on v1.39 Semantic Convention |
 
+## Entities
+
+Below are the entities that are currently supported by this integration package.
+
+| Title      |
+| ---------- |
+| Go Runtime |
+
 ## Metrics
 
 ### Semantic Conventions

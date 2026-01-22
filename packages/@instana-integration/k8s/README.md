@@ -21,16 +21,16 @@ Below are the dashboards that are currently supported by this integration packag
 
 Below are the entities that are currently supported by this integration package.
 
-| Title                    | Description                                                  |
-| ------------------------ | ------------------------------------------------------------ |
-| Cron Job                 | Custom entities and dashboard for Cron Job                   |
-| DaemonSet                | Custom entities and dashboard for DaemonSet                  |
-| Deployment               | Custom entities and dashboard for Deployment                 |
-| HorizontalPod AutoScaler | Custom entities and dashboard for Horizontal Pod Auto Scaler |
-| Job                      | Custom entities and dashboard for Job                        |
-| ReplicaSet               | Custom entities and dashboard for ReplicaSet                 |
-| ReplicationController    | Custom entities and dashboard for Replication Controller     |
-| StatefulSet              | Custom entities and dashboard for StatefulSet                |
+| Title                    |
+| ------------------------ |
+| Cron Job                 |
+| DaemonSet                |
+| Deployment               |
+| HorizontalPod AutoScaler |
+| Job                      |
+| ReplicaSet               |
+| ReplicationController    |
+| StatefulSet              |
 
 ## Metrics
 
