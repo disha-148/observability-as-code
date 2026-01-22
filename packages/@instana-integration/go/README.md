@@ -6,10 +6,10 @@ The Instana integration package used to support Go monitoring. Once you import t
 
 Below are the dashboards that are currently supported by this integration package.
 
-| Dashboard Title                                 | Description                                                                                              |
-| ----------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Go Runtime Monitoring                           | Instana custom dashboard that displays runtime metrics for Go application                                |
-| Go Runtime Monitoring (based on Semantic v1.39) | Instana custom dashboard that displays runtime metrics for Go entity defined in this Integration package |
+| Dashboard Title       | Description                                                                                              |
+| --------------------- | -------------------------------------------------------------------------------------------------------- |
+| Go Runtime Metrics    | Instana custom dashboard that displays runtime metrics for Go application                                |
+| Go Runtime Monitoring | Instana custom dashboard that displays runtime metrics for Go entity defined in this Integration package |
 
 ## Entities
 
@@ -23,22 +23,22 @@ Below are the entities that are currently supported by this integration package.
 
 Below are the Go runtime metrics that are currently supported by this integration package.
 
-| Metrics Name                           | Description         | Unit   | Dashboard                              |
-| -------------------------------------- | ------------------- | ------ | -------------------------------------- |
-| go.memory.used{go.memory.type="other"} | Memory Used - Other | Byte   | Go Runtime Monitoring (Semantic v1.39) |
-| go.memory.used{go.memory.type="stack"} | Memory Used - Stack | Byte   | Go Runtime Monitoring (Semantic v1.39) |
-| go.memory.allocated                    | Memory Allocated    | Byte   | Go Runtime Monitoring (Semantic v1.39) |
-| go.memory.limit                        | Memory Limit        | Byte   | Go Runtime Monitoring (Semantic v1.39) |
-| go.memory.gc.goal                      | GC Goal             | Byte   | Go Runtime Monitoring (Semantic v1.39) |
-| go.memory.allocations                  | Memory Allocations  | Number | Go Runtime Monitoring (Semantic v1.39) |
-| go.goroutine.count                     | Goroutine Count     | Number | Go Runtime Monitoring (Semantic v1.39) |
-| go.processor.limit                     | Processor Limit     | Number | Go Runtime Monitoring (Semantic v1.39) |
-| go.config.gogc                         | GOGC Config         | Number | Go Runtime Monitoring (Semantic v1.39) |
-| process.runtime.go.mem.heap_inuse      | Heap Used           | Byte   | Go Runtime Monitoring                  |
-| process.runtime.go.mem.heap_alloc      | Allocated Memory    | Byte   | Go Runtime Monitoring                  |
-| process.runtime.go.mem.heap_sys        | System Heap         | Byte   | Go Runtime Monitoring                  |
-| process.runtime.go.mem.heap_objects    | Heap Objects        | Number | Go Runtime Monitoring                  |
-| process.runtime.go.goroutines          | Executed Goroutines | Number | Go Runtime Monitoring                  |
+| Metrics Name                           | Description         | Unit   | Dashboard             |
+| -------------------------------------- | ------------------- | ------ | --------------------- |
+| go.memory.used{go.memory.type="other"} | Memory Used - Other | Byte   | Go Runtime Monitoring |
+| go.memory.used{go.memory.type="stack"} | Memory Used - Stack | Byte   | Go Runtime Monitoring |
+| go.memory.allocated                    | Memory Allocated    | Byte   | Go Runtime Monitoring |
+| go.memory.limit                        | Memory Limit        | Byte   | Go Runtime Monitoring |
+| go.memory.gc.goal                      | GC Goal             | Byte   | Go Runtime Monitoring |
+| go.memory.allocations                  | Memory Allocations  | Number | Go Runtime Monitoring |
+| go.goroutine.count                     | Goroutine Count     | Number | Go Runtime Monitoring |
+| go.processor.limit                     | Processor Limit     | Number | Go Runtime Monitoring |
+| go.config.gogc                         | GOGC Config         | Number | Go Runtime Monitoring |
+| process.runtime.go.mem.heap_inuse      | Heap Used           | Byte   | Go Runtime Metrics    |
+| process.runtime.go.mem.heap_alloc      | Allocated Memory    | Byte   | Go Runtime Metrics    |
+| process.runtime.go.mem.heap_sys        | System Heap         | Byte   | Go Runtime Metrics    |
+| process.runtime.go.mem.heap_objects    | Heap Objects        | Number | Go Runtime Metrics    |
+| process.runtime.go.goroutines          | Executed Goroutines | Number | Go Runtime Metrics    |
 
 ### Resource Attributes
 
