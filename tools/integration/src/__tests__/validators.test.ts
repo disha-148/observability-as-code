@@ -730,6 +730,24 @@ describe('validators', () => {
             expect(successMessages).toContain('README.md contains all required sections.');
         });
 
+		it('should not require Entities section when entities folder does not exist', () => {
+            const readmeContent = `
+# @instana-integration/test
+## Dashboards
+## Metrics
+## Semantic Conventions
+## Resource Attributes
+## Events
+            `;
+            mockedFs.existsSync.mockImplementation((path: any) => {
+                return !path.includes('entities');
+            });
+
+            validators.validateReadmeContent(readmeContent, '@instana-integration/test', '/test', errors, warnings, successMessages);
+
+            expect(successMessages).toContain('README.md contains all required sections.');
+        });
+
         it('should handle case-insensitive section matching', () => {
             const readmeContent = `
 # @instana-integration/test

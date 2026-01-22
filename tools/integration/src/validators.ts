@@ -340,6 +340,7 @@ export function validateReadmeContent(
 ): void {
     const dashboardsExist = fs.existsSync(path.join(currentDirectory, 'dashboards'));
     const eventsExist = fs.existsSync(path.join(currentDirectory, 'events'));
+    const entitiesExist = fs.existsSync(path.join(currentDirectory, 'entities'));
     const requiredSections = [packageName];
     if (dashboardsExist) {
         requiredSections.push('Dashboards');
@@ -348,6 +349,9 @@ export function validateReadmeContent(
     if (eventsExist) {
         requiredSections.push('Events');
     }
+	if (entitiesExist) {
+		requiredSections.push('Entities');
+	}
     const readmeLines = readmeContent.split('\n');
     const headingLines = readmeLines
         .filter(line => /^#{1,6}\s+/.test(line.trim()))
