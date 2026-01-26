@@ -1,3 +1,15 @@
 tools/integration/dist/
 tools/integration/node_modules/
 packages/node_modules/
+
+# Test coverage
+coverage/
+*.lcov
+
+# Test results
+junit.xml
+test-results/
+
+# Jest cache
+.jest/
+
