@@ -341,6 +341,7 @@ export function validateReadmeContent(
     const dashboardsExist = fs.existsSync(path.join(currentDirectory, 'dashboards'));
     const eventsExist = fs.existsSync(path.join(currentDirectory, 'events'));
     const entitiesExist = fs.existsSync(path.join(currentDirectory, 'entities'));
+    const infraSmartAlertsExist = fs.existsSync(path.join(currentDirectory, 'infra-smart-alerts'));
     const requiredSections = [packageName];
     if (dashboardsExist) {
         requiredSections.push('Dashboards');
@@ -351,6 +352,9 @@ export function validateReadmeContent(
     }
 	if (entitiesExist) {
 		requiredSections.push('Entities');
+	}
+	if (infraSmartAlertsExist) {
+		requiredSections.push('Infrastructure Smart Alerts');
 	}
     const readmeLines = readmeContent.split('\n');
     const headingLines = readmeLines
@@ -366,4 +370,73 @@ export function validateReadmeContent(
     } else {
         successMessages.push('README.md contains all required sections.');
     }
+}
+/**
+ * Validate Infrastructure smart alerts files for required fields
+ */
+export function validateInfraAlertFiles(
+	infraAlertPath: string,
+	errors: string[],
+	warnings: string[],
+	successMessages: string[]
+): void {
+	const jsonFiles = getAllJsonFiles(infraAlertPath);
+
+	if(jsonFiles.length === 0) {
+		warnings.push('No JSON files found in the infra-smart-alerts folder.');
+		return;
+	}
+
+	jsonFiles.forEach(filePath => {
+    	const file = path.relative(infraAlertPath, filePath);
+    	try {
+    		const fileContent = fs.readFileSync(filePath, 'utf-8');
+    		const infraAlert = JSON.parse(fileContent);
+    		let allInfraAlertFieldsValid = true;
+
+    		const alwaysRequiredInfraAlertFields = ['name', 'granularity', 'timeThreshold'];
+    		const presentFields: string[] = [];
+    		const missingFields: string[] = [];
+
+    		// Check always required fields
+    		for (const field of alwaysRequiredInfraAlertFields) {
+    			const value = infraAlert[field];
+    			const isEmptyArray = Array.isArray(value) && value.length === 0;
+    			const isEmptyValue = value === undefined || value === null || value === '' || isEmptyArray;
+
+    			if (isEmptyValue) {
+    				missingFields.push(field);
+    				allInfraAlertFieldsValid = false;
+    			} else {
+    				presentFields.push(field);
+    			}
+    		}
+
+    		// Check "rule + threshold" OR "rules" array
+    		const hasRuleAndThreshold = infraAlert.rule != null && infraAlert.threshold != null;
+    		const hasRulesArray = Array.isArray(infraAlert.rules) && infraAlert.rules.length > 0;
+
+    		if (!hasRuleAndThreshold && !hasRulesArray) {
+    			missingFields.push('rule + threshold OR rules[]');
+    			allInfraAlertFieldsValid = false;
+    		} else {
+    			presentFields.push(hasRuleAndThreshold ? 'rule + threshold' : 'rules[]');
+    		}
+
+			if (presentFields.length > 0) {
+				successMessages.push(`The infra smart alert field(s) ${presentFields.join(', ')} are present in the file: ${file}.`);
+			}
+			if (missingFields.length > 0) {
+				errors.push(`The infra smart alert is missing required field(s) ${missingFields.join(', ')} in file: ${file}.`);
+			}
+
+			if (allInfraAlertFieldsValid) {
+				successMessages.push(`The infra smart alert is correctly defined in the file: ${file}.`);
+			} else {
+				errors.push(`The infra smart alert is not correctly defined in the file: ${file}.`);
+			}
+    	} catch (error) {
+    		errors.push(`Error validating file ${filePath}: ${error instanceof Error ? error.message : String(error)}.`);
+    	}
+    });
 }

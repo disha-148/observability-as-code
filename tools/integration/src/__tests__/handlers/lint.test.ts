@@ -150,6 +150,44 @@ describe('Lint Handler', () => {
             expect(validators.validateEventFiles).toHaveBeenCalled();
         });
 
+        it('should validate infra-smart-alerts when folder exists', async () => {
+            const argv = { debug: false, 'strict-mode': false };
+            const packageData = { name: 'test-package', private: false };
+            const readmeContent = '# Test';
+
+            (utils.readPackageJson as jest.Mock).mockReturnValue(packageData);
+            (utils.isPrivatePackage as jest.Mock).mockReturnValue(false);
+            (utils.readReadmeFile as jest.Mock).mockReturnValue(readmeContent);
+            (validators.validatePackageJson as jest.Mock).mockResolvedValue(undefined);
+            (validators.validateReadmeContent as jest.Mock).mockImplementation(() => {});
+            (validators.validateInfraAlertFiles as jest.Mock).mockImplementation(() => {});
+            
+            (fs.existsSync as jest.Mock).mockImplementation((p: string) => {
+                return p.includes('infra-smart-alerts');
+            });
+
+            await expect(handleLint(argv)).rejects.toThrow('process.exit(0)');
+
+            expect(validators.validateInfraAlertFiles).toHaveBeenCalled();
+        });
+
+        it('should log info when no infra-smart-alerts folder found', async () => {
+            const argv = { debug: false, 'strict-mode': false };
+            const packageData = { name: 'test-package', private: false };
+            const readmeContent = '# Test';
+
+            (utils.readPackageJson as jest.Mock).mockReturnValue(packageData);
+            (utils.isPrivatePackage as jest.Mock).mockReturnValue(false);
+            (utils.readReadmeFile as jest.Mock).mockReturnValue(readmeContent);
+            (validators.validatePackageJson as jest.Mock).mockResolvedValue(undefined);
+            (validators.validateReadmeContent as jest.Mock).mockImplementation(() => {});
+            (fs.existsSync as jest.Mock).mockReturnValue(false);
+
+            await expect(handleLint(argv)).rejects.toThrow('process.exit(0)');
+
+            expect(logger.info).toHaveBeenCalledWith('No infrastructure smart alerts folder found for this package.');
+        });
+
         it('should log info when no entities folder found', async () => {
             const argv = { debug: false, 'strict-mode': false };
             const packageData = { name: 'test-package', private: false };
@@ -313,6 +351,7 @@ describe('Lint Handler', () => {
             (validators.validateEntityFiles as jest.Mock).mockImplementation(() => {});
             (validators.validateDashboardFiles as jest.Mock).mockImplementation(() => {});
             (validators.validateEventFiles as jest.Mock).mockImplementation(() => {});
+            (validators.validateInfraAlertFiles as jest.Mock).mockImplementation(() => {});
             (fs.existsSync as jest.Mock).mockReturnValue(true);
 
             await expect(handleLint(argv)).rejects.toThrow('process.exit(0)');
@@ -320,6 +359,7 @@ describe('Lint Handler', () => {
             expect(validators.validateEntityFiles).toHaveBeenCalled();
             expect(validators.validateDashboardFiles).toHaveBeenCalled();
             expect(validators.validateEventFiles).toHaveBeenCalled();
+            expect(validators.validateInfraAlertFiles).toHaveBeenCalled();
         });
     });
 });

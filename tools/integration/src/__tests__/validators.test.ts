@@ -675,6 +675,8 @@ describe('validators', () => {
 ## Semantic Conventions
 ## Resource Attributes
 ## Events
+## Entities
+## Infrastructure Smart Alerts
             `;
             mockedFs.existsSync.mockReturnValue(true);
 
@@ -705,7 +707,7 @@ describe('validators', () => {
 ## Events
             `;
             mockedFs.existsSync.mockImplementation((path: any) => {
-                return !path.includes('dashboards');
+                return !path.includes('dashboards') && !path.includes('entities') && !path.includes('infra-smart-alerts');
             });
 
             validators.validateReadmeContent(readmeContent, '@instana-integration/test', '/test', errors, warnings, successMessages);
@@ -722,7 +724,7 @@ describe('validators', () => {
 ## Resource Attributes
             `;
             mockedFs.existsSync.mockImplementation((path: any) => {
-                return !path.includes('events');
+                return !path.includes('events') && !path.includes('entities') && !path.includes('infra-smart-alerts');
             });
 
             validators.validateReadmeContent(readmeContent, '@instana-integration/test', '/test', errors, warnings, successMessages);
@@ -730,7 +732,7 @@ describe('validators', () => {
             expect(successMessages).toContain('README.md contains all required sections.');
         });
 
-		it('should not require Entities section when entities folder does not exist', () => {
+  it('should not require Entities section when entities folder does not exist', () => {
             const readmeContent = `
 # @instana-integration/test
 ## Dashboards
@@ -740,7 +742,26 @@ describe('validators', () => {
 ## Events
             `;
             mockedFs.existsSync.mockImplementation((path: any) => {
-                return !path.includes('entities');
+                return !path.includes('entities') && !path.includes('infra-smart-alerts');
+            });
+
+            validators.validateReadmeContent(readmeContent, '@instana-integration/test', '/test', errors, warnings, successMessages);
+
+            expect(successMessages).toContain('README.md contains all required sections.');
+        });
+
+  it('should not require Infrastructure Smart Alerts section when infra-smart-alerts folder does not exist', () => {
+            const readmeContent = `
+# @instana-integration/test
+## Dashboards
+## Metrics
+## Semantic Conventions
+## Resource Attributes
+## Events
+## Entities
+            `;
+            mockedFs.existsSync.mockImplementation((path: any) => {
+                return !path.includes('infra-smart-alerts');
             });
 
             validators.validateReadmeContent(readmeContent, '@instana-integration/test', '/test', errors, warnings, successMessages);
@@ -756,6 +777,8 @@ describe('validators', () => {
 ## semantic conventions
 ## Resource Attributes
 ## events
+## entities
+## infrastructure smart alerts
             `;
             mockedFs.existsSync.mockReturnValue(true);
 
@@ -772,12 +795,236 @@ describe('validators', () => {
 ##### Semantic Conventions
 ###### Resource Attributes
 ## Events
+## Entities
+## Infrastructure Smart Alerts
             `;
             mockedFs.existsSync.mockReturnValue(true);
 
             validators.validateReadmeContent(readmeContent, '@instana-integration/test', '/test', errors, warnings, successMessages);
 
             expect(successMessages).toContain('README.md contains all required sections.');
+        });
+    });
+
+    describe('validateInfraAlertFiles', () => {
+        beforeEach(() => {
+            mockedFs.readdirSync.mockReturnValue(['alert1.json'] as any);
+            mockedFs.statSync.mockReturnValue({ isDirectory: () => false } as any);
+        });
+
+        it('should warn when no JSON files found', () => {
+            mockedFs.readdirSync.mockReturnValue([]);
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(warnings).toContain('No JSON files found in the infra-smart-alerts folder.');
+        });
+
+        it('should validate infra alert with all required fields and rule+threshold', () => {
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: 'Test Alert',
+                granularity: 300,
+                timeThreshold: 600,
+                rule: 'entity.type:host',
+                threshold: 0.8
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(successMessages.some(m => m.includes('name, granularity, timeThreshold, rule + threshold'))).toBe(true);
+            expect(successMessages.some(m => m.includes('correctly defined'))).toBe(true);
+            expect(errors).toHaveLength(0);
+        });
+
+        it('should validate infra alert with all required fields and rules array', () => {
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: 'Test Alert',
+                granularity: 300,
+                timeThreshold: 600,
+                rules: [
+                    { severity: 5, threshold: 0.8 },
+                    { severity: 10, threshold: 0.9 }
+                ]
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(successMessages.some(m => m.includes('name, granularity, timeThreshold, rules[]'))).toBe(true);
+            expect(successMessages.some(m => m.includes('correctly defined'))).toBe(true);
+            expect(errors).toHaveLength(0);
+        });
+
+        it('should error on missing required fields', () => {
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: 'Test Alert'
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('missing required field(s)'))).toBe(true);
+            expect(errors.some(e => e.includes('granularity'))).toBe(true);
+            expect(errors.some(e => e.includes('timeThreshold'))).toBe(true);
+        });
+
+        it('should error when neither rule+threshold nor rules array is present', () => {
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: 'Test Alert',
+                granularity: 300,
+                timeThreshold: 600
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('rule + threshold OR rules[]'))).toBe(true);
+            expect(errors.some(e => e.includes('not correctly defined'))).toBe(true);
+        });
+
+        it('should error when rule is present but threshold is missing', () => {
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: 'Test Alert',
+                granularity: 300,
+                timeThreshold: 600,
+                rule: 'entity.type:host'
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('rule + threshold OR rules[]'))).toBe(true);
+        });
+
+        it('should error when threshold is present but rule is missing', () => {
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: 'Test Alert',
+                granularity: 300,
+                timeThreshold: 600,
+                threshold: 0.8
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('rule + threshold OR rules[]'))).toBe(true);
+        });
+
+        it('should error when rules array is empty', () => {
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: 'Test Alert',
+                granularity: 300,
+                timeThreshold: 600,
+                rules: []
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('rule + threshold OR rules[]'))).toBe(true);
+        });
+
+        it('should error on empty string fields', () => {
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: '',
+                granularity: 300,
+                timeThreshold: 600,
+                rule: 'entity.type:host',
+                threshold: 0.8
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('missing required field(s)') && e.includes('name'))).toBe(true);
+            expect(errors.some(e => e.includes('not correctly defined'))).toBe(true);
+        });
+
+        it('should error on null fields', () => {
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: 'Test Alert',
+                granularity: null,
+                timeThreshold: 600,
+                rule: 'entity.type:host',
+                threshold: 0.8
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('missing required field(s)') && e.includes('granularity'))).toBe(true);
+            expect(errors.some(e => e.includes('not correctly defined'))).toBe(true);
+        });
+
+        it('should error on undefined fields', () => {
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: 'Test Alert',
+                granularity: 300,
+                rule: 'entity.type:host',
+                threshold: 0.8
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('missing required field(s)') && e.includes('timeThreshold'))).toBe(true);
+            expect(errors.some(e => e.includes('not correctly defined'))).toBe(true);
+        });
+
+        it('should handle JSON parse errors', () => {
+            mockedFs.readFileSync.mockReturnValue('invalid json');
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('Error validating file'))).toBe(true);
+        });
+
+        it('should handle non-Error exceptions', () => {
+            mockedFs.readFileSync.mockImplementation(() => {
+                throw 'String error';
+            });
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('Error validating file'))).toBe(true);
+            expect(errors.some(e => e.includes('String error'))).toBe(true);
+        });
+
+        it('should validate multiple infra alert files', () => {
+            mockedFs.readdirSync.mockReturnValue(['alert1.json', 'alert2.json'] as any);
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: 'Test Alert',
+                granularity: 300,
+                timeThreshold: 600,
+                rule: 'entity.type:host',
+                threshold: 0.8
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(mockedFs.readFileSync).toHaveBeenCalledTimes(2);
+        });
+
+        it('should accept zero as valid value for numeric fields', () => {
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: 'Test Alert',
+                granularity: 0,
+                timeThreshold: 0,
+                rule: 'entity.type:host',
+                threshold: 0
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(successMessages.some(m => m.includes('correctly defined'))).toBe(true);
+            expect(errors).toHaveLength(0);
+        });
+
+        it('should validate both rule+threshold and rules array can coexist', () => {
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify({
+                name: 'Test Alert',
+                granularity: 300,
+                timeThreshold: 600,
+                rule: 'entity.type:host',
+                threshold: 0.8,
+                rules: [{ severity: 5, threshold: 0.9 }]
+            }));
+
+            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+
+            expect(successMessages.some(m => m.includes('correctly defined'))).toBe(true);
+            expect(errors).toHaveLength(0);
         });
     });
 });

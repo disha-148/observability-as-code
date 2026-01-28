@@ -394,14 +394,22 @@ describe('Utils Module', () => {
             expect(content).toContain('## Entities');
         });
 
-        it('should generate README with all sections', () => {
-            utils.generateReadme('/test/path', '@instana-integration/test', ['dashboards', 'events', 'entities']);
+		it('should generate README with infra-smart-alerts section', () => {
+			utils.generateReadme('/test/path', '@instana-integration/test', ['infra-smart-alerts']);
+
+		    const content = (mockedFs.writeFileSync as jest.Mock).mock.calls[0][1];
+		    expect(content).toContain('## Infrastructure Smart Alerts');
+		 });
+
+		 it('should generate README with all sections', () => {
+		 	utils.generateReadme('/test/path', '@instana-integration/test', ['dashboards', 'events', 'entities', 'infra-smart-alerts']);
 
             const content = (mockedFs.writeFileSync as jest.Mock).mock.calls[0][1];
             expect(content).toContain('## Dashboards');
             expect(content).toContain('## Events');
             expect(content).toContain('## Entities');
             expect(content).toContain('## Metrics');
+            expect(content).toContain('## Infrastructure Smart Alerts');
             expect(content).toContain('## Installation and Usage');
         });
     });

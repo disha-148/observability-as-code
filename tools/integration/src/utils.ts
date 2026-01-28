@@ -325,6 +325,21 @@ Below are the entities that are currently supported by this integration package.
 `;
     }
 
+	if (configTypes.includes('infra-smart-alerts')) {
+        readmeContent += `
+## Infrastructure Smart Alerts
+
+Below are the infrastructure smart alerts that are currently supported by this integration package.
+
+(Note: Replace the sample entries below with actual infrastructure smart alerts from your package.)
+
+| Infrastructure Smart Alerts Name              | Description                       |
+|-----------------------------------------------|---------------------------------  |
+| <infrastructure.smart.alert.name.example1>    | Triggered when condition X occurs |
+| <infrastructure.smart.alert.name.example2>    | Triggered when condition Y occurs |
+`;
+    }
+
     readmeContent += `
 ## Installation and Usage
 
