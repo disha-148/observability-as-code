@@ -705,9 +705,12 @@ describe('validators', () => {
 ## Semantic Conventions
 ## Resource Attributes
 ## Events
+## Entities
+## Infrastructure Smart Alerts
             `;
             mockedFs.existsSync.mockImplementation((path: any) => {
-                return !path.includes('dashboards') && !path.includes('entities') && !path.includes('infra-smart-alerts');
+                // Only dashboards folder doesn't exist, but entities and infra-smart-alerts do
+                return !path.includes('dashboards');
             });
 
             validators.validateReadmeContent(readmeContent, '@instana-integration/test', '/test', errors, warnings, successMessages);
@@ -722,9 +725,12 @@ describe('validators', () => {
 ## Metrics
 ## Semantic Conventions
 ## Resource Attributes
+## Entities
+## Infrastructure Smart Alerts
             `;
             mockedFs.existsSync.mockImplementation((path: any) => {
-                return !path.includes('events') && !path.includes('entities') && !path.includes('infra-smart-alerts');
+                // Only events folder doesn't exist, but dashboards, entities and infra-smart-alerts do
+                return !path.includes('events');
             });
 
             validators.validateReadmeContent(readmeContent, '@instana-integration/test', '/test', errors, warnings, successMessages);
@@ -740,9 +746,11 @@ describe('validators', () => {
 ## Semantic Conventions
 ## Resource Attributes
 ## Events
+## Infrastructure Smart Alerts
             `;
             mockedFs.existsSync.mockImplementation((path: any) => {
-                return !path.includes('entities') && !path.includes('infra-smart-alerts');
+                // Only entities folder doesn't exist, but dashboards, events and infra-smart-alerts do
+                return !path.includes('entities');
             });
 
             validators.validateReadmeContent(readmeContent, '@instana-integration/test', '/test', errors, warnings, successMessages);
@@ -761,6 +769,7 @@ describe('validators', () => {
 ## Entities
             `;
             mockedFs.existsSync.mockImplementation((path: any) => {
+                // Only infra-smart-alerts folder doesn't exist, but dashboards, events and entities do
                 return !path.includes('infra-smart-alerts');
             });
 
