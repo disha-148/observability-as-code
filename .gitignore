@@ -1,4 +1,14 @@
 tools/integration/dist/
 tools/integration/node_modules/
 packages/node_modules/
-.DS_Store
+
+# Test coverage
+coverage/
+*.lcov
+
+# Test results
+junit.xml
+test-results/
+
+# Jest cache
+.jest/
