@@ -14,7 +14,7 @@
     },
     "dashboards": [
       {
-        "reference": "HorizontalPodAutoscaler.json"
+        "reference": "horizontal-pod-autoscaler.json"
       }
     ],
     "metrics": [

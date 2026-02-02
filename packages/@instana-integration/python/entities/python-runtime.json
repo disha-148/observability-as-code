@@ -16,7 +16,7 @@
     },
     "dashboards": [
       {
-        "reference": "PythonRuntime.json"
+        "reference": "python-runtime.json"
       }
     ],
     "metrics": [

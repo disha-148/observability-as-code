@@ -26,7 +26,7 @@
     },
     "dashboards": [
       {
-        "reference": "StatefulSet.json"
+        "reference": "stateful-set.json"
       }
     ],
     "metrics": [

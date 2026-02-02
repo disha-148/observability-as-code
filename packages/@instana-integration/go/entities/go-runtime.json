@@ -16,7 +16,7 @@
     },
     "dashboards": [
       {
-        "reference": "GoRuntime.json"
+        "reference": "go-runtime.json"
       }
     ],
     "metrics": [

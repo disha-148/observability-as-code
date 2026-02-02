@@ -26,7 +26,7 @@
     },
     "dashboards": [
       {
-        "reference": "DaemonSet.json"
+        "reference": "daemon-set.json"
       }
     ],
     "metrics": [

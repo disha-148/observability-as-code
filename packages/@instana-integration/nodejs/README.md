@@ -43,25 +43,25 @@ sdk.start()
 
 Below are the Node.js runtime metrics that are currently supported by this integration package.
 
-| Metric Name                                                                                          | Type      | Description                                    | Unit       | Dashboard(s)                     |
-| ---------------------------------------------------------------------------------------------------- | --------- | ---------------------------------------------- | ---------- | -------------------------------- |
-| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.max`                             | Gauge     | Event loop maximum delay                       | second     | NodeJsRuntime.json, runtime.json |
-| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.mean`                            | Gauge     | Event loop mean delay                          | second     | NodeJsRuntime.json, runtime.json |
-| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.min`                             | Gauge     | Event loop minimum delay                       | second     | NodeJsRuntime.json, runtime.json |
-| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.stddev`                          | Gauge     | Event loop standard deviation delay            | second     | NodeJsRuntime.json, runtime.json |
-| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p50`                             | Gauge     | Event loop delay 50th percentile               | number     | NodeJsRuntime.json               |
-| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p90`                             | Gauge     | Event loop delay 90th percentile               | number     | NodeJsRuntime.json               |
-| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p99`                             | Gauge     | Event loop delay 99th percentile               | number     | NodeJsRuntime.json               |
-| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state="active"}` | Sum       | Event loop time in active state                | number     | NodeJsRuntime.json               |
-| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state="idle"}`   | Sum       | Event loop time in idle state                  | number     | NodeJsRuntime.json               |
-| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.utilization`                           | Gauge     | Event loop utilization percentage              | percentage | NodeJsRuntime.json               |
-| `@opentelemetry/instrumentation-runtime-node/v8js.gc.duration{v8js.gc.type="incremental"}`           | Histogram | Garbage collection duration for incremental GC | second     | runtime.json                     |
-| `@opentelemetry/instrumentation-runtime-node/v8js.gc.duration{v8js.gc.type="major"}`                 | Histogram | Garbage collection duration for major GC       | second     | runtime.json                     |
-| `@opentelemetry/instrumentation-runtime-node/v8js.gc.duration{v8js.gc.type="minor"}`                 | Histogram | Garbage collection duration for minor GC       | second     | runtime.json                     |
-| `@opentelemetry/instrumentation-runtime-node/v8js.memory.heap.space.available_size`                  | Gauge     | Heap space available size                      | byte       | runtime.json                     |
-| `@opentelemetry/instrumentation-runtime-node/v8js.memory.heap.limit`                                 | Gauge     | Total heap memory size pre-allocated           | byte       | runtime.json                     |
-| `@opentelemetry/instrumentation-runtime-node/v8js.memory.heap.space.physical_size`                   | Gauge     | Committed size of a heap space                 | byte       | runtime.json                     |
-| `@opentelemetry/instrumentation-runtime-node/v8js.memory.heap.used`                                  | Gauge     | Heap memory size allocated                     | byte       | runtime.json                     |
+| Metric Name                                                                                          | Type      | Description                                    | Unit       | Dashboard(s)                      |
+| ---------------------------------------------------------------------------------------------------- | --------- | ---------------------------------------------- | ---------- | --------------------------------- |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.max`                             | Gauge     | Event loop maximum delay                       | second     | nodejs-runtime.json, runtime.json |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.mean`                            | Gauge     | Event loop mean delay                          | second     | nodejs-runtime.json, runtime.json |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.min`                             | Gauge     | Event loop minimum delay                       | second     | nodejs-runtime.json, runtime.json |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.stddev`                          | Gauge     | Event loop standard deviation delay            | second     | nodejs-runtime.json, runtime.json |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p50`                             | Gauge     | Event loop delay 50th percentile               | number     | nodejs-runtime.json               |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p90`                             | Gauge     | Event loop delay 90th percentile               | number     | nodejs-runtime.json               |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p99`                             | Gauge     | Event loop delay 99th percentile               | number     | nodejs-runtime.json               |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state="active"}` | Sum       | Event loop time in active state                | number     | nodejs-runtime.json               |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state="idle"}`   | Sum       | Event loop time in idle state                  | number     | nodejs-runtime.json               |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.utilization`                           | Gauge     | Event loop utilization percentage              | percentage | nodejs-runtime.json               |
+| `@opentelemetry/instrumentation-runtime-node/v8js.gc.duration{v8js.gc.type="incremental"}`           | Histogram | Garbage collection duration for incremental GC | second     | runtime.json                      |
+| `@opentelemetry/instrumentation-runtime-node/v8js.gc.duration{v8js.gc.type="major"}`                 | Histogram | Garbage collection duration for major GC       | second     | runtime.json                      |
+| `@opentelemetry/instrumentation-runtime-node/v8js.gc.duration{v8js.gc.type="minor"}`                 | Histogram | Garbage collection duration for minor GC       | second     | runtime.json                      |
+| `@opentelemetry/instrumentation-runtime-node/v8js.memory.heap.space.available_size`                  | Gauge     | Heap space available size                      | byte       | runtime.json                      |
+| `@opentelemetry/instrumentation-runtime-node/v8js.memory.heap.limit`                                 | Gauge     | Total heap memory size pre-allocated           | byte       | runtime.json                      |
+| `@opentelemetry/instrumentation-runtime-node/v8js.memory.heap.space.physical_size`                   | Gauge     | Committed size of a heap space                 | byte       | runtime.json                      |
+| `@opentelemetry/instrumentation-runtime-node/v8js.memory.heap.used`                                  | Gauge     | Heap memory size allocated                     | byte       | runtime.json                      |
 
 ### Resource Attributes
 

@@ -78,7 +78,7 @@
     ],
     "dashboards": [
       {
-        "reference": "Job.json"
+        "reference": "job.json"
       }
     ]
   }

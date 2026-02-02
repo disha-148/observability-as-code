@@ -40,32 +40,32 @@ The k8s metrics are obtained by OpenTelemetry auto-instrumentation and scraped b
 
 Below are the Kubernetes metrics that are currently supported by this integration package:
 
-| Metric Name                             | Type  | Description                                                                                                                | Unit   | Dashboard(s)                 |
-| --------------------------------------- | ----- | -------------------------------------------------------------------------------------------------------------------------- | ------ | ---------------------------- |
-| `k8s.cronjob.active`                    | Gauge | The number of actively running jobs for a cronjob                                                                          | number | CronJob.json                 |
-| `k8s.daemonset.current_scheduled_nodes` | Gauge | Number of nodes that are running at least 1 daemon pod and are supposed to run the daemon pod                              | number | DaemonSet.json               |
-| `k8s.daemonset.desired_scheduled_nodes` | Gauge | Number of nodes that should be running the daemon pod (including nodes currently running the daemon pod)                   | number | DaemonSet.json               |
-| `k8s.daemonset.misscheduled_nodes`      | Gauge | Number of nodes that are running the daemon pod, but are not supposed to run the daemon pod                                | number | DaemonSet.json               |
-| `k8s.daemonset.ready_nodes`             | Gauge | Number of nodes that should be running the daemon pod and have one or more of the daemon pod running and ready             | number | DaemonSet.json               |
-| `k8s.deployment.available`              | Gauge | Total number of available replica pods (ready for at least minReadySeconds) targeted by this deployment                    | number | Deployment.json              |
-| `k8s.deployment.desired`                | Gauge | Number of desired replica pods in this deployment                                                                          | number | Deployment.json              |
-| `k8s.hpa.current`                       | Gauge | Current number of replica pods managed by this horizontal pod autoscaler                                                   | number | HorizontalPodAutoscaler.json |
-| `k8s.hpa.desired`                       | Gauge | Desired number of replica pods managed by this horizontal pod autoscaler                                                   | number | HorizontalPodAutoscaler.json |
-| `k8s.hpa.max`                           | Gauge | The upper limit for the number of replica pods to which the autoscaler can scale up                                        | number | HorizontalPodAutoscaler.json |
-| `k8s.hpa.min`                           | Gauge | The lower limit for the number of replica pods to which the autoscaler can scale down                                      | number | HorizontalPodAutoscaler.json |
-| `k8s.job.active`                        | Gauge | The number of pending and actively running pods for a job                                                                  | number | Job.json                     |
-| `k8s.job.desired_successful`            | Gauge | The desired number of successfully finished pods the job should be run with                                                | number | Job.json                     |
-| `k8s.job.failed`                        | Gauge | The number of pods which reached phase Failed for a job                                                                    | number | Job.json                     |
-| `k8s.job.max_parallel`                  | Gauge | The max desired number of pods the job should run at any given time                                                        | number | Job.json                     |
-| `k8s.job.successful`                    | Gauge | The number of pods which reached phase Succeeded for a job                                                                 | number | Job.json                     |
-| `k8s.replicaset.available`              | Gauge | Total number of available replica pods (ready for at least minReadySeconds) targeted by this replicaset                    | number | ReplicaSet.json              |
-| `k8s.replicaset.desired`                | Gauge | Number of desired replica pods in this replicaset                                                                          | number | ReplicaSet.json              |
-| `k8s.replicationcontroller.available`   | Gauge | Total number of available replica pods (ready for at least minReadySeconds) targeted by this replication controller        | number | ReplicationController.json   |
-| `k8s.replicationcontroller.desired`     | Gauge | Number of desired replica pods in this replication controller                                                              | number | ReplicationController.json   |
-| `k8s.statefulset.current`               | Gauge | The number of replica pods created by the statefulset controller from the statefulset version indicated by currentRevision | number | StatefulSet.json             |
-| `k8s.statefulset.desired`               | Gauge | Number of desired replica pods in this statefulset                                                                         | number | StatefulSet.json             |
-| `k8s.statefulset.ready`                 | Gauge | The number of replica pods created for this statefulset with a Ready Condition                                             | number | StatefulSet.json             |
-| `k8s.statefulset.updated`               | Gauge | Number of replica pods created by the statefulset controller from the statefulset version indicated by updateRevision      | number | StatefulSet.json             |
+| Metric Name                             | Type  | Description                                                                                                                | Unit   | Dashboard(s)                   |
+| --------------------------------------- | ----- | -------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------ |
+| `k8s.cronjob.active`                    | Gauge | The number of actively running jobs for a cronjob                                                                          | number | cron-job.json                  |
+| `k8s.daemonset.current_scheduled_nodes` | Gauge | Number of nodes that are running at least 1 daemon pod and are supposed to run the daemon pod                              | number | daemon-set.json                |
+| `k8s.daemonset.desired_scheduled_nodes` | Gauge | Number of nodes that should be running the daemon pod (including nodes currently running the daemon pod)                   | number | daemon-set.json                |
+| `k8s.daemonset.misscheduled_nodes`      | Gauge | Number of nodes that are running the daemon pod, but are not supposed to run the daemon pod                                | number | daemon-set.json                |
+| `k8s.daemonset.ready_nodes`             | Gauge | Number of nodes that should be running the daemon pod and have one or more of the daemon pod running and ready             | number | daemon-set.json                |
+| `k8s.deployment.available`              | Gauge | Total number of available replica pods (ready for at least minReadySeconds) targeted by this deployment                    | number | deployment.json                |
+| `k8s.deployment.desired`                | Gauge | Number of desired replica pods in this deployment                                                                          | number | deployment.json                |
+| `k8s.hpa.current`                       | Gauge | Current number of replica pods managed by this horizontal pod autoscaler                                                   | number | horizontal-pod-autoscaler.json |
+| `k8s.hpa.desired`                       | Gauge | Desired number of replica pods managed by this horizontal pod autoscaler                                                   | number | horizontal-pod-autoscaler.json |
+| `k8s.hpa.max`                           | Gauge | The upper limit for the number of replica pods to which the autoscaler can scale up                                        | number | horizontal-pod-autoscaler.json |
+| `k8s.hpa.min`                           | Gauge | The lower limit for the number of replica pods to which the autoscaler can scale down                                      | number | horizontal-pod-autoscaler.json |
+| `k8s.job.active`                        | Gauge | The number of pending and actively running pods for a job                                                                  | number | job.json                       |
+| `k8s.job.desired_successful`            | Gauge | The desired number of successfully finished pods the job should be run with                                                | number | job.json                       |
+| `k8s.job.failed`                        | Gauge | The number of pods which reached phase Failed for a job                                                                    | number | job.json                       |
+| `k8s.job.max_parallel`                  | Gauge | The max desired number of pods the job should run at any given time                                                        | number | job.json                       |
+| `k8s.job.successful`                    | Gauge | The number of pods which reached phase Succeeded for a job                                                                 | number | job.json                       |
+| `k8s.replicaset.available`              | Gauge | Total number of available replica pods (ready for at least minReadySeconds) targeted by this replicaset                    | number | replica-set.json               |
+| `k8s.replicaset.desired`                | Gauge | Number of desired replica pods in this replicaset                                                                          | number | replica-set.json               |
+| `k8s.replicationcontroller.available`   | Gauge | Total number of available replica pods (ready for at least minReadySeconds) targeted by this replication controller        | number | replication-controller.json    |
+| `k8s.replicationcontroller.desired`     | Gauge | Number of desired replica pods in this replication controller                                                              | number | replication-controller.json    |
+| `k8s.statefulset.current`               | Gauge | The number of replica pods created by the statefulset controller from the statefulset version indicated by currentRevision | number | stateful-set.json              |
+| `k8s.statefulset.desired`               | Gauge | Number of desired replica pods in this statefulset                                                                         | number | stateful-set.json              |
+| `k8s.statefulset.ready`                 | Gauge | The number of replica pods created for this statefulset with a Ready Condition                                             | number | stateful-set.json              |
+| `k8s.statefulset.updated`               | Gauge | Number of replica pods created by the statefulset controller from the statefulset version indicated by updateRevision      | number | stateful-set.json              |
 
 ### Resource Attributes
 

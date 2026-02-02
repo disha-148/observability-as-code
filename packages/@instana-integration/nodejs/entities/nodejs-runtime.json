@@ -16,7 +16,7 @@
     },
     "dashboards": [
       {
-        "reference": "NodeJsRuntime.json"
+        "reference": "nodejs-runtime.json"
       }
     ],
     "metrics": [
