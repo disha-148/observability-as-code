@@ -1,0 +1,245 @@
+{
+  "data": {
+    "label": "Python Runtime",
+    "identifiers": ["otel.attribute.sdk.language"],
+    "tagFilterExpression": {
+      "type": "TAG_FILTER",
+      "name": "otel.attribute.telemetry.sdk.language",
+      "stringValue": "python",
+      "numberValue": null,
+      "booleanValue": null,
+      "floatValue": null,
+      "key": null,
+      "value": "python",
+      "operator": "EQUALS",
+      "entity": "NOT_APPLICABLE"
+    },
+    "dashboards": [
+      {
+        "reference": "python-runtime.json"
+      }
+    ],
+    "metrics": [
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu.utilization{}",
+        "name": "metrics.gauges.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu.utilization{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime CPU Utilization",
+        "description": "Python Runtime CPU Utilization",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.collected_objects{generation=\"0\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.collected_objects{generation=\"0\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime GC Collected Objects - Generation 0",
+        "description": "Python Runtime GC Collected Objects - Generation 0",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.collected_objects{generation=\"1\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.collected_objects{generation=\"1\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime GC Collected Objects - Generation 1",
+        "description": "Python Runtime GC Collected Objects - Generation 1",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.collected_objects{generation=\"2\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.collected_objects{generation=\"2\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime GC Collected Objects - Generation 2",
+        "description": "Python Runtime GC Collected Objects - Generation 2",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.collections{generation=\"0\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.collections{generation=\"0\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime GC Collections - Generation 0",
+        "description": "Python Runtime GC Collections - Generation 0",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.collections{generation=\"1\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.collections{generation=\"1\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime GC Collections - Generation 1",
+        "description": "Python Runtime GC CCollections - Generation 1",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.collections{generation=\"2\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.collections{generation=\"2\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime GC Collections - Generation 2",
+        "description": "Python Runtime GC Collections - Generation 2",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.uncollected_objects{generation=\"0\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.uncollected_objects{generation=\"0\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime GC Un-Collected Objects - Generation 0",
+        "description": "Python Runtime Un-Collected Objects - Generation 0",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.uncollected_objects{generation=\"1\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.uncollected_objects{generation=\"1\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime GC Un-Collected  Objects - Generation 1",
+        "description": "Python Runtime GC Un-Collected  Objects - Generation 1",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.uncollected_objects{generation=\"2\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.uncollected_objects{generation=\"2\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime GC Un-Collected  Objects - Generation 2",
+        "description": "Python Runtime GC Un-Collected  Objects - Generation 2",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.gc_count{generation=\"0\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.gc_count{generation=\"0\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime GC Count - Generation 0",
+        "description": "Python Runtime GC Count - Generation 0",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.gc_count{generation=\"1\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.gc_count{generation=\"1\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime GC Count - Generation 1",
+        "description": "Python Runtime GC Count - Generation 1",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.gc_count{generation=\"2\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.gc.gc_count{generation=\"2\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Python Runtime GC Count - Generation 2",
+        "description": "Python Runtime GC Count - Generation 2",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.context_switches{type=\"involuntary\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.context_switches{type=\"involuntary\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": " Runtime Context Switches - Involuntary",
+        "description": "Runtime Context Switches - Involuntary",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.context_switches{type=\"voluntary\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.context_switches{type=\"voluntary\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Context Switches - Voluntary",
+        "description": "Context Switches - Voluntary",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu_time{type=\"system\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu_time{type=\"system\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "CPU Time - System",
+        "description": "CPU Time - System",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu_time{type=\"user\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu_time{type=\"user\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "CPU Time - User",
+        "description": "CPU Time - User",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.thread_count{}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.thread_count{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Runtime Thread Count",
+        "description": "Runtime Thread Count",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.memory{type=\"rss\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.memory{type=\"rss\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Runtime Memory  - rss",
+        "description": "Runtime Memory  - rss",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.memory{type=\"vms\"}",
+        "name": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.memory{type=\"vms\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Python Runtime",
+        "label": "Runtime Memory - vms",
+        "description": "Runtime Memory - vms",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      }
+    ]
+  }
+}

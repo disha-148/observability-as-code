@@ -1,0 +1,63 @@
+{
+  "data": {
+    "label": "Kubernetes HorizontalPodAutoscaler",
+    "identifiers": [
+      "otel.attribute.k8s.hpa.name",
+      "otel.attribute.k8s.cluster.name",
+      "otel.attribute.k8s.namespace.name"
+    ],
+    "tagFilterExpression": {
+      "type": "TAG_FILTER",
+      "name": "otel.attribute.k8s.hpa.uid",
+      "operator": "NOT_EMPTY",
+      "value": ""
+    },
+    "dashboards": [
+      {
+        "reference": "horizontal-pod-autoscaler.json"
+      }
+    ],
+    "metrics": [
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.hpa.desired{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.hpa.desired",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes HorizontalPodAutoscaler",
+        "label": "Desired number of replica pods",
+        "description": "Desired number of replica pods",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.hpa.current{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.hpa.current",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes HorizontalPodAutoscaler",
+        "label": "Current number of replica pods",
+        "description": "Current number of replica pods",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.hpa.max{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.hpa.max",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes HorizontalPodAutoscaler",
+        "label": "Maximum number of replica pods",
+        "description": "Maximum number of replica pods",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.hpa.min{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.hpa.min",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes HorizontalPodAutoscaler",
+        "label": "Minimum number of replica pods",
+        "description": "Minimum number of replica pods",
+        "formatter": "NUMBER"
+      }
+    ]
+  }
+}

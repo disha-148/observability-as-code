@@ -1,0 +1,329 @@
+{
+  "id": null,
+  "title": "Python Runtime Monitoring",
+  "accessRules": null,
+  "widgets": [
+    {
+      "id": "f8AHnEV7QtcPt3gQ",
+      "title": "Memory ",
+      "width": 12,
+      "height": 13,
+      "x": 0,
+      "y": 40,
+      "type": "chart",
+      "config": {
+        "shareMaxAxisDomain": false,
+        "y1": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": [
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "",
+              "source": "INFRASTRUCTURE_METRICS",
+              "type": "customEntity",
+              "metricPath": ["Custom Entity", "Custom Entity"],
+              "formatter": "number.compact",
+              "unit": "number",
+              "metric": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.memory{type=\"rss\"}",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": ["SUM", "MEAN"],
+              "metricLabel": "Python Memory type - rss",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "",
+              "source": "INFRASTRUCTURE_METRICS",
+              "type": "customEntity",
+              "metricPath": ["Custom Entity", "Custom Entity"],
+              "formatter": "number.compact",
+              "unit": "number",
+              "metric": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.memory{type=\"vms\"}",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": ["SUM", "MEAN"],
+              "metricLabel": "Python Memory type - vms",
+              "crossSeriesAggregation": "MEAN"
+            }
+          ],
+          "formatterSelected": false
+        },
+        "y2": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": []
+        },
+        "type": "TIME_SERIES"
+      }
+    },
+    {
+      "id": "nRWrr02__LbWTJzB",
+      "title": "Thread Count",
+      "width": 2,
+      "height": 4,
+      "x": 2,
+      "y": 0,
+      "type": "bigNumber",
+      "config": {
+        "formatter": "number.detailed",
+        "comparisonDecreaseColor": "greenish",
+        "metricConfiguration": {
+          "lastValue": false,
+          "threshold": {
+            "critical": "",
+            "warning": "",
+            "thresholdEnabled": false,
+            "operator": ">="
+          },
+          "aggregation": "MEAN",
+          "source": "INFRASTRUCTURE_METRICS",
+          "type": "customEntity",
+          "metricPath": ["Custom Entity", "Custom Entity"],
+          "formatter": "number.compact",
+          "unit": "number",
+          "metric": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.thread_count{}",
+          "timeShift": 0,
+          "tagFilterExpression": {
+            "logicalOperator": "AND",
+            "elements": [],
+            "type": "EXPRESSION"
+          },
+          "allowedCrossSeriesAggregations": ["SUM", "MEAN"],
+          "crossSeriesAggregation": "MEAN"
+        },
+        "comparisonIncreaseColor": "redish",
+        "formatterSelected": false
+      }
+    },
+    {
+      "id": "t2zEU0UwwMUO5NvG",
+      "title": "CPU Time",
+      "width": 12,
+      "height": 13,
+      "x": 0,
+      "y": 5,
+      "type": "chart",
+      "config": {
+        "shareMaxAxisDomain": false,
+        "y1": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": [
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "",
+              "source": "INFRASTRUCTURE_METRICS",
+              "type": "customEntity",
+              "metricPath": ["Custom Entity", "Custom Entity"],
+              "formatter": "number.compact",
+              "unit": "number",
+              "metric": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu_time{type=\"system\"}",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": ["SUM", "MEAN"],
+              "metricLabel": "CPU Time - System",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "",
+              "source": "INFRASTRUCTURE_METRICS",
+              "type": "customEntity",
+              "metricPath": ["Custom Entity", "Custom Entity"],
+              "formatter": "number.compact",
+              "unit": "number",
+              "metric": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu_time{type=\"user\"}",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": ["SUM", "MEAN"],
+              "metricLabel": "CPU Time - User",
+              "crossSeriesAggregation": "MEAN"
+            }
+          ],
+          "formatterSelected": false
+        },
+        "y2": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": []
+        },
+        "type": "TIME_SERIES"
+      }
+    },
+    {
+      "id": "UMelGk9m3KyREgMN",
+      "title": "CPU Utilization",
+      "width": 1,
+      "height": 4,
+      "x": 0,
+      "y": 0,
+      "type": "bigNumber",
+      "config": {
+        "formatter": "number.detailed",
+        "comparisonDecreaseColor": "greenish",
+        "metricConfiguration": {
+          "lastValue": false,
+          "threshold": {
+            "critical": "",
+            "warning": "",
+            "thresholdEnabled": false,
+            "operator": ">="
+          },
+          "aggregation": "MEAN",
+          "source": "INFRASTRUCTURE_METRICS",
+          "type": "customEntity",
+          "metricPath": ["Custom Entity", "Custom Entity"],
+          "formatter": "number.compact",
+          "unit": "number",
+          "regex": false,
+          "metric": "metrics.gauges.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.cpu.utilization{}",
+          "timeShift": 0,
+          "tagFilterExpression": {
+            "logicalOperator": "AND",
+            "elements": [],
+            "type": "EXPRESSION"
+          },
+          "allowedCrossSeriesAggregations": ["SUM", "MEAN"],
+          "crossSeriesAggregation": "MEAN"
+        },
+        "comparisonIncreaseColor": "redish",
+        "formatterSelected": false
+      }
+    },
+    {
+      "id": "tI4sRtkb4MriSwvC",
+      "title": "Runtime Context Switches",
+      "width": 12,
+      "height": 13,
+      "x": 0,
+      "y": 20,
+      "type": "chart",
+      "config": {
+        "shareMaxAxisDomain": false,
+        "y1": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": [
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "",
+              "source": "INFRASTRUCTURE_METRICS",
+              "type": "customEntity",
+              "metricPath": ["Custom Entity", "Custom Entity"],
+              "formatter": "number.compact",
+              "unit": "number",
+              "metric": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.context_switches{type=\"voluntary\"}",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": ["SUM", "MEAN"],
+              "metricLabel": "Context Switches - Voluntary",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "",
+              "source": "INFRASTRUCTURE_METRICS",
+              "type": "customEntity",
+              "metricPath": ["Custom Entity", "Custom Entity"],
+              "formatter": "number.compact",
+              "unit": "number",
+              "metric": "metrics.sums.opentelemetry.instrumentation.system_metrics/process.runtime.cpython.context_switches{type=\"involuntary\"}",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": ["SUM", "MEAN"],
+              "metricLabel": "Python Runtime Context Switches = involuntary",
+              "crossSeriesAggregation": "MEAN"
+            }
+          ],
+          "formatterSelected": false
+        },
+        "y2": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": []
+        },
+        "type": "TIME_SERIES"
+      }
+    }
+  ]
+}

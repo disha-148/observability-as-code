@@ -6,9 +6,18 @@ The Instana integration package used to support Node.js monitoring. Once you imp
 
 Below are the dashboards that are currently supported by this integration package.
 
-| Dashboard Title         | Description                                                                    |    
-|-------------------------|--------------------------------------------------------------------------------|
-| Node.js Runtime Metrics | Instana custom dashboard that displays runtime metrics for Node.js application |
+| Dashboard Title            | Description                                                                                                  |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Node.js Runtime Metrics    | Instana custom dashboard that displays runtime metrics for Node.js application                               |
+| Node.js Runtime Monitoring | Instana custom dashboard that displays runtime metrics for NodeJs entity defined in this Integration package |
+
+## Entities
+
+Below are the entities that are currently supported by this integration package.
+
+| Title          |
+| -------------- |
+| NodeJs Runtime |
 
 ## Metrics
 
@@ -34,27 +43,34 @@ sdk.start()
 
 Below are the Node.js runtime metrics that are currently supported by this integration package.
 
-| Metrics Name                     | Description                                                                      | Unit | 
-|----------------------------------|----------------------------------------------------------------------------------|------|
-| v8js.gc.duration                 | Garbage collection duration by kind, one of major, minor, incremental or weakcb. | s    |
-| memory.heap.limit                | Total heap memory size pre-allocated.                                            | Byte |
-| memory.heap.used                 | Heap memory size allocated.                                                      | Byte |
-| memory.heap.space.available_size | Heap space available size.                                                       | Byte |
-| memory.heap.space.physical_size  | Committed size of a heap space.                                                  | Byte |
-| eventloop.delay.min              | Event loop minimum delay.                                                        | s    |
-| eventloop.delay.max              | Event loop maximum delay.                                                        | s    |
-| eventloop.delay.mean             | Event loop mean delay.                                                           | s    |
-| eventloop.delay.stddev           | Event loop standard deviation delay.                                             | s    |
-
+| Metric Name                                                                                          | Type      | Description                                    | Unit       | Dashboard(s)                      |
+| ---------------------------------------------------------------------------------------------------- | --------- | ---------------------------------------------- | ---------- | --------------------------------- |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.max`                             | Gauge     | Event loop maximum delay                       | second     | nodejs-runtime.json, runtime.json |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.mean`                            | Gauge     | Event loop mean delay                          | second     | nodejs-runtime.json, runtime.json |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.min`                             | Gauge     | Event loop minimum delay                       | second     | nodejs-runtime.json, runtime.json |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.stddev`                          | Gauge     | Event loop standard deviation delay            | second     | nodejs-runtime.json, runtime.json |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p50`                             | Gauge     | Event loop delay 50th percentile               | number     | nodejs-runtime.json               |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p90`                             | Gauge     | Event loop delay 90th percentile               | number     | nodejs-runtime.json               |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p99`                             | Gauge     | Event loop delay 99th percentile               | number     | nodejs-runtime.json               |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state="active"}` | Sum       | Event loop time in active state                | number     | nodejs-runtime.json               |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state="idle"}`   | Sum       | Event loop time in idle state                  | number     | nodejs-runtime.json               |
+| `@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.utilization`                           | Gauge     | Event loop utilization percentage              | percentage | nodejs-runtime.json               |
+| `@opentelemetry/instrumentation-runtime-node/v8js.gc.duration{v8js.gc.type="incremental"}`           | Histogram | Garbage collection duration for incremental GC | second     | runtime.json                      |
+| `@opentelemetry/instrumentation-runtime-node/v8js.gc.duration{v8js.gc.type="major"}`                 | Histogram | Garbage collection duration for major GC       | second     | runtime.json                      |
+| `@opentelemetry/instrumentation-runtime-node/v8js.gc.duration{v8js.gc.type="minor"}`                 | Histogram | Garbage collection duration for minor GC       | second     | runtime.json                      |
+| `@opentelemetry/instrumentation-runtime-node/v8js.memory.heap.space.available_size`                  | Gauge     | Heap space available size                      | byte       | runtime.json                      |
+| `@opentelemetry/instrumentation-runtime-node/v8js.memory.heap.limit`                                 | Gauge     | Total heap memory size pre-allocated           | byte       | runtime.json                      |
+| `@opentelemetry/instrumentation-runtime-node/v8js.memory.heap.space.physical_size`                   | Gauge     | Committed size of a heap space                 | byte       | runtime.json                      |
+| `@opentelemetry/instrumentation-runtime-node/v8js.memory.heap.used`                                  | Gauge     | Heap memory size allocated                     | byte       | runtime.json                      |
 
 ### Resource Attributes
 
 Below are the resource attributes that are currently supported by this integration package.
 
-| Attribute Key        | Type   | Description                                                             | 
-|----------------------|--------|-------------------------------------------------------------------------|
-| service.name         | string | This attribute is used to describe the entity name.                     |
-| service.instance.id  | string | This attribute is used to describe the entity ID of the current object. |
+| Attribute Key       | Type   | Description                                                             |
+| ------------------- | ------ | ----------------------------------------------------------------------- |
+| service.name        | string | This attribute is used to describe the entity name.                     |
+| service.instance.id | string | This attribute is used to describe the entity ID of the current object. |
 
 ## Events
 
@@ -62,15 +78,15 @@ Below are the events that are currently supported by this integration package.
 
 Note: In each event definition, conditionValue represents a threshold used to trigger the event and is provided as a default or reference value. Please adjust this value based on your specific environment.
 
-| Event Name                           | Description                                                                                                                                                                                |
-|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Frequent Major Garbage Collections   | Detects when a Node.js application is experiencing frequent major garbage collections, which can cause significant application pauses and performance degradation.                         |
-| Heap Space Exhaustion                | Detects when a Node.js application's heap space is nearly exhausted, which may lead to application crashes or out-of-memory errors.                                                        |
-| High Event Loop Delay                | Detects when a Node.js application's event loop is experiencing high delays, which may indicate CPU-intensive operations blocking the event loop and affecting application responsiveness. |
-| High Event Loop Lag Variance         | Detects when a Node.js application's event loop is experiencing inconsistent performance with high standard deviation in delay times, which may indicate intermittent blocking operations. |
-| High Garbage Collection Duration     | Detects when a Node.js application is experiencing long garbage collection pauses, which can cause application latency spikes and poor user experience.                                    |
-| High Heap Usage                      | Detects when a Node.js application is using a high percentage of its available heap memory, which may indicate memory leaks or inefficient memory usage.                                   |
-| Memory Leak Detection                | Detects potential memory leaks in Node.js applications by monitoring continuously increasing heap usage over time with minimal garbage collection impact.                                  |
+| Event Name                         | Description                                                                                                                                                                                |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Frequent Major Garbage Collections | Detects when a Node.js application is experiencing frequent major garbage collections, which can cause significant application pauses and performance degradation.                         |
+| Heap Space Exhaustion              | Detects when a Node.js application's heap space is nearly exhausted, which may lead to application crashes or out-of-memory errors.                                                        |
+| High Event Loop Delay              | Detects when a Node.js application's event loop is experiencing high delays, which may indicate CPU-intensive operations blocking the event loop and affecting application responsiveness. |
+| High Event Loop Lag Variance       | Detects when a Node.js application's event loop is experiencing inconsistent performance with high standard deviation in delay times, which may indicate intermittent blocking operations. |
+| High Garbage Collection Duration   | Detects when a Node.js application is experiencing long garbage collection pauses, which can cause application latency spikes and poor user experience.                                    |
+| High Heap Usage                    | Detects when a Node.js application is using a high percentage of its available heap memory, which may indicate memory leaks or inefficient memory usage.                                   |
+| Memory Leak Detection              | Detects potential memory leaks in Node.js applications by monitoring continuously increasing heap usage over time with minimal garbage collection impact.                                  |
 
 ## Installation and Usage
 

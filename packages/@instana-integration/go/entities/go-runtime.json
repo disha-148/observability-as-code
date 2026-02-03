@@ -1,0 +1,124 @@
+{
+  "data": {
+    "label": "Go Runtime",
+    "identifiers": ["otel.attribute.service.name"],
+    "tagFilterExpression": {
+      "type": "TAG_FILTER",
+      "name": "otel.attribute.telemetry.sdk.language",
+      "stringValue": "go",
+      "numberValue": null,
+      "booleanValue": null,
+      "floatValue": null,
+      "key": null,
+      "value": "go",
+      "operator": "EQUALS",
+      "entity": "NOT_APPLICABLE"
+    },
+    "dashboards": [
+      {
+        "reference": "go-runtime.json"
+      }
+    ],
+    "metrics": [
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.used{go.memory.type=\"other\"}",
+        "name": "go.memory.used - other",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Go Runtime",
+        "label": "Memory used by the Go runtime - Other",
+        "description": "Memory used by the Go runtime - Other",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.used{go.memory.type=\"stack\"}",
+        "name": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.used{go.memory.type=\"stack\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Go Runtime",
+        "label": "Memory used by the Go runtime - Stack",
+        "description": "Memory used by the Go runtime - Stack",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.limit{}",
+        "name": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.limit{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Go Runtime",
+        "label": "Go runtime memory limit configured by the user, if a limit exists",
+        "description": "Go runtime memory limit configured by the user, if a limit exists",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.allocated{}",
+        "name": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.allocated{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Go Runtime",
+        "label": "Memory allocated to the heap by the application",
+        "description": "Memory allocated to the heap by the application",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.allocations{}",
+        "name": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.allocations{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Go Runtime",
+        "label": "Count of allocations to the heap by the application",
+        "description": "Count of allocations to the heap by the application",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.gc.goal{}",
+        "name": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.memory.gc.goal{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Go Runtime",
+        "label": "Heap size target for the end of the GC cycle",
+        "description": "Heap size target for the end of the GC cycle",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.goroutine.count{}",
+        "name": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.goroutine.count{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Go Runtime",
+        "label": "Count of live goroutines",
+        "description": "Count of live goroutines",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.processor.limit{}",
+        "name": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.processor.limit{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Go Runtime",
+        "label": "The number of OS threads that can execute user-level Go code simultaneously.",
+        "description": "The number of OS threads that can execute user-level Go code simultaneously.",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.config.gogc{}",
+        "name": "metrics.sums.go.opentelemetry.io/contrib/instrumentation/runtime/go.config.gogc{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Go Runtime",
+        "label": "Heap size target percentage configured by the user, otherwise 100",
+        "description": "Heap size target percentage configured by the user, otherwise 100",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      }
+    ]
+  }
+}

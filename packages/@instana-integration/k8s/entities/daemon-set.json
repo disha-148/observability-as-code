@@ -1,0 +1,75 @@
+{
+  "data": {
+    "label": "Kubernetes DaemonSet",
+    "identifiers": [
+      "otel.attribute.k8s.daemonset.name",
+      "otel.attribute.k8s.cluster.name",
+      "otel.attribute.k8s.namespace.name"
+    ],
+    "tagFilterExpression": {
+      "type": "EXPRESSION",
+      "logicalOperator": "AND",
+      "elements": [
+        {
+          "type": "TAG_FILTER",
+          "name": "dfq.selftype",
+          "operator": "EQUALS",
+          "value": "otelk8s"
+        },
+        {
+          "type": "TAG_FILTER",
+          "name": "otel.attribute.k8s.daemonset.uid",
+          "operator": "NOT_EMPTY",
+          "value": ""
+        }
+      ]
+    },
+    "dashboards": [
+      {
+        "reference": "daemon-set.json"
+      }
+    ],
+    "metrics": [
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.daemonset.node.current_scheduled{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.daemonset.node.current_scheduled",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes DaemonSet",
+        "label": "Number of nodes running daemon pods",
+        "description": "Number of nodes running daemon pods",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.daemonset.node.desired_scheduled{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.daemonset.node.desired_scheduled",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes DaemonSet",
+        "label": "Number of nodes that should run daemon pods",
+        "description": "Number of nodes that should run daemon pods",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.daemonset.node.misscheduled{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.daemonset.node.misscheduled",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes DaemonSet",
+        "label": "Number of nodes running daemon pods but shouldn't",
+        "description": "Number of nodes running daemon pods but shouldn't",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.daemonset.node.ready{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.daemonset.node.ready",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes DaemonSet",
+        "label": "Number of nodes with ready daemon pods",
+        "description": "Number of nodes with ready daemon pods",
+        "formatter": "NUMBER"
+      }
+    ]
+  }
+}

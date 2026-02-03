@@ -1,0 +1,135 @@
+{
+  "data": {
+    "label": "NodeJs Runtime",
+    "identifiers": ["otel.attribute.telemetry.sdk.language"],
+    "tagFilterExpression": {
+      "type": "TAG_FILTER",
+      "name": "otel.attribute.telemetry.sdk.language",
+      "stringValue": "nodejs",
+      "numberValue": null,
+      "booleanValue": null,
+      "floatValue": null,
+      "key": null,
+      "value": "nodejs",
+      "operator": "EQUALS",
+      "entity": "NOT_APPLICABLE"
+    },
+    "dashboards": [
+      {
+        "reference": "nodejs-runtime.json"
+      }
+    ],
+    "metrics": [
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.max{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.max{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop maximum delay.",
+        "description": "Event loop maximum delay.",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.mean{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.mean{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop standard deviation delay",
+        "description": "Event loop standard deviation delay",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.min{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.min{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop minimum delay",
+        "description": "Event loop minimum delay",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p50{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p50{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop 50 percentile delay",
+        "description": "Event loop 50 percentile delay",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p90{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p90{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop 90 percentile delay",
+        "description": "Event loop 90 percentile delay",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p99{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.p99{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop 99 percentile delay",
+        "description": "Event loop 99 percentile delay",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.stddev{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.delay.stddev{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop standard deviation delay",
+        "description": "Event loop standard deviation delay",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.utilization{}",
+        "name": "metrics.gauges.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.utilization{}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "Event loop utilization.",
+        "description": "Event loop utilization.",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state=\"active\"}",
+        "name": "metrics.sums.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state=\"active\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "The state of event loop time - active",
+        "description": "The state of event loop time - active",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      },
+      {
+        "type": "openTelemetry",
+        "source": "metrics.sums.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state=\"idle\"}",
+        "name": "metrics.sums.@opentelemetry/instrumentation-runtime-node/nodejs.eventloop.time{nodejs.eventloop.state=\"idle\"}",
+        "section": "CUSTOM_ENTITY",
+        "category": "OpenTelemetry Node.js Runtime",
+        "label": "The state of event loop time - idle",
+        "description": "The state of event loop time - idle",
+        "formatter": "NUMBER",
+        "aggregation": "MEAN"
+      }
+    ]
+  }
+}

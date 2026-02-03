@@ -1,0 +1,75 @@
+{
+  "data": {
+    "label": "Kubernetes StatefulSet",
+    "identifiers": [
+      "otel.attribute.k8s.statefulset.name",
+      "otel.attribute.k8s.cluster.name",
+      "otel.attribute.k8s.namespace.name"
+    ],
+    "tagFilterExpression": {
+      "type": "EXPRESSION",
+      "logicalOperator": "AND",
+      "elements": [
+        {
+          "type": "TAG_FILTER",
+          "name": "dfq.selftype",
+          "operator": "EQUALS",
+          "value": "otelk8s"
+        },
+        {
+          "type": "TAG_FILTER",
+          "name": "otel.attribute.k8s.statefulset.uid",
+          "operator": "NOT_EMPTY",
+          "value": ""
+        }
+      ]
+    },
+    "dashboards": [
+      {
+        "reference": "stateful-set.json"
+      }
+    ],
+    "metrics": [
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.statefulset.pod.desired{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.statefulset.pod.desired",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes StatefulSet",
+        "label": "Number of desired replica pods",
+        "description": "Number of desired replica pods",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.statefulset.pod.ready{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.statefulset.pod.ready",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes StatefulSet",
+        "label": "Number of ready replica pods",
+        "description": "Number of ready replica pods",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.statefulset.pod.current{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.statefulset.pod.current",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes StatefulSet",
+        "label": "Number of current pods",
+        "description": "Number of current pods",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.statefulset.pod.updated{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.statefulset.pod.updated",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes StatefulSet",
+        "label": "Number of updated pods",
+        "description": "Number of updated pods",
+        "formatter": "NUMBER"
+      }
+    ]
+  }
+}

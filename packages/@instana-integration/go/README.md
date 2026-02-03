@@ -6,9 +6,18 @@ The Instana integration package used to support Go monitoring. Once you import t
 
 Below are the dashboards that are currently supported by this integration package.
 
-| Dashboard Title       | Description                                                               |    
-|-----------------------|---------------------------------------------------------------------------|
-| Go Runtime Metrics    | Instana custom dashboard that displays runtime metrics for Go application |
+| Dashboard Title       | Description                                                                                              |
+| --------------------- | -------------------------------------------------------------------------------------------------------- |
+| Go Runtime Metrics    | Instana custom dashboard that displays runtime metrics for Go application                                |
+| Go Runtime Monitoring | Instana custom dashboard that displays runtime metrics for Go entity defined in this Integration package |
+
+## Entities
+
+Below are the entities that are currently supported by this integration package.
+
+| Title      |
+| ---------- |
+| Go Runtime |
 
 ## Metrics
 
@@ -26,24 +35,31 @@ if err != nil {
 
 Below are the Go runtime metrics that are currently supported by this integration package.
 
-| Metrics Name                        | Description          | Unit   | 
-|-------------------------------------|----------------------|--------|
-| process.runtime.go.mem.heap_inuse   | Heap used            | Number |
-| process.runtime.go.mem.heap.alloc   | Allocated memory     | Byte   |
-| process.runtime.go.mem.heap.sys     | System heap          | Byte   |
-| process.runtime.go.mem.heap.inuse   | Used heap            | Byte   |
-| process.runtime.go.mem.heap.objects | Objects              | Byte   |
-| process.runtime.go.goroutines       | Executed goroutines  | Number |
-
+| Metrics Name                           | Description         | Unit   | Dashboard             |
+| -------------------------------------- | ------------------- | ------ | --------------------- |
+| go.memory.used{go.memory.type="other"} | Memory Used - Other | Byte   | Go Runtime Monitoring |
+| go.memory.used{go.memory.type="stack"} | Memory Used - Stack | Byte   | Go Runtime Monitoring |
+| go.memory.allocated                    | Memory Allocated    | Byte   | Go Runtime Monitoring |
+| go.memory.limit                        | Memory Limit        | Byte   | Go Runtime Monitoring |
+| go.memory.gc.goal                      | GC Goal             | Byte   | Go Runtime Monitoring |
+| go.memory.allocations                  | Memory Allocations  | Number | Go Runtime Monitoring |
+| go.goroutine.count                     | Goroutine Count     | Number | Go Runtime Monitoring |
+| go.processor.limit                     | Processor Limit     | Number | Go Runtime Monitoring |
+| go.config.gogc                         | GOGC Config         | Number | Go Runtime Monitoring |
+| process.runtime.go.mem.heap_inuse      | Heap Used           | Byte   | Go Runtime Metrics    |
+| process.runtime.go.mem.heap_alloc      | Allocated Memory    | Byte   | Go Runtime Metrics    |
+| process.runtime.go.mem.heap_sys        | System Heap         | Byte   | Go Runtime Metrics    |
+| process.runtime.go.mem.heap_objects    | Heap Objects        | Number | Go Runtime Metrics    |
+| process.runtime.go.goroutines          | Executed Goroutines | Number | Go Runtime Metrics    |
 
 ### Resource Attributes
 
 Below are the resource attributes that are currently supported by this integration package.
 
-| Attribute Key        | Type    |  Description                                                             | 
-|----------------------|---------|--------------------------------------------------------------------------|
-| service.name         | string  | This attribute is used to describe the entity name.                      |
-| service.instance.id  | string  | This attribute is used to describe the entity ID of the current object.  |
+| Attribute Key       | Type   | Description                                                             |
+| ------------------- | ------ | ----------------------------------------------------------------------- |
+| service.name        | string | This attribute is used to describe the entity name.                     |
+| service.instance.id | string | This attribute is used to describe the entity ID of the current object. |
 
 ## Events
 
@@ -52,7 +68,7 @@ Below are the events that are currently supported by this integration package.
 Note: In each event definition, conditionValue represents a threshold used to trigger the event and is provided as a default or reference value. Please adjust this value based on your specific environment.
 
 | Event Name                             | Description                                                                                                                                                                                       |
-|----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Context Deadline Exceeded Errors       | Detects when Go applications are experiencing a high rate of context deadline exceeded errors, which may indicate timeouts in API calls, database operations, or other time-sensitive operations. |
 | Go Heap Allocation Spike               | Detects sudden spikes in heap allocations in Go applications, which may indicate inefficient memory usage patterns or unexpected workload increases.                                              |
 | High CPU Utilization in Go Application | Detects when a Go application is consuming an unusually high amount of CPU resources, which may indicate inefficient code, infinite loops, or excessive processing.                               |
@@ -85,4 +101,3 @@ $ stanctl-integration import --package @instana-integration/go \
 - API_TOKEN: Requests against the Instana API require valid API tokens. The API token can be generated via the Instana user interface. For more information, please refers to [Instana documentation](https://www.ibm.com/docs/en/instana-observability/current?topic=apis-instana-rest-api#usage-of-api-token).
 - SERVICE_NAME: Logical name of the service.
 - SERVICE_INSTANCE_ID: The string ID of the service instance. The ID helps to distinguish instances of the same service that exist at the same time (e.g. instances of a horizontally scaled service).
-

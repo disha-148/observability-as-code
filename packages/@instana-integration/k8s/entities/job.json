@@ -1,0 +1,85 @@
+{
+  "data": {
+    "label": "Kubernetes Job",
+    "identifiers": [
+      "otel.attribute.k8s.job.name",
+      "otel.attribute.k8s.cluster.name",
+      "otel.attribute.k8s.namespace.name"
+    ],
+    "tagFilterExpression": {
+      "type": "EXPRESSION",
+      "logicalOperator": "AND",
+      "elements": [
+        {
+          "type": "TAG_FILTER",
+          "name": "dfq.selftype",
+          "operator": "EQUALS",
+          "value": "otelk8s"
+        },
+        {
+          "type": "TAG_FILTER",
+          "name": "otel.attribute.k8s.job.uid",
+          "operator": "NOT_EMPTY",
+          "value": ""
+        }
+      ]
+    },
+    "metrics": [
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.job.pod.active{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.job.pod.active",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes Job",
+        "label": "Number of currently running pods",
+        "description": "Number of currently running pods",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.job.pod.failed{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.job.pod.failed",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes Job",
+        "label": "Number of failed pods",
+        "description": "Number of failed pods",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.job.pod.successful{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.job.pod.successful",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes Job",
+        "label": "Number of successful pods",
+        "description": "Number of successful pods",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.job.pod.desired_successful{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.job.pod.desired_successful",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes Job",
+        "label": "Desired number of successful pods",
+        "description": "Desired number of successful pods",
+        "formatter": "NUMBER"
+      },
+      {
+        "type": "oTelK8sCluster",
+        "source": "metrics.gauges.k8s.job.pod.max_parallel{scope=\"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/k8sclusterreceiver\"}",
+        "name": "k8s.job.pod.max_parallel",
+        "section": "OTHERS",
+        "category": "OpenTelemetry Kubernetes Job",
+        "label": "Maximum number of parallel pods",
+        "description": "Maximum number of parallel pods",
+        "formatter": "NUMBER"
+      }
+    ],
+    "dashboards": [
+      {
+        "reference": "job.json"
+      }
+    ]
+  }
+}
