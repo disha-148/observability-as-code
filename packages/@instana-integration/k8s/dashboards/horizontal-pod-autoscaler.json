@@ -1,12 +1,6 @@
 {
   "rbacTags": [],
-  "accessRules": [
-    {
-      "accessType": "READ",
-      "relationType": "GLOBAL",
-      "relatedId": ""
-    }
-  ],
+  "accessRules": null,
   "id": "HPADashboardID",
   "title": "Kubernetes Horizontal Pod Scaler Monitoring",
   "widgets": [

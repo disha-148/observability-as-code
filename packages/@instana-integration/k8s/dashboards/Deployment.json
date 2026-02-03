@@ -1,12 +1,6 @@
 {
   "rbacTags": [],
-  "accessRules": [
-    {
-      "accessType": "READ",
-      "relationType": "GLOBAL",
-      "relatedId": ""
-    }
-  ],
+  "accessRules": null,
   "id": "YfC4W9iNTjSPTH1aeRXKvA",
   "title": "Kubernetes Deployments Monitoring",
   "widgets": [

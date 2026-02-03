@@ -1,12 +1,6 @@
 {
   "rbacTags": [],
-  "accessRules": [
-    {
-      "accessType": "READ",
-      "relationType": "GLOBAL",
-      "relatedId": ""
-    }
-  ],
+  "accessRules": null,
   "id": "StatefulSetDashboardID",
   "title": "Kubernetes StatefulSet Monitoring",
   "widgets": [

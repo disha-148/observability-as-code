@@ -1,12 +1,6 @@
 {
   "rbacTags": [],
-  "accessRules": [
-    {
-      "accessType": "READ",
-      "relationType": "GLOBAL",
-      "relatedId": ""
-    }
-  ],
+  "accessRules": null,
   "id": "CronJobDashboardID",
   "title": "Kubernetes CronJob Monitoring",
   "widgets": [
