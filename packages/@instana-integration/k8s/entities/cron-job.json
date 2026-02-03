@@ -26,7 +26,7 @@
     },
     "dashboards": [
       {
-        "reference": "CronJob.json"
+        "reference": "cron-job.json"
       }
     ],
     "metrics": [
