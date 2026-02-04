@@ -26,7 +26,7 @@ export async function handleLint(argv: any): Promise<void> {
     const dashboardsPath = path.join(currentDirectory, 'dashboards');
     const eventsPath = path.join(currentDirectory, 'events');
     const entitiesPath = path.join(currentDirectory, 'entities');
-    const infraAlertPath = path.join(currentDirectory, 'infra-smart-alerts');
+    const smartAlertPath = path.join(currentDirectory, 'smart-alerts');
 
     let embeddedDashboardRefs = new Set<string>();
 
@@ -65,10 +65,10 @@ export async function handleLint(argv: any): Promise<void> {
             logger.info('No events folder found for this package.');
         }
 
-		if (fs.existsSync(infraAlertPath)) {
-            validators.validateInfraAlertFiles(infraAlertPath, errors, warnings, successMessages);
+		if (fs.existsSync(smartAlertPath)) {
+            validators.validateSmartAlertFiles(smartAlertPath, errors, warnings, successMessages);
         } else {
-            logger.info('No infrastructure smart alerts folder found for this package.');
+            logger.info('No smart alerts folder found for this package.');
         }
     } catch (error) {
         errors.push(`Linting failed: ${error}`);

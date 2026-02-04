@@ -48,7 +48,7 @@ export async function handleInit(): Promise<void> {
             { name: 'dashboards', value: 'dashboards', checked: true },
             { name: 'events', value: 'events'},
             { name: 'entities', value: 'entities'},
-            { name: 'infrastructure smart alerts', value: 'infra-smart-alerts'},
+            { name: 'smart alerts', value: 'smart-alerts'},
             new Separator('-- Below items are not supported yet --'),
             { name: 'collector configs', value: 'collector-configs', disabled: true, },
         ],

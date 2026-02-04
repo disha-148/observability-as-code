@@ -676,7 +676,7 @@ describe('validators', () => {
 ## Resource Attributes
 ## Events
 ## Entities
-## Infrastructure Smart Alerts
+## Smart Alerts
             `;
             mockedFs.existsSync.mockReturnValue(true);
 
@@ -706,10 +706,10 @@ describe('validators', () => {
 ## Resource Attributes
 ## Events
 ## Entities
-## Infrastructure Smart Alerts
+## Smart Alerts
             `;
             mockedFs.existsSync.mockImplementation((path: any) => {
-                // Only dashboards folder doesn't exist, but entities and infra-smart-alerts do
+                // Only dashboards folder doesn't exist, but entities and smart-alerts do
                 return !path.includes('dashboards');
             });
 
@@ -726,10 +726,10 @@ describe('validators', () => {
 ## Semantic Conventions
 ## Resource Attributes
 ## Entities
-## Infrastructure Smart Alerts
+## Smart Alerts
             `;
             mockedFs.existsSync.mockImplementation((path: any) => {
-                // Only events folder doesn't exist, but dashboards, entities and infra-smart-alerts do
+                // Only events folder doesn't exist, but dashboards, entities and smart-alerts do
                 return !path.includes('events');
             });
 
@@ -746,10 +746,10 @@ describe('validators', () => {
 ## Semantic Conventions
 ## Resource Attributes
 ## Events
-## Infrastructure Smart Alerts
+## Smart Alerts
             `;
             mockedFs.existsSync.mockImplementation((path: any) => {
-                // Only entities folder doesn't exist, but dashboards, events and infra-smart-alerts do
+                // Only entities folder doesn't exist, but dashboards, events and smart-alerts do
                 return !path.includes('entities');
             });
 
@@ -758,7 +758,7 @@ describe('validators', () => {
             expect(successMessages).toContain('README.md contains all required sections.');
         });
 
-  it('should not require Infrastructure Smart Alerts section when infra-smart-alerts folder does not exist', () => {
+  it('should not require Smart Alerts section when smart-alerts folder does not exist', () => {
             const readmeContent = `
 # @instana-integration/test
 ## Dashboards
@@ -769,8 +769,8 @@ describe('validators', () => {
 ## Entities
             `;
             mockedFs.existsSync.mockImplementation((path: any) => {
-                // Only infra-smart-alerts folder doesn't exist, but dashboards, events and entities do
-                return !path.includes('infra-smart-alerts');
+                // Only smart-alerts folder doesn't exist, but dashboards, events and entities do
+                return !path.includes('smart-alerts');
             });
 
             validators.validateReadmeContent(readmeContent, '@instana-integration/test', '/test', errors, warnings, successMessages);
@@ -787,7 +787,7 @@ describe('validators', () => {
 ## Resource Attributes
 ## events
 ## entities
-## infrastructure smart alerts
+## Smart Alerts
             `;
             mockedFs.existsSync.mockReturnValue(true);
 
@@ -805,7 +805,7 @@ describe('validators', () => {
 ###### Resource Attributes
 ## Events
 ## Entities
-## Infrastructure Smart Alerts
+## Smart Alerts
             `;
             mockedFs.existsSync.mockReturnValue(true);
 
@@ -815,7 +815,7 @@ describe('validators', () => {
         });
     });
 
-    describe('validateInfraAlertFiles', () => {
+    describe('validateSmartAlertFiles', () => {
         beforeEach(() => {
             mockedFs.readdirSync.mockReturnValue(['alert1.json'] as any);
             mockedFs.statSync.mockReturnValue({ isDirectory: () => false } as any);
@@ -824,9 +824,9 @@ describe('validators', () => {
         it('should warn when no JSON files found', () => {
             mockedFs.readdirSync.mockReturnValue([]);
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
-            expect(warnings).toContain('No JSON files found in the infra-smart-alerts folder.');
+            expect(warnings).toContain('No JSON files found in the smart-alerts folder.');
         });
 
         it('should validate infra alert with all required fields and rule+threshold', () => {
@@ -838,7 +838,7 @@ describe('validators', () => {
                 threshold: 0.8
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(successMessages.some(m => m.includes('name, granularity, timeThreshold, rule + threshold'))).toBe(true);
             expect(successMessages.some(m => m.includes('correctly defined'))).toBe(true);
@@ -856,7 +856,7 @@ describe('validators', () => {
                 ]
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(successMessages.some(m => m.includes('name, granularity, timeThreshold, rules[]'))).toBe(true);
             expect(successMessages.some(m => m.includes('correctly defined'))).toBe(true);
@@ -868,7 +868,7 @@ describe('validators', () => {
                 name: 'Test Alert'
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(errors.some(e => e.includes('missing required field(s)'))).toBe(true);
             expect(errors.some(e => e.includes('granularity'))).toBe(true);
@@ -882,7 +882,7 @@ describe('validators', () => {
                 timeThreshold: 600
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(errors.some(e => e.includes('rule + threshold OR rules[]'))).toBe(true);
             expect(errors.some(e => e.includes('not correctly defined'))).toBe(true);
@@ -896,7 +896,7 @@ describe('validators', () => {
                 rule: 'entity.type:host'
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(errors.some(e => e.includes('rule + threshold OR rules[]'))).toBe(true);
         });
@@ -909,7 +909,7 @@ describe('validators', () => {
                 threshold: 0.8
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(errors.some(e => e.includes('rule + threshold OR rules[]'))).toBe(true);
         });
@@ -922,7 +922,7 @@ describe('validators', () => {
                 rules: []
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(errors.some(e => e.includes('rule + threshold OR rules[]'))).toBe(true);
         });
@@ -936,7 +936,7 @@ describe('validators', () => {
                 threshold: 0.8
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(errors.some(e => e.includes('missing required field(s)') && e.includes('name'))).toBe(true);
             expect(errors.some(e => e.includes('not correctly defined'))).toBe(true);
@@ -951,7 +951,7 @@ describe('validators', () => {
                 threshold: 0.8
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(errors.some(e => e.includes('missing required field(s)') && e.includes('granularity'))).toBe(true);
             expect(errors.some(e => e.includes('not correctly defined'))).toBe(true);
@@ -965,7 +965,7 @@ describe('validators', () => {
                 threshold: 0.8
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(errors.some(e => e.includes('missing required field(s)') && e.includes('timeThreshold'))).toBe(true);
             expect(errors.some(e => e.includes('not correctly defined'))).toBe(true);
@@ -974,7 +974,7 @@ describe('validators', () => {
         it('should handle JSON parse errors', () => {
             mockedFs.readFileSync.mockReturnValue('invalid json');
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(errors.some(e => e.includes('Error validating file'))).toBe(true);
         });
@@ -984,7 +984,7 @@ describe('validators', () => {
                 throw 'String error';
             });
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(errors.some(e => e.includes('Error validating file'))).toBe(true);
             expect(errors.some(e => e.includes('String error'))).toBe(true);
@@ -1000,7 +1000,7 @@ describe('validators', () => {
                 threshold: 0.8
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(mockedFs.readFileSync).toHaveBeenCalledTimes(2);
         });
@@ -1014,7 +1014,7 @@ describe('validators', () => {
                 threshold: 0
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(successMessages.some(m => m.includes('correctly defined'))).toBe(true);
             expect(errors).toHaveLength(0);
@@ -1030,7 +1030,7 @@ describe('validators', () => {
                 rules: [{ severity: 5, threshold: 0.9 }]
             }));
 
-            validators.validateInfraAlertFiles('/test/infra-smart-alerts', errors, warnings, successMessages);
+            validators.validateSmartAlertFiles('/test/smart-alerts', errors, warnings, successMessages);
 
             expect(successMessages.some(m => m.includes('correctly defined'))).toBe(true);
             expect(errors).toHaveLength(0);
