@@ -8,11 +8,11 @@ Below are the dashboards that are currently supported by this integration packag
 
 | Dashboard Title    | 
 |-------------------|
-| spark-errors-and-failures.json
-| spark-job-latency.json
-| spark-job-lifecycle.json
-| spark-job-performance.json
-| spark-system-health.json
+| spark-errors-and-failures
+| spark-job-latency
+| spark-job-lifecycle
+| spark-job-performance
+| spark-system-health
 
 
 ## Metrics
