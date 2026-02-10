@@ -21,13 +21,18 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '18'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
         run: npm ci
 
       - name: Configure npm authentication
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLISHING_TOKEN }}" > ~/.npmrc
+        run: |
+          echo "registry=https://registry.npmjs.org/" > ~/.npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+          echo "Created .npmrc file with registry and token"
+          cat ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
 
       - name: Set up Git user
         run: |
@@ -36,5 +41,3 @@ jobs:
 
       - name: Publish packages
         run: npx lerna publish from-package --yes --loglevel verbose
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
