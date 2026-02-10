@@ -37,6 +37,7 @@ export async function handleImport(argv: any) {
     const defaultFolders = ['dashboards'];
     const defaultEventsFolders = ['events'];
     const defaultEntitiesFolders = ['entities'];
+    const defaultSmartAlertsFolders = ['smart-alerts'];
 
     // Create an axios instance with a custom httpsAgent to ignore self-signed certificate errors
     const axiosInstance = axios.create({
@@ -94,11 +95,31 @@ export async function handleImport(argv: any) {
                     continue; // Continue with the next file
                 }
 
+                // Determine actual API path for smart alerts based on content
+                let actualApiPath = apiPath;
+                if (typeLabel === 'smart alert') {
+                    try {
+                        actualApiPath = determineSmartAlertAPI(jsonContent);
+                        
+                        const typeName = actualApiPath.includes('infra')
+                            ? 'infrastructure'
+                            : actualApiPath.includes('application')
+                            ? 'application'
+                            : 'mobile app';
+                        
+                        logger.info(`Detected ${typeName} smart alert`);
+                    } catch (err) {
+                        logger.error(`Unable to determine smart alert type for ${file}: ${(err as Error).message}`);
+                        failFileCount++;
+                        continue;
+                    }
+                }
+
                 if (apiPath === 'api/custom-dashboard') {
                   ensureAccessRules(jsonContent)
                 }
 
-				if (apiPath === 'api/custom-entitytypes' && jsonContent.data){
+                if (apiPath === 'api/custom-entitytypes' && jsonContent.data){
 					logger.info(`Flattening the structure for entity file ${file} ...`);
 					jsonContent = {
                     	...jsonContent.data,
@@ -127,7 +148,7 @@ export async function handleImport(argv: any) {
 				}
 
                 try {
-                    const url = `https://${server}/${apiPath}`;
+                    const url = `https://${server}/${actualApiPath}`;
                     logger.info(`Applying the ${typeLabel} to ${url} ...`);
                     const response = await axiosInstance.post(url, jsonContent, {
                         headers: {
@@ -140,7 +161,7 @@ export async function handleImport(argv: any) {
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
                         // Handle 409 conflict for entities only
-                        if (error.response?.status === 409 && apiPath === 'api/custom-entitytypes') {
+                        if (error.response?.status === 409 && actualApiPath === 'api/custom-entitytypes') {
                             // Extract label from jsonContent
                             const entityLabel = jsonContent.label;
                             logger.info(`Entity with label "${entityLabel}" already exists. Checking if update is needed ...`);
@@ -197,13 +218,16 @@ export async function handleImport(argv: any) {
         }
 		const totalFiles = successFileCount + failFileCount;
 
-        if (successFileCount > 0 && failFileCount === 0) {
-            logger.info(`Successfully imported: ${successFileCount}`);
-        } else if (failFileCount > 0 && successFileCount === 0) {
-            logger.info(`Failed to import: ${failFileCount}`);
-        } else {
-            logger.info(`Total files: ${totalFiles} | Successfully imported: ${successFileCount} | Failed: ${failFileCount}`);
-        }
+		      if (totalFiles === 0) {
+		          // No files were processed
+		          return;
+		      } else if (successFileCount > 0 && failFileCount === 0) {
+		          logger.info(`Total files: ${totalFiles} | Successfully imported: ${successFileCount}`);
+		      } else if (failFileCount > 0 && successFileCount === 0) {
+		          logger.info(`Total files: ${totalFiles} | Failed to import: ${failFileCount}`);
+		      } else {
+		          logger.info(`Total files: ${totalFiles} | Successfully imported: ${successFileCount} | Failed: ${failFileCount}`);
+		      }
     }
 
     if (includePattern) {
@@ -212,6 +236,8 @@ export async function handleImport(argv: any) {
             await importIntegration(searchPattern, "api/events/settings/event-specifications/custom", "event");
         } else if (includePattern.includes('entities')) {
             await importIntegration(searchPattern, "api/custom-entitytypes", "entity");
+        } else if (includePattern.includes('smart-alerts')) {
+            await importIntegration(searchPattern, "smart-alert", "smart alert");
         } else if (includePattern.includes('dashboards')) {
 			const entitiesPath = path.join(packagePath, 'entities');
             let referencedDashboardPaths = new Set<string>();
@@ -251,6 +277,10 @@ export async function handleImport(argv: any) {
         for (const defaultFolder of defaultEntitiesFolders) {
             const searchPattern = path.join(packagePath, defaultFolder, '**/*.json');
             await importIntegration(searchPattern, "api/custom-entitytypes", "entity");
+        }
+        for (const defaultFolder of defaultSmartAlertsFolders) {
+            const searchPattern = path.join(packagePath, defaultFolder, '**/*.json');
+            await importIntegration(searchPattern, "smart-alert", "smart alert");
         }
     }
 }
@@ -476,5 +506,27 @@ async function getEntityList(server: string, token: string, axiosInstance: any):
 			logger.error(`Failed to get entity list: ${String(error)}`);
 		}
         return [];
+	}
+}
+
+// Helper function to determine which API to call for smart alerts
+function determineSmartAlertAPI(alertJson: any): string {
+	// Check for mobile app alert
+	if (alertJson.mobileAppId) {
+		return 'api/events/settings/mobile-app-alert-configs';
+	}
+	// Check for application alert
+	else if (alertJson.applicationId || alertJson.applications) {
+		return 'api/events/settings/application-alert-configs';
+	}
+	// Check for infrastructure alert
+	else if (alertJson.rule?.entityType || (Array.isArray(alertJson.rules) && alertJson.rules.length > 0)) {
+		return 'api/events/settings/infra-alert-configs';
+	}
+	// Unknown smart alert type
+	else {
+       throw new Error(
+            `Alert must have one of: mobileAppId, applicationId/applications, or rule.entityType`
+        );
 	}
 }

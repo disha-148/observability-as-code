@@ -146,6 +146,216 @@ describe('handleImport', () => {
             );
             expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Successfully imported: 1'));
         });
+
+		      it('should import infrastructure smart alerts successfully', async () => {
+		          const argv = {
+		              package: '/test/package',
+		              server: 'test-server.com',
+		              token: 'test-token',
+		              location: '/test/location',
+		              include: 'smart-alerts/**/*.json',
+		              debug: false
+		          };
+
+		          mockedFs.existsSync = jest.fn().mockReturnValue(true);
+		          mockedGlobSync.mockReturnValue(['/test/package/smart-alerts/infra-alert.json']);
+		          mockedFs.readFileSync = jest.fn().mockReturnValue(JSON.stringify({
+		              name: 'Test Infrastructure Smart Alert',
+		              rule: {
+		                  entityType: 'kubernetesCluster',
+		                  metricName: 'test.metric'
+		              },
+		              threshold: { value: 10 },
+		              granularity: 60000,
+		              timeThreshold: { type: 'violationsInSequence' }
+		          }));
+
+		          mockAxiosInstance.post.mockResolvedValue({ status: 200 });
+
+		          await handleImport(argv);
+
+		          expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Detected infrastructure smart alert'));
+		          expect(mockAxiosInstance.post).toHaveBeenCalledWith(
+		              'https://test-server.com/api/events/settings/infra-alert-configs',
+		              expect.objectContaining({ name: 'Test Infrastructure Smart Alert' }),
+		              expect.any(Object)
+		          );
+		          expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Successfully imported: 1'));
+		      });
+
+		      it('should import application smart alerts successfully', async () => {
+		          const argv = {
+		              package: '/test/package',
+		              server: 'test-server.com',
+		              token: 'test-token',
+		              location: '/test/location',
+		              include: 'smart-alerts/**/*.json',
+		              debug: false
+		          };
+
+		          mockedFs.existsSync = jest.fn().mockReturnValue(true);
+		          mockedGlobSync.mockReturnValue(['/test/package/smart-alerts/app-alert.json']);
+		          mockedFs.readFileSync = jest.fn().mockReturnValue(JSON.stringify({
+		              name: 'Test Application Smart Alert',
+		              applicationId: 'app-123',
+		              rule: {
+		                  metricName: 'test.metric'
+		              },
+		              threshold: { value: 10 },
+		              granularity: 60000,
+		              timeThreshold: { type: 'violationsInSequence' }
+		          }));
+
+		          mockAxiosInstance.post.mockResolvedValue({ status: 200 });
+
+		          await handleImport(argv);
+
+		          expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Detected application smart alert'));
+		          expect(mockAxiosInstance.post).toHaveBeenCalledWith(
+		              'https://test-server.com/api/events/settings/application-alert-configs',
+		              expect.objectContaining({ name: 'Test Application Smart Alert' }),
+		              expect.any(Object)
+		          );
+		          expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Successfully imported: 1'));
+		      });
+
+		      it('should import application smart alerts with applications array successfully', async () => {
+		          const argv = {
+		              package: '/test/package',
+		              server: 'test-server.com',
+		              token: 'test-token',
+		              location: '/test/location',
+		              include: 'smart-alerts/**/*.json',
+		              debug: false
+		          };
+
+		          mockedFs.existsSync = jest.fn().mockReturnValue(true);
+		          mockedGlobSync.mockReturnValue(['/test/package/smart-alerts/app-alert-multi.json']);
+		          mockedFs.readFileSync = jest.fn().mockReturnValue(JSON.stringify({
+		              name: 'Test Application Smart Alert Multi',
+		              applications: [{ applicationId: 'app-123' }, { applicationId: 'app-456' }],
+		              rule: {
+		                  metricName: 'test.metric'
+		              },
+		              threshold: { value: 10 },
+		              granularity: 60000,
+		              timeThreshold: { type: 'violationsInSequence' }
+		          }));
+
+		          mockAxiosInstance.post.mockResolvedValue({ status: 200 });
+
+		          await handleImport(argv);
+
+		          expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Detected application smart alert'));
+		          expect(mockAxiosInstance.post).toHaveBeenCalledWith(
+		              'https://test-server.com/api/events/settings/application-alert-configs',
+		              expect.objectContaining({ name: 'Test Application Smart Alert Multi' }),
+		              expect.any(Object)
+		          );
+		          expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Successfully imported: 1'));
+		      });
+
+		      it('should import mobile app smart alerts successfully', async () => {
+		          const argv = {
+		              package: '/test/package',
+		              server: 'test-server.com',
+		              token: 'test-token',
+		              location: '/test/location',
+		              include: 'smart-alerts/**/*.json',
+		              debug: false
+		          };
+
+		          mockedFs.existsSync = jest.fn().mockReturnValue(true);
+		          mockedGlobSync.mockReturnValue(['/test/package/smart-alerts/mobile-alert.json']);
+		          mockedFs.readFileSync = jest.fn().mockReturnValue(JSON.stringify({
+		              name: 'Test Mobile App Smart Alert',
+		              mobileAppId: 'mobile-123',
+		              rule: {
+		                  metricName: 'test.metric'
+		              },
+		              threshold: { value: 10 },
+		              granularity: 60000,
+		              timeThreshold: { type: 'violationsInSequence' }
+		          }));
+
+		          mockAxiosInstance.post.mockResolvedValue({ status: 200 });
+
+		          await handleImport(argv);
+
+		          expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Detected mobile app smart alert'));
+		          expect(mockAxiosInstance.post).toHaveBeenCalledWith(
+		              'https://test-server.com/api/events/settings/mobile-app-alert-configs',
+		              expect.objectContaining({ name: 'Test Mobile App Smart Alert' }),
+		              expect.any(Object)
+		          );
+		          expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Successfully imported: 1'));
+		      });
+
+		      it('should import infrastructure smart alerts with rules array successfully', async () => {
+		          const argv = {
+		              package: '/test/package',
+		              server: 'test-server.com',
+		              token: 'test-token',
+		              location: '/test/location',
+		              include: 'smart-alerts/**/*.json',
+		              debug: false
+		          };
+
+		          mockedFs.existsSync = jest.fn().mockReturnValue(true);
+		          mockedGlobSync.mockReturnValue(['/test/package/smart-alerts/infra-alert-multi.json']);
+		          mockedFs.readFileSync = jest.fn().mockReturnValue(JSON.stringify({
+		              name: 'Test Infrastructure Smart Alert Multi',
+		              rules: [
+		                  {
+		                      entityType: 'kubernetesCluster',
+		                      metricName: 'test.metric1'
+		                  },
+		                  {
+		                      entityType: 'host',
+		                      metricName: 'test.metric2'
+		                  }
+		              ],
+		              threshold: { value: 10 },
+		              granularity: 60000,
+		              timeThreshold: { type: 'violationsInSequence' }
+		          }));
+
+		          mockAxiosInstance.post.mockResolvedValue({ status: 200 });
+
+		          await handleImport(argv);
+
+		          expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Detected infrastructure smart alert'));
+		          expect(mockAxiosInstance.post).toHaveBeenCalledWith(
+		              'https://test-server.com/api/events/settings/infra-alert-configs',
+		              expect.objectContaining({ name: 'Test Infrastructure Smart Alert Multi' }),
+		              expect.any(Object)
+		          );
+		          expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Successfully imported: 1'));
+		      });
+
+		      it('should handle smart alert type detection failure', async () => {
+		          const argv = {
+		              package: '/test/package',
+		              server: 'test-server.com',
+		              token: 'test-token',
+		              location: '/test/location',
+		              include: 'smart-alerts/**/*.json',
+		              debug: false
+		          };
+
+		          mockedFs.existsSync = jest.fn().mockReturnValue(true);
+		          mockedGlobSync.mockReturnValue(['/test/package/smart-alerts/unknown-alert.json']);
+		          mockedFs.readFileSync = jest.fn().mockReturnValue(JSON.stringify({
+		              name: 'Unknown Smart Alert',
+		              // Missing all identifying fields
+		              threshold: { value: 10 }
+		          }));
+
+		          await handleImport(argv);
+
+		          expect(mockedLogger.error).toHaveBeenCalledWith(expect.stringContaining('Unable to determine smart alert type'));
+		          expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Total files: 1 | Failed to import: 1'));
+		      });
     });
 
     describe('Debug Mode', () => {
@@ -697,7 +907,7 @@ describe('handleImport', () => {
 
             await handleImport(argv);
 
-            expect(mockedLogger.info).toHaveBeenCalledWith('Successfully imported: 2');
+            expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Total files: 2 | Successfully imported: 2'));
         });
 
         it('should report only failures when all imports fail', async () => {
@@ -725,7 +935,7 @@ describe('handleImport', () => {
 
             await handleImport(argv);
 
-            expect(mockedLogger.info).toHaveBeenCalledWith('Failed to import: 2');
+            expect(mockedLogger.info).toHaveBeenCalledWith(expect.stringContaining('Total files: 2 | Failed to import: 2'));
         });
 
         it('should report both successes and failures when mixed', async () => {

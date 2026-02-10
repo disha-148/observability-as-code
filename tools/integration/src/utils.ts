@@ -325,6 +325,21 @@ Below are the entities that are currently supported by this integration package.
 `;
     }
 
+	if (configTypes.includes('smart-alerts')) {
+        readmeContent += `
+## Smart Alerts
+
+Below are the smart alerts that are currently supported by this integration package.
+
+(Note: Replace the sample entries below with actual smart alerts from your package.)
+
+| Smart Alerts Name              | Description                       |
+|-----------------------------------------------|---------------------------------  |
+| <smart.alert.name.example1>    | Triggered when condition X occurs |
+| <smart.alert.name.example2>    | Triggered when condition Y occurs |
+`;
+    }
+
     readmeContent += `
 ## Installation and Usage
 

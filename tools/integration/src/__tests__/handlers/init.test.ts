@@ -62,7 +62,7 @@ describe('Init Handler', () => {
                 .mockResolvedValueOnce('Author')
                 .mockResolvedValueOnce('MIT');
 
-            (checkbox as jest.Mock).mockResolvedValue(['dashboards', 'events', 'entities']);
+            (checkbox as jest.Mock).mockResolvedValue(['dashboards', 'events', 'entities', 'smart-alerts']);
             (utils.generateReadme as jest.Mock).mockImplementation(() => {});
             (utils.printDirectoryTree as jest.Mock).mockImplementation(() => {});
 
@@ -71,6 +71,7 @@ describe('Init Handler', () => {
             expect(fs.mkdirSync).toHaveBeenCalledWith('/test/dir/test-package/dashboards', { recursive: true });
             expect(fs.mkdirSync).toHaveBeenCalledWith('/test/dir/test-package/events', { recursive: true });
             expect(fs.mkdirSync).toHaveBeenCalledWith('/test/dir/test-package/entities', { recursive: true });
+            expect(fs.mkdirSync).toHaveBeenCalledWith('/test/dir/test-package/smart-alerts', { recursive: true });
         });
 
         it('should create package.json with correct structure', async () => {

@@ -341,6 +341,7 @@ export function validateReadmeContent(
     const dashboardsExist = fs.existsSync(path.join(currentDirectory, 'dashboards'));
     const eventsExist = fs.existsSync(path.join(currentDirectory, 'events'));
     const entitiesExist = fs.existsSync(path.join(currentDirectory, 'entities'));
+    const smartAlertsExist = fs.existsSync(path.join(currentDirectory, 'smart-alerts'));
     const requiredSections = [packageName];
     if (dashboardsExist) {
         requiredSections.push('Dashboards');
@@ -349,9 +350,12 @@ export function validateReadmeContent(
     if (eventsExist) {
         requiredSections.push('Events');
     }
-	if (entitiesExist) {
-		requiredSections.push('Entities');
-	}
+    if (entitiesExist) {
+        requiredSections.push('Entities');
+    }
+    if (smartAlertsExist) {
+        requiredSections.push('Smart Alerts');
+    }
     const readmeLines = readmeContent.split('\n');
     const headingLines = readmeLines
         .filter(line => /^#{1,6}\s+/.test(line.trim()))
@@ -366,4 +370,73 @@ export function validateReadmeContent(
     } else {
         successMessages.push('README.md contains all required sections.');
     }
+}
+/**
+ * Validate smart alerts files for required fields
+ */
+export function validateSmartAlertFiles(
+	smartAlertPath: string,
+	errors: string[],
+	warnings: string[],
+	successMessages: string[]
+): void {
+	const jsonFiles = getAllJsonFiles(smartAlertPath);
+
+	if(jsonFiles.length === 0) {
+		warnings.push('No JSON files found in the smart-alerts folder.');
+		return;
+	}
+
+	jsonFiles.forEach(filePath => {
+    	const file = path.relative(smartAlertPath, filePath);
+    	try {
+    		const fileContent = fs.readFileSync(filePath, 'utf-8');
+    		const smartAlert = JSON.parse(fileContent);
+    		let allSmartAlertFieldsValid = true;
+
+    		const alwaysRequiredSmartAlertFields = ['name', 'granularity', 'timeThreshold'];
+    		const presentFields: string[] = [];
+    		const missingFields: string[] = [];
+
+    		// Check always required fields
+    		for (const field of alwaysRequiredSmartAlertFields) {
+    			const value = smartAlert[field];
+    			const isEmptyArray = Array.isArray(value) && value.length === 0;
+    			const isEmptyValue = value === undefined || value === null || value === '' || isEmptyArray;
+
+    			if (isEmptyValue) {
+    				missingFields.push(field);
+    				allSmartAlertFieldsValid = false;
+    			} else {
+    				presentFields.push(field);
+    			}
+    		}
+
+    		// Check "rule + threshold" OR "rules" array
+    		const hasRuleAndThreshold = smartAlert.rule != null && smartAlert.threshold != null;
+    		const hasRulesArray = Array.isArray(smartAlert.rules) && smartAlert.rules.length > 0;
+
+    		if (!hasRuleAndThreshold && !hasRulesArray) {
+    			missingFields.push('rule + threshold OR rules[]');
+    			allSmartAlertFieldsValid = false;
+    		} else {
+    			presentFields.push(hasRuleAndThreshold ? 'rule + threshold' : 'rules[]');
+    		}
+
+			if (presentFields.length > 0) {
+				successMessages.push(`The smart alert field(s) ${presentFields.join(', ')} are present in the file: ${file}.`);
+			}
+			if (missingFields.length > 0) {
+				errors.push(`The smart alert is missing required field(s) ${missingFields.join(', ')} in file: ${file}.`);
+			}
+
+			if (allSmartAlertFieldsValid) {
+				successMessages.push(`The smart alert is correctly defined in the file: ${file}.`);
+			} else {
+				errors.push(`The smart alert is not correctly defined in the file: ${file}.`);
+			}
+    	} catch (error) {
+    		errors.push(`Error validating file ${filePath}: ${error instanceof Error ? error.message : String(error)}.`);
+    	}
+    });
 }
