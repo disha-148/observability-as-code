@@ -29,12 +29,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Configure npm authentication
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLISHING_TOKEN }}" > .npmrc
+          cat .npmrc
+
       - name: Set up Git user
         run: |
-            git config --global user.name "github-actions[bot]"
-            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Publish packages
         run: npx lerna publish from-package --yes --loglevel verbose
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
