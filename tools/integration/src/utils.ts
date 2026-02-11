@@ -4,6 +4,34 @@ import path from 'path';
 import { spawn } from 'child_process';
 
 /**
+ * Generic filter function for filtering objects by conditions
+ * Supports filtering by: title, name, label, ownerid, annotation, id
+ */
+export const filterElementsBy = (objects: any[], conditions: string[]): any[] => {
+    return objects.filter(obj => {
+        return conditions.every(condition => {
+            const [key, rawValue] = condition.split('=');
+            const value = rawValue?.replace(/^"|"$/g, '');
+            
+            // Handle different filter keys - check all possible name/title/label properties
+            if (key === 'title' || key === 'name' || key === 'label') {
+                const titleMatch = new RegExp(value, 'i').test(obj.title ?? '');
+                const nameMatch = new RegExp(value, 'i').test(obj.name ?? '');
+                const labelMatch = new RegExp(value, 'i').test(obj.data?.label ?? '');
+                return titleMatch || nameMatch || labelMatch;
+            } else if (key === 'ownerid') {
+                return new RegExp(value, 'i').test(obj.ownerId ?? '');
+            } else if (key === 'annotation') {
+                return (obj.annotations ?? []).includes(value);
+            } else if (key === 'id') {
+                return obj.id === value;
+            }
+            return false;
+        });
+    });
+};
+
+/**
  * Promisify spawn for async/await usage
  */
 export const spawnAsync = (command: any, args: any, options: any) => {

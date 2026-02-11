@@ -30,7 +30,8 @@ export async function handleExport(argv: any) {
         const foldersToCheck = [
             path.join(location, 'dashboards'),
             path.join(location, 'events'),
-            path.join(location, 'entities')
+            path.join(location, 'entities'),
+            path.join(location,'smart-alerts')
         ];
 
         for (const folderPath of foldersToCheck) {
@@ -40,7 +41,7 @@ export async function handleExport(argv: any) {
                 const jsonFiles = files.filter(file => !file.startsWith('.') && file.endsWith('.json'));
                 if (jsonFiles.length > 0) {
                     logger.error(`Cannot export: folder contains existing JSON files.`);
-                    logger.info(`The export directory must not contain any JSON files in dashboards/, events/, or entities/ folders.`);
+                    logger.info(`The export directory must not contain any JSON files in dashboards/, events/, or entities/ or smart-alerts/ folders.`);
                     logger.info(`Please clean the folder or choose a new one.`);
                     process.exit(1);
                 }
@@ -59,17 +60,20 @@ export async function handleExport(argv: any) {
     const dashboardsPath = path.join(location, "dashboards");
     const eventsPath = path.join(location, "events");
     const entitiesPath = path.join(location, "entities");
+    const smartAlertsPath = path.join(location, "smart-alerts");
     fs.mkdirSync(dashboardsPath, { recursive: true });
     fs.mkdirSync(eventsPath, { recursive: true });
     fs.mkdirSync(entitiesPath, {recursive: true});
+    fs.mkdirSync(smartAlertsPath, {recursive: true});
 
     let wasDashboardFound = false;
     let wasEventFound = false;
     let wasEntityFound = false;
+    let wasSmartAlertFound = false;
 
     // Dashboard export
     if (parsedIncludes.some(inc => inc.type === "dashboard" || inc.type === "all")) {
-        const allDashboards = await getDashboardList(server, token, axiosInstance);
+        const allDashboards = await fetchDashboard(server, token, axiosInstance);
         let totalDashboardProcessed = 0;
 
         for (const inc of parsedIncludes.filter(inc => inc.type === "dashboard" || inc.type === "all")) {
@@ -79,11 +83,11 @@ export async function handleExport(argv: any) {
             if (matches.length) {
                 filtered = matches.map(idCond => {
                     const id = idCond.split("=")[1]?.replace(/^"|"$/g, '');
-                    const found = allDashboards.find(d => d.id === id);
+                    const found = allDashboards.find((d: any) => d.id === id);
                     return found;
                 }).filter(Boolean);
             } else {
-                filtered = filterDashboardsBy(allDashboards, inc.conditions);
+                filtered = utils.filterElementsBy(allDashboards, inc.conditions);
             }
 
             if (filtered.length === 0) {
@@ -91,13 +95,13 @@ export async function handleExport(argv: any) {
                 logFn(`No dashboard(s) found matching: ${inc.conditions.join(', ')}`);
                 continue;
             }
-	    	const enriched = filtered.map(item => ({
+     	const enriched = filtered.map(item => ({
                 ...item,
                 name: item.name ?? `dashboard-${item.id}`
             }));
             const sanitized = utils.sanitizeTitles(filtered, "dashboard");
             for (const dash of sanitized) {
-                const dashboard = await exportDashboard(server, token, dash.id, axiosInstance);
+                const dashboard = await fetchDashboard(server, token, axiosInstance, dash.id);
                 if (dashboard) {
                     saveDashboard(dashboardsPath, dash.id, dash.title, dashboard);
                     totalDashboardProcessed++;
@@ -113,20 +117,20 @@ export async function handleExport(argv: any) {
 
     // Event export
     if (parsedIncludes.some(inc => inc.type === "event" || inc.type === "all")) {
-        const allEvents = await getEventList(server, token, axiosInstance);
+        const allEvents = await fetchEvent(server, token, axiosInstance);
         let totalEventProcessed = 0;
 
         for (const inc of parsedIncludes.filter(inc => inc.type === "event" || inc.type === "all")) {
         	const matches = inc.conditions.filter(c => c.startsWith("id="));
             let filtered;
-	   		if (matches.length) {
+    		if (matches.length) {
             	filtered = matches.map(idCond => {
                 	const id = idCond.split("=")[1]?.replace(/^"|"$/g, '');
-                    const found = allEvents.find(e => e.id === id);
+                    const found = allEvents.find((e: any) => e.id === id);
                     return found;
                 }).filter(Boolean);
             } else {
-                filtered = filterEventsBy(allEvents, inc.conditions);
+                filtered = utils.filterElementsBy(allEvents, inc.conditions);
             }
 
             if (filtered.length === 0) {
@@ -134,13 +138,13 @@ export async function handleExport(argv: any) {
                 logFn(`No event(s) found matching: ${inc.conditions.join(', ')}`);
                 continue;
             }
-	    	const enriched = filtered.map(item => ({
+     	const enriched = filtered.map(item => ({
                 ...item,
                 name: item.name ?? `event-${item.id}`
             }));
             const sanitized = utils.sanitizeTitles(filtered, "event");
             for (const evt of sanitized) {
-                const event = await exportEvent(server, token, evt.id, axiosInstance);
+                const event = await fetchEvent(server, token, axiosInstance, evt.id);
                 if (event) {
                     saveEvent(eventsPath, evt.id, evt.title, event);
                     totalEventProcessed++;
@@ -157,7 +161,7 @@ export async function handleExport(argv: any) {
 
 	// Entity export
 	if (parsedIncludes.some(inc => inc.type === "entity" || inc.type === "all")){
-		const allEntities = await getEntityList(server, token, axiosInstance);
+		const allEntities = await fetchEntity(server, token, axiosInstance);
 		let totalEntitiesProcessed = 0;
 
 		for (const inc of parsedIncludes.filter(inc => inc.type === "entity" || inc.type === "all")){
@@ -165,12 +169,12 @@ export async function handleExport(argv: any) {
 			let filtered;
 			if (matches.length) {
 				filtered = matches.map(idCond => {
-                	const id = idCond.split("=")[1]?.replace(/^"|"$/g, '');
-                    const found = allEntities.find(e => e.id === id);
-                    return found;
-                }).filter(Boolean);
+	            	const id = idCond.split("=")[1]?.replace(/^"|"$/g, '');
+	                const found = allEntities.find((e: any) => e.id === id);
+	                return found;
+	            }).filter(Boolean);
 			} else {
-				filtered = filterEntitiesBy(allEntities, inc.conditions);
+				filtered = utils.filterElementsBy(allEntities, inc.conditions);
 			}
 
 			if (filtered.length === 0){
@@ -181,40 +185,168 @@ export async function handleExport(argv: any) {
 
 			const enriched = filtered.map(item => ({
 				...item,
-            	data: {
-            		...item.data,
-            		label: item.data?.label ?? `entity-${item.id}`
-            	}
+	           	data: {
+	           		...item.data,
+	           		label: item.data?.label ?? `entity-${item.id}`
+	           	}
 			}));
 
-            const sanitized = utils.sanitizeTitles(enriched, "entity");
+	           const sanitized = utils.sanitizeTitles(enriched, "entity");
 
-            for (const ent of sanitized) {
-				const entity = await exportEntity(server, token, ent.id, axiosInstance);
-            	if (entity) {
-            		saveEntity(entitiesPath, dashboardsPath, entity);
-            		totalEntitiesProcessed++;
-            		wasEntityFound = true;
-            	} else {
-            		const logFn = inc.explicitlyTyped ? logger.error : logger.debug;
-            		logFn(`The entity with id=${ent.id} not found or failed to export.`);
-            	}
+	           for (const ent of sanitized) {
+				const entity = await fetchEntity(server, token, axiosInstance, ent.id);
+	           	if (entity) {
+	           		saveEntity(entitiesPath, dashboardsPath, entity);
+	           		totalEntitiesProcessed++;
+	           		wasEntityFound = true;
+	           	} else {
+	           		const logFn = inc.explicitlyTyped ? logger.error : logger.debug;
+	           		logFn(`The entity with id=${ent.id} not found or failed to export.`);
+	           	}
 			}
 		}
 		logger.info(`Total entities processed: ${totalEntitiesProcessed}`);
 	}
 
+    // smart-alert export
+    if (parsedIncludes.some(inc => inc.type === "smart-alert" || inc.type === "all")) {
+        const allSmartAlerts = await fetchSmartAlert(server, token, axiosInstance);
+        let totalSmartAlertsProcessed = 0;
+
+        for (const inc of parsedIncludes.filter(inc => inc.type === "smart-alert" || inc.type === "all")) {
+        	const matches = inc.conditions.filter(c => c.startsWith("id="));
+            let filtered;
+    		if (matches.length) {
+            	filtered = matches.map(idCond => {
+                	const id = idCond.split("=")[1]?.replace(/^"|"$/g, '');
+                    const found = allSmartAlerts.find((e: any) => e.id === id);
+                    return found;
+                }).filter(Boolean);
+            } else {
+                filtered = utils.filterElementsBy(allSmartAlerts, inc.conditions);
+            }
+
+            if (filtered.length === 0) {
+                const logFn = inc.explicitlyTyped ? logger.error : logger.debug;
+                logFn(`No smart-alert(s) found matching: ${inc.conditions.join(', ')}`);
+                continue;
+            }
+      const enriched = filtered.map((item: any) => ({
+                ...item,
+                name: item.name ?? `smart-alert-${item.id}`
+            }));
+            const sanitized = utils.sanitizeTitles(filtered, "smart-alert");
+            for (const alert of sanitized) {
+                const smartAlert = await fetchSmartAlert(server, token, axiosInstance, alert.id);
+                if (smartAlert) {
+                    saveSmartAlert(smartAlertsPath, smartAlert);
+                    totalSmartAlertsProcessed++;
+                    wasSmartAlertFound = true;
+                } else {
+                    const logFn = inc.explicitlyTyped ? logger.error : logger.debug;
+                    logFn(`The smart-alert with id=${alert.id} not found or failed to export.`);
+                }
+            }
+        }
+
+        logger.info(`Total smart alert(s) processed: ${totalSmartAlertsProcessed}`);
+    }
+
     // Final info
-    if (!wasDashboardFound && !wasEventFound && !wasEntityFound) {
+    if (!wasDashboardFound && !wasEventFound && !wasEntityFound && !wasSmartAlertFound) {
         logger.error("No elements were found or exported.");
     }
 }
 
-// Helper functions for entity export
-async function getEntityList(server: string, token: string, axiosInstance: any): Promise<any[]> {
+// Helper functions for smart-alert export
+async function fetchSmartAlert(server: string, token: string, axiosInstance: any, alertId?: string): Promise<any> {
+    try {
+        const urls = [
+            `https://${server}/api/events/settings/mobile-app-alert-configs`,
+            `https://${server}/api/events/settings/application-alert-configs`,
+            `https://${server}/api/events/settings/infra-alert-configs`
+        ];
+        
+        if (alertId) {
+            // Fetch single alert - try each endpoint
+            logger.info(`Getting smart-alert (id=${alertId}) ...`);
+            for (const baseUrl of urls) {
+                try {
+                    const url = `${baseUrl}/${alertId}`;
+                    const response = await axiosInstance.get(url, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `apiToken ${token}`
+                        }
+                    });
+                    logger.info(`Successfully got smart-alert (id=${alertId}): ${response.status}`);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(`Response data: \n${JSON.stringify(response.data)}`);
+                    }
+                    return response.data;
+                } catch (err) {
+                    // Try next endpoint
+                    continue;
+                }
+            }
+            throw new Error(`Smart alert with id=${alertId} not found in any endpoint`);
+        } else {
+            // Fetch all alerts from all endpoints
+            logger.info(`Getting smart-alert list from multiple endpoints ...`);
+            const allAlerts: any[] = [];
+            
+            for (const url of urls) {
+                try {
+                    const response = await axiosInstance.get(url, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `apiToken ${token}`
+                        }
+                    });
+                    if (Array.isArray(response.data)) {
+                        allAlerts.push(...response.data);
+                    }
+                } catch (err) {
+                    logger.debug(`Failed to fetch from ${url}: ${err}`);
+                }
+            }
+            
+            if (logger.isDebugEnabled()) {
+                logger.debug(`Response data: \n${JSON.stringify(allAlerts)}`);
+            }
+            return allAlerts;
+        }
+    } catch (error) {
+        handleAxiosError(error, alertId ? `smart-alert (id=${alertId})` : `smart-alert list`);
+        return alertId ? null : [];
+    }
+}
+
+
+function saveSmartAlert(dir: string, smartAlert: any) {
 	try {
-		const url = `https://${server}/api/custom-entitytypes`;
-		logger.info(`Getting entity list from ${url} ...`);
+		const alertId = smartAlert.id;
+		const alertName = utils.sanitizeFileName(smartAlert.name ?? `smart-alert-${alertId}`);
+		const alertFilePath = path.join(dir, `${alertName}.json`);
+
+		logger.info(`Saving smart-alert (id=${alertId}) to ${alertFilePath} ...`);
+		fs.writeFileSync(alertFilePath, JSON.stringify(smartAlert, null, 2));
+		logger.info(`The smart-alert (id=${alertId}) saved successfully to ${alertFilePath}`);
+	} catch (error) {
+		logger.error(`Error saving smart-alert (id=${smartAlert?.id ?? 'unknown'}):`, error);
+	}
+}
+
+
+// Helper functions for entity export
+async function fetchEntity(server: string, token: string, axiosInstance: any, entityId?: string): Promise<any> {
+	try {
+		const url = entityId
+			? `https://${server}/api/custom-entitytypes/${entityId}`
+			: `https://${server}/api/custom-entitytypes`;
+		
+		const context = entityId ? `entity (id=${entityId})` : 'entity list';
+		logger.info(`Getting ${context} from ${url} ...`);
 
 		const response = await axiosInstance.get(url, {
         	headers: {
@@ -222,55 +354,17 @@ async function getEntityList(server: string, token: string, axiosInstance: any):
                 'Authorization': `apiToken ${token}`
             }
 		});
-        logger.info(`Successfully got entity list: ${response.status}`);
+        logger.info(`Successfully got ${context}: ${response.status}`);
         if (logger.isDebugEnabled()) {
         	logger.debug(`Response data: \n${JSON.stringify(response.data)}`);
         }
         return response.data;
 	} catch (error) {
-		handleAxiosError(error, `entity list`);
-        return [];
+		handleAxiosError(error, entityId ? `entity (id=${entityId})` : `entity list`);
+        return entityId ? null : [];
 	}
 }
 
-function filterEntitiesBy(idObjects: any[], include: string[]): any[] {
-    return idObjects.filter(obj => {
-        return include.every(condition => {
-            const [key, rawValue] = condition.split('=');
-            const value = rawValue?.replace(/^"|"$/g, '');
-            if (key === 'name' || key === 'title') {
-                return new RegExp(value, 'i').test(obj.name ?? obj.data?.label ?? '');
-            } else if (key === 'label') {
-                return new RegExp(value, 'i').test(obj.data?.label ?? '');
-            }
-            return false;
-        });
-    });
-}
-
-async function exportEntity(server: string, token: string, entityId: string, axiosInstance: any): Promise<any> {
-	try {
-		const url = `https://${server}/api/custom-entitytypes/${entityId}`;
-		logger.info(`Getting entity (id=${entityId}) from ${url} ...`);
-
-		const response = await axiosInstance.get(url, {
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `apiToken ${token}`
-			}
-		});
-
-		logger.info(`Successfully got entity (id=${entityId}): ${response.status}`);
-		if (logger.isDebugEnabled()) {
-			logger.debug(`Response data: \n${JSON.stringify(response.data)}`);
-		}
-
-		return response.data;
-	} catch (error) {
-		handleAxiosError(error, `entity (id=${entityId})`);
-		return null;
-	}
-}
 
 function saveEntity(entityDir: string, dashboardDir: string, entity: any) {
 	try {
@@ -309,10 +403,14 @@ function saveEntity(entityDir: string, dashboardDir: string, entity: any) {
 
 
 // Helper functions for dashboard export
-async function exportDashboard(server: string, token: string, dashboardId: string, axiosInstance: any): Promise<any> {
+async function fetchDashboard(server: string, token: string, axiosInstance: any, dashboardId?: string): Promise<any> {
     try {
-        const url = `https://${server}/api/custom-dashboard/${dashboardId}`;
-        logger.info(`Getting dashboard (id=${dashboardId}) from ${url} ...`);
+        const url = dashboardId
+            ? `https://${server}/api/custom-dashboard/${dashboardId}`
+            : `https://${server}/api/custom-dashboard`;
+        
+        const context = dashboardId ? `dashboard (id=${dashboardId})` : 'dashboard list';
+        logger.info(`Getting ${context} from ${url} ...`);
 
         const response = await axiosInstance.get(url, {
             headers: {
@@ -321,37 +419,15 @@ async function exportDashboard(server: string, token: string, dashboardId: strin
             }
         });
 
-        logger.info(`Successfully got dashboard (id=${dashboardId}): ${response.status}`);
+        logger.info(`Successfully got ${context}: ${response.status}`);
         if (logger.isDebugEnabled()) {
             logger.debug(`Response data: \n${JSON.stringify(response.data)}`);
         }
 
         return response.data;
     } catch (error) {
-        handleAxiosError(error, `dashboard (id=${dashboardId})`);
-        return null;
-    }
-}
-
-async function getDashboardList(server: string, token: string, axiosInstance: any): Promise<any[]> {
-    try {
-        const url = `https://${server}/api/custom-dashboard`;
-        logger.info(`Getting dashboard list from ${url} ...`);
-
-        const response = await axiosInstance.get(url, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `apiToken ${token}`
-            }
-        });
-        logger.info(`Successfully got dashboard list: ${response.status}`);
-        if (logger.isDebugEnabled()) {
-            logger.debug(`Response data: \n${JSON.stringify(response.data)}`);
-        }
-        return response.data;
-    } catch (error) {
-        handleAxiosError(error, `dashboard list`);
-        return [];
+        handleAxiosError(error, dashboardId ? `dashboard (id=${dashboardId})` : `dashboard list`);
+        return dashboardId ? null : [];
     }
 }
 
@@ -367,28 +443,16 @@ function saveDashboard(dir: string, id: string, title: string, dashboard: any) {
     }
 }
 
-function filterDashboardsBy(idObjects: IdObject[], include: string[]): IdObject[] {
-    return idObjects.filter(obj => {
-        return include.every(condition => {
-            const [key, rawValue] = condition.split('=');
-            const value = rawValue?.replace(/^"|"$/g, '');
-            if (key === 'title') {
-                return new RegExp(value, 'i').test(obj.title);
-            } else if (key === 'ownerid') {
-                return new RegExp(value, 'i').test(obj.ownerId ?? '');
-            } else if (key === 'annotation') {
-                return (obj.annotations ?? []).includes(value);
-            }
-            return false;
-        });
-    });
-}
 
 // Helper functions for event export
-async function exportEvent(server: string, token: string, eventId: string, axiosInstance: any): Promise<any> {
+async function fetchEvent(server: string, token: string, axiosInstance: any, eventId?: string): Promise<any> {
     try {
-        const url = `https://${server}/api/events/settings/event-specifications/custom/${eventId}`;
-        logger.info(`Getting event (id=${eventId}) from ${url} ...`);
+        const url = eventId
+            ? `https://${server}/api/events/settings/event-specifications/custom/${eventId}`
+            : `https://${server}/api/events/settings/event-specifications/custom`;
+        
+        const context = eventId ? `event (id=${eventId})` : 'event list';
+        logger.info(`Getting ${context} from ${url} ...`);
 
         const response = await axiosInstance.get(url, {
             headers: {
@@ -397,39 +461,15 @@ async function exportEvent(server: string, token: string, eventId: string, axios
             }
         });
 
-        logger.info(`Successfully got event (id=${eventId}): ${response.status}`);
+        logger.info(`Successfully got ${context}: ${response.status}`);
         if (logger.isDebugEnabled()) {
             logger.debug(`Response data: \n${JSON.stringify(response.data)}`);
         }
 
         return response.data;
     } catch (error) {
-        handleAxiosError(error, `event (id=${eventId})`);
-        return null;
-    }
-}
-
-async function getEventList(server: string, token: string, axiosInstance: any): Promise<any[]> {
-    try {
-        const url = `https://${server}/api/events/settings/event-specifications/custom`;
-        logger.info(`Getting event list from ${url} ...`);
-
-        const response = await axiosInstance.get(url, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `apiToken ${token}`
-            }
-        });
-
-        logger.info(`Successfully got event list: ${response.status}`);
-        if (logger.isDebugEnabled()) {
-            logger.debug(`Response data: \n${JSON.stringify(response.data)}`);
-        }
-
-        return response.data;
-    } catch (error) {
-        handleAxiosError(error, `event list`);
-        return [];
+        handleAxiosError(error, eventId ? `event (id=${eventId})` : `event list`);
+        return eventId ? null : [];
     }
 }
 
@@ -445,21 +485,6 @@ function saveEvent(dir: string, id: string, name: string, event: any) {
     }
 }
 
-function filterEventsBy(idObjects: any[], include: string[]): any[] {
-    return idObjects.filter(obj => {
-        return include.every(condition => {
-            const [key, rawValue] = condition.split('=');
-            const value = rawValue?.replace(/^"|"$/g, '');
-
-            if (key === 'name' || key === 'title') {
-                return new RegExp(value, 'i').test(obj.name ?? '');
-            } else if (key === 'id') {
-                return obj.id === value;
-            }
-            return false;
-        });
-    });
-}
 
 // Helper for axios error handling
 function handleAxiosError(error: any, context: string) {
