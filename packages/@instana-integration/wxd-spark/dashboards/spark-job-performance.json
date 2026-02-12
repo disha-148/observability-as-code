@@ -1,0 +1,848 @@
+{
+  "rbacTags": [],
+  "accessRules": [
+    {
+      "accessType": "READ_WRITE",
+      "relationType": "GLOBAL",
+      "relatedId": ""
+    }
+  ],
+  "id": "f6CBX9KuQd2g0TUjBmYFHg",
+  "title": "spark-job-performance",
+  "widgets": [
+    {
+      "width": 12,
+      "x": 0,
+      "y": 13,
+      "id": "YjwaziI1AmN2h0_4",
+      "title": "Job Success Rate",
+      "type": "chart",
+      "config": {
+        "shareMaxAxisDomain": false,
+        "y1": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": [
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "successful jobs",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_jobs_succeededJobs_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_jobs_succeededJobs_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "failed jobs",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_jobs_failedJobs_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_jobs_failedJobs_count",
+              "crossSeriesAggregation": "MEAN"
+            }
+          ],
+          "formatterSelected": false
+        },
+        "y2": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": []
+        },
+        "type": "TIME_SERIES"
+      },
+      "height": 14
+    },
+    {
+      "width": 12,
+      "x": 0,
+      "y": 0,
+      "id": "w4ErRPWXKuNs1dXx",
+      "title": "Active Jobs & Stages",
+      "type": "chart",
+      "config": {
+        "shareMaxAxisDomain": false,
+        "y1": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": [
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "active jobs",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_DAGScheduler_job_activeJobs",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_DAGScheduler_job_activeJobs",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "running stages",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_DAGScheduler_stage_runningStages",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_DAGScheduler_stage_runningStages",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "waiting stages",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_DAGScheduler_stage_waitingStages",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_DAGScheduler_stage_waitingStages",
+              "crossSeriesAggregation": "MEAN"
+            }
+          ],
+          "formatterSelected": false
+        },
+        "y2": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": []
+        },
+        "type": "TIME_SERIES"
+      },
+      "height": 13
+    },
+    {
+      "width": 12,
+      "x": 0,
+      "y": 41,
+      "id": "StSQgMSv16MLNQsE",
+      "title": "Metadata & Query Performance",
+      "type": "chart",
+      "config": {
+        "shareMaxAxisDomain": false,
+        "y1": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": [
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "file cache hits count",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_fileCacheHits_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_fileCacheHits_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "files discovered count",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_filesDiscovered_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_filesDiscovered_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "partitions fetched",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_partitionsFetched_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_partitionsFetched_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "client calls count",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_hiveClientCalls_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_hiveClientCalls_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "parellel listing job count",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_parallelListingJobCount_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_parallelListingJobCount_count",
+              "crossSeriesAggregation": "MEAN"
+            }
+          ],
+          "formatterSelected": false
+        },
+        "y2": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": []
+        },
+        "type": "TIME_SERIES"
+      },
+      "height": 13
+    },
+    {
+      "width": 12,
+      "x": 0,
+      "y": 28,
+      "id": "mgXvn-LUSNFdDs7f",
+      "title": "Task Success Rate",
+      "type": "chart",
+      "config": {
+        "shareMaxAxisDomain": false,
+        "y1": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": [
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "completed tasks",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_tasks_completedTasks_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_tasks_completedTasks_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "failed tasks",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_tasks_failedTasks_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_tasks_failedTasks_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "killed tasks",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_tasks_killedTasks_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_tasks_killedTasks_count",
+              "crossSeriesAggregation": "MEAN"
+            }
+          ],
+          "formatterSelected": false
+        },
+        "y2": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": []
+        },
+        "type": "TIME_SERIES"
+      },
+      "height": 13
+    },
+    {
+      "width": 12,
+      "x": 0,
+      "y": 54,
+      "id": "yIXNe8tcE_Vqz3bl",
+      "title": "Shuffle Performance ",
+      "type": "chart",
+      "config": {
+        "shareMaxAxisDomain": false,
+        "y1": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": [
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "shuffle total bytes read",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleTotalBytesRead_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleTotalBytesRead_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "shuffle bytes written",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleBytesWritten_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleBytesWritten_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "shuffle records read",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleRecordsRead_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleRecordsRead_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "shuffle records written",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleRecordsWritten_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleRecordsWritten_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "shuffle remote bytes read to disk",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleRemoteBytesReadToDisk_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleRemoteBytesReadToDisk_count",
+              "crossSeriesAggregation": "MEAN"
+            }
+          ],
+          "formatterSelected": false
+        },
+        "y2": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": []
+        },
+        "type": "TIME_SERIES"
+      },
+      "height": 14
+    },
+    {
+      "width": 12,
+      "x": 0,
+      "y": 68,
+      "id": "mljRJPnqhH8IE1gh",
+      "title": "Data Processing Volume",
+      "type": "chart",
+      "config": {
+        "shareMaxAxisDomain": false,
+        "y1": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": [
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "Bytes read count",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_bytesRead_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_bytesRead_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "bytes written count",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_bytesWritten_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_bytesWritten_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "records read count",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_recordsRead_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_recordsRead_count",
+              "crossSeriesAggregation": "MEAN"
+            },
+            {
+              "lastValue": false,
+              "color": "",
+              "compareToTimeShifted": false,
+              "threshold": {
+                "critical": "",
+                "warning": "",
+                "thresholdEnabled": false,
+                "operator": ">="
+              },
+              "aggregation": "MEAN",
+              "label": "records written count",
+              "source": "INFRASTRUCTURE_METRICS",
+              "metricPath": [
+                "Others",
+                "Regex"
+              ],
+              "formatter": "number.detailed",
+              "unit": "number",
+              "regex": true,
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_recordsWritten_count",
+              "timeShift": 0,
+              "tagFilterExpression": {
+                "logicalOperator": "AND",
+                "elements": [],
+                "type": "EXPRESSION"
+              },
+              "allowedCrossSeriesAggregations": [],
+              "metricLabel": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_recordsWritten_count",
+              "crossSeriesAggregation": "MEAN"
+            }
+          ],
+          "formatterSelected": false
+        },
+        "y2": {
+          "formatter": "number.detailed",
+          "renderer": "line",
+          "metrics": []
+        },
+        "type": "TIME_SERIES"
+      },
+      "height": 13
+    }
+  ],
+  "ownerId": "677f7040fabd1d00013dada8",
+  "writable": true
+}
