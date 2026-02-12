@@ -41,7 +41,8 @@ export async function handleExport(argv: any) {
                 const jsonFiles = files.filter(file => !file.startsWith('.') && file.endsWith('.json'));
                 if (jsonFiles.length > 0) {
                     logger.error(`Cannot export: folder contains existing JSON files.`);
-                    logger.info(`The export directory must not contain any JSON files in dashboards/, events/, or entities/ or smart-alerts/ folders.`);
+                    const folderNames = foldersToCheck.map(folder => path.basename(folder));
+                    logger.info(`The export directory must not contain any JSON files in ${folderNames.join(', ')} folders.`);
                     logger.info(`Please clean the folder or choose a new one.`);
                     process.exit(1);
                 }
@@ -73,7 +74,7 @@ export async function handleExport(argv: any) {
 
     // Dashboard export
     if (parsedIncludes.some(inc => inc.type === "dashboard" || inc.type === "all")) {
-        const allDashboards = await fetchDashboard(server, token, axiosInstance);
+        const allDashboards = await fetchDashboards(server, token, axiosInstance);
         let totalDashboardProcessed = 0;
 
         for (const inc of parsedIncludes.filter(inc => inc.type === "dashboard" || inc.type === "all")) {
@@ -101,7 +102,7 @@ export async function handleExport(argv: any) {
             }));
             const sanitized = utils.sanitizeTitles(filtered, "dashboard");
             for (const dash of sanitized) {
-                const dashboard = await fetchDashboard(server, token, axiosInstance, dash.id);
+                const dashboard = await fetchDashboards(server, token, axiosInstance, dash.id);
                 if (dashboard) {
                     saveDashboard(dashboardsPath, dash.id, dash.title, dashboard);
                     totalDashboardProcessed++;
@@ -117,7 +118,7 @@ export async function handleExport(argv: any) {
 
     // Event export
     if (parsedIncludes.some(inc => inc.type === "event" || inc.type === "all")) {
-        const allEvents = await fetchEvent(server, token, axiosInstance);
+        const allEvents = await fetchEvents(server, token, axiosInstance);
         let totalEventProcessed = 0;
 
         for (const inc of parsedIncludes.filter(inc => inc.type === "event" || inc.type === "all")) {
@@ -144,7 +145,7 @@ export async function handleExport(argv: any) {
             }));
             const sanitized = utils.sanitizeTitles(filtered, "event");
             for (const evt of sanitized) {
-                const event = await fetchEvent(server, token, axiosInstance, evt.id);
+                const event = await fetchEvents(server, token, axiosInstance, evt.id);
                 if (event) {
                     saveEvent(eventsPath, evt.id, evt.title, event);
                     totalEventProcessed++;
@@ -161,7 +162,7 @@ export async function handleExport(argv: any) {
 
 	// Entity export
 	if (parsedIncludes.some(inc => inc.type === "entity" || inc.type === "all")){
-		const allEntities = await fetchEntity(server, token, axiosInstance);
+		const allEntities = await fetchEntities(server, token, axiosInstance);
 		let totalEntitiesProcessed = 0;
 
 		for (const inc of parsedIncludes.filter(inc => inc.type === "entity" || inc.type === "all")){
@@ -194,7 +195,7 @@ export async function handleExport(argv: any) {
 	           const sanitized = utils.sanitizeTitles(enriched, "entity");
 
 	           for (const ent of sanitized) {
-				const entity = await fetchEntity(server, token, axiosInstance, ent.id);
+				const entity = await fetchEntities(server, token, axiosInstance, ent.id);
 	           	if (entity) {
 	           		saveEntity(entitiesPath, dashboardsPath, entity);
 	           		totalEntitiesProcessed++;
@@ -210,7 +211,7 @@ export async function handleExport(argv: any) {
 
     // smart-alert export
     if (parsedIncludes.some(inc => inc.type === "smart-alert" || inc.type === "all")) {
-        const allSmartAlerts = await fetchSmartAlert(server, token, axiosInstance);
+        const allSmartAlerts = await fetchSmartAlerts(server, token, axiosInstance);
         let totalSmartAlertsProcessed = 0;
 
         for (const inc of parsedIncludes.filter(inc => inc.type === "smart-alert" || inc.type === "all")) {
@@ -237,7 +238,7 @@ export async function handleExport(argv: any) {
             }));
             const sanitized = utils.sanitizeTitles(filtered, "smart-alert");
             for (const alert of sanitized) {
-                const smartAlert = await fetchSmartAlert(server, token, axiosInstance, alert.id);
+                const smartAlert = await fetchSmartAlerts(server, token, axiosInstance, alert.id);
                 if (smartAlert) {
                     saveSmartAlert(smartAlertsPath, smartAlert);
                     totalSmartAlertsProcessed++;
@@ -259,7 +260,7 @@ export async function handleExport(argv: any) {
 }
 
 // Helper functions for smart-alert export
-async function fetchSmartAlert(server: string, token: string, axiosInstance: any, alertId?: string): Promise<any> {
+async function fetchSmartAlerts(server: string, token: string, axiosInstance: any, alertId?: string): Promise<any> {
     try {
         const urls = [
             `https://${server}/api/events/settings/mobile-app-alert-configs`,
@@ -339,7 +340,7 @@ function saveSmartAlert(dir: string, smartAlert: any) {
 
 
 // Helper functions for entity export
-async function fetchEntity(server: string, token: string, axiosInstance: any, entityId?: string): Promise<any> {
+async function fetchEntities(server: string, token: string, axiosInstance: any, entityId?: string): Promise<any> {
 	try {
 		const url = entityId
 			? `https://${server}/api/custom-entitytypes/${entityId}`
@@ -403,7 +404,7 @@ function saveEntity(entityDir: string, dashboardDir: string, entity: any) {
 
 
 // Helper functions for dashboard export
-async function fetchDashboard(server: string, token: string, axiosInstance: any, dashboardId?: string): Promise<any> {
+async function fetchDashboards(server: string, token: string, axiosInstance: any, dashboardId?: string): Promise<any> {
     try {
         const url = dashboardId
             ? `https://${server}/api/custom-dashboard/${dashboardId}`
@@ -445,7 +446,7 @@ function saveDashboard(dir: string, id: string, title: string, dashboard: any) {
 
 
 // Helper functions for event export
-async function fetchEvent(server: string, token: string, axiosInstance: any, eventId?: string): Promise<any> {
+async function fetchEvents(server: string, token: string, axiosInstance: any, eventId?: string): Promise<any> {
     try {
         const url = eventId
             ? `https://${server}/api/events/settings/event-specifications/custom/${eventId}`
