@@ -413,4 +413,165 @@ describe('Utils Module', () => {
             expect(content).toContain('## Installation and Usage');
         });
     });
+
+    describe('filterElementsBy', () => {
+        it('should filter by title', () => {
+            const objects = [
+                { id: '1', title: 'Production Dashboard', ownerId: 'user1', annotations: [] },
+                { id: '2', title: 'Test Dashboard', ownerId: 'user1', annotations: [] },
+                { id: '3', title: 'Development Dashboard', ownerId: 'user2', annotations: [] }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['title=Production']);
+            expect(result).toHaveLength(1);
+            expect(result[0].id).toBe('1');
+        });
+
+        it('should filter by name', () => {
+            const objects = [
+                { id: '1', name: 'Critical Alert', ownerId: 'user1', annotations: [] },
+                { id: '2', name: 'Warning Alert', ownerId: 'user1', annotations: [] }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['name=Critical']);
+            expect(result).toHaveLength(1);
+            expect(result[0].id).toBe('1');
+        });
+
+        it('should filter by label in data object', () => {
+            const objects = [
+                { id: '1', data: { label: 'Database Entity' } },
+                { id: '2', data: { label: 'Service Entity' } }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['label=Database']);
+            expect(result).toHaveLength(1);
+            expect(result[0].id).toBe('1');
+        });
+
+        it('should filter by ownerId', () => {
+            const objects = [
+                { id: '1', title: 'Dashboard 1', ownerId: 'user1', annotations: [] },
+                { id: '2', title: 'Dashboard 2', ownerId: 'user2', annotations: [] },
+                { id: '3', title: 'Dashboard 3', ownerId: 'user1', annotations: [] }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['ownerid=user1']);
+            expect(result).toHaveLength(2);
+            expect(result[0].id).toBe('1');
+            expect(result[1].id).toBe('3');
+        });
+
+        it('should filter by annotation', () => {
+            const objects = [
+                { id: '1', title: 'Dashboard 1', ownerId: 'user1', annotations: ['prod', 'critical'] },
+                { id: '2', title: 'Dashboard 2', ownerId: 'user1', annotations: ['dev'] },
+                { id: '3', title: 'Dashboard 3', ownerId: 'user1', annotations: ['prod'] }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['annotation=prod']);
+            expect(result).toHaveLength(2);
+            expect(result[0].id).toBe('1');
+            expect(result[1].id).toBe('3');
+        });
+
+        it('should filter by id', () => {
+            const objects = [
+                { id: 'dash-1', title: 'Dashboard 1', ownerId: 'user1', annotations: [] },
+                { id: 'dash-2', title: 'Dashboard 2', ownerId: 'user1', annotations: [] }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['id=dash-1']);
+            expect(result).toHaveLength(1);
+            expect(result[0].id).toBe('dash-1');
+        });
+
+        it('should handle multiple conditions (AND logic)', () => {
+            const objects = [
+                { id: '1', title: 'Production Dashboard', ownerId: 'user1', annotations: ['prod'] },
+                { id: '2', title: 'Production Alert', ownerId: 'user2', annotations: ['prod'] },
+                { id: '3', title: 'Test Dashboard', ownerId: 'user1', annotations: ['test'] }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['title=Production', 'ownerid=user1']);
+            expect(result).toHaveLength(1);
+            expect(result[0].id).toBe('1');
+        });
+
+        it('should handle case-insensitive matching', () => {
+            const objects = [
+                { id: '1', title: 'PRODUCTION Dashboard', ownerId: 'user1', annotations: [] },
+                { id: '2', title: 'production alert', ownerId: 'user1', annotations: [] }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['title=production']);
+            expect(result).toHaveLength(2);
+        });
+
+        it('should handle quoted values', () => {
+            const objects = [
+                { id: '1', title: 'My Dashboard', ownerId: 'user1', annotations: [] },
+                { id: '2', title: 'Your Dashboard', ownerId: 'user1', annotations: [] }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['title="My Dashboard"']);
+            expect(result).toHaveLength(1);
+            expect(result[0].id).toBe('1');
+        });
+
+        it('should return empty array when no matches', () => {
+            const objects = [
+                { id: '1', title: 'Dashboard 1', ownerId: 'user1', annotations: [] }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['title=NonExistent']);
+            expect(result).toHaveLength(0);
+        });
+
+        it('should return all objects when no conditions', () => {
+            const objects = [
+                { id: '1', title: 'Dashboard 1', ownerId: 'user1', annotations: [] },
+                { id: '2', title: 'Dashboard 2', ownerId: 'user1', annotations: [] }
+            ];
+
+            const result = utils.filterElementsBy(objects, []);
+            expect(result).toHaveLength(2);
+        });
+
+        it('should handle objects with missing properties', () => {
+            const objects = [
+                { id: '1', ownerId: 'user1', annotations: [] },
+                { id: '2', title: 'Dashboard 2', ownerId: 'user1', annotations: [] }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['title=Dashboard']);
+            expect(result).toHaveLength(1);
+            expect(result[0].id).toBe('2');
+        });
+
+        it('should match title, name, or label with same condition', () => {
+            const objects = [
+                { id: '1', title: 'Test Item', ownerId: 'user1', annotations: [] },
+                { id: '2', name: 'Test Item', ownerId: 'user1', annotations: [] },
+                { id: '3', data: { label: 'Test Item' } }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['title=Test']);
+            expect(result).toHaveLength(3);
+        });
+
+        it('should handle empty objects array', () => {
+            const result = utils.filterElementsBy([], ['title=test']);
+            expect(result).toHaveLength(0);
+        });
+
+        it('should handle unknown filter keys', () => {
+            const objects = [
+                { id: '1', title: 'Dashboard 1', ownerId: 'user1', annotations: [] }
+            ];
+
+            const result = utils.filterElementsBy(objects, ['unknown=value']);
+            expect(result).toHaveLength(0);
+        });
+    });
 });
