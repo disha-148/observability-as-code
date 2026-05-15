@@ -352,6 +352,7 @@ describe('Lint Handler', () => {
             (validators.validateDashboardFiles as jest.Mock).mockImplementation(() => {});
             (validators.validateEventFiles as jest.Mock).mockImplementation(() => {});
             (validators.validateSmartAlertFiles as jest.Mock).mockImplementation(() => {});
+            (validators.validateCollectorFiles as jest.Mock).mockImplementation(() => {});
             (fs.existsSync as jest.Mock).mockReturnValue(true);
 
             await expect(handleLint(argv)).rejects.toThrow('process.exit(0)');
@@ -360,6 +361,49 @@ describe('Lint Handler', () => {
             expect(validators.validateDashboardFiles).toHaveBeenCalled();
             expect(validators.validateEventFiles).toHaveBeenCalled();
             expect(validators.validateSmartAlertFiles).toHaveBeenCalled();
+            expect(validators.validateCollectorFiles).toHaveBeenCalled();
+        });
+
+        it('should validate collector when collector folder exists', async () => {
+            const argv = { debug: false, 'strict-mode': false };
+            const packageData = { name: 'test-package', private: false };
+            const readmeContent = '# Test';
+
+            (utils.readPackageJson as jest.Mock).mockReturnValue(packageData);
+            (utils.isPrivatePackage as jest.Mock).mockReturnValue(false);
+            (utils.readReadmeFile as jest.Mock).mockReturnValue(readmeContent);
+            (validators.validatePackageJson as jest.Mock).mockResolvedValue(undefined);
+            (validators.validateReadmeContent as jest.Mock).mockImplementation(() => {});
+            (validators.validateCollectorFiles as jest.Mock).mockImplementation(() => {});
+            (fs.existsSync as jest.Mock).mockImplementation((path: string) => {
+                return path.includes('collector');
+            });
+
+            await expect(handleLint(argv)).rejects.toThrow('process.exit(0)');
+
+            expect(validators.validateCollectorFiles).toHaveBeenCalledWith(
+                '/test/package/collector',
+                expect.any(Array),
+                expect.any(Array),
+                expect.any(Array)
+            );
+        });
+
+        it('should log info when no collector folder found', async () => {
+            const argv = { debug: false, 'strict-mode': false };
+            const packageData = { name: 'test-package', private: false };
+            const readmeContent = '# Test';
+
+            (utils.readPackageJson as jest.Mock).mockReturnValue(packageData);
+            (utils.isPrivatePackage as jest.Mock).mockReturnValue(false);
+            (utils.readReadmeFile as jest.Mock).mockReturnValue(readmeContent);
+            (validators.validatePackageJson as jest.Mock).mockResolvedValue(undefined);
+            (validators.validateReadmeContent as jest.Mock).mockImplementation(() => {});
+            (fs.existsSync as jest.Mock).mockReturnValue(false);
+
+            await expect(handleLint(argv)).rejects.toThrow('process.exit(0)');
+
+            expect(logger.info).toHaveBeenCalledWith('No collector folder found for this package.');
         });
     });
 });
