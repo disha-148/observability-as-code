@@ -49,8 +49,7 @@ export async function handleInit(): Promise<void> {
             { name: 'events', value: 'events'},
             { name: 'entities', value: 'entities'},
             { name: 'smart alerts', value: 'smart-alerts'},
-            new Separator('-- Below items are not supported yet --'),
-            { name: 'collector configs', value: 'collector-configs', disabled: true, },
+            { name: 'collector', value: 'collector'},
         ],
         required: true
     });
@@ -66,6 +65,10 @@ export async function handleInit(): Promise<void> {
         fs.mkdirSync(configTypePath, { recursive: true });
         logger.info(`Created the integration package sub-folder: ${configTypePath}`);
     });
+
+    if (configTypes.includes('collector')) {
+        utils.generateCollectorFiles(packagePath, packageName, configTypes);
+    }
 
     const packageJson: {
         name: string;

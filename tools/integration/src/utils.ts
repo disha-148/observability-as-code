@@ -265,6 +265,16 @@ export function generateReadme(packagePath: string, packageName: string, configT
 
 (Note: Write your package description here.)
 `;
+
+    if (configTypes.includes('collector')) {
+        readmeContent += `
+## Collector
+
+Below are the collector configurations that are currently supported by this integration package.
+`;
+
+    }
+
     if (configTypes.includes('dashboards')) {
         readmeContent += `
 ## Dashboards
@@ -398,4 +408,78 @@ $ stanctl-integration import --package ${packageName} \\
     const readmeFilePath = path.join(packagePath, 'README.md');
     fs.writeFileSync(readmeFilePath, readmeContent);
     logger.info(`Created the package README file at ${readmeFilePath}`);
+}
+
+/**
+ * Generate collector template files
+*/
+export function generateCollectorFiles(packagePath: string, packageName: string, configTypes: string[]) {
+    const normalizedPackageName = packageName
+        .replace(/^@instana-integration\//, '')
+        .split('/')
+        .filter(Boolean)
+        .join('_');
+
+    const targetDir = path.join(packagePath, 'collector');
+
+    // Dockerfile
+    const dockerfileContent = `# Multi-stage build for Python collector
+FROM python:3.9-slim as builder
+
+WORKDIR /app
+
+# Copy requirements and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# Final stage
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Copy installed dependencies from builder
+COPY --from=builder /root/.local /root/.local
+COPY ${normalizedPackageName}_collector.py .
+COPY config.json .
+
+# Make sure scripts in .local are usable
+ENV PATH=/root/.local/bin:$PATH
+
+# Run the collector
+CMD ["python", "${normalizedPackageName}_collector.py"]
+`;
+    fs.writeFileSync(path.join(targetDir, 'Dockerfile'), dockerfileContent);
+    
+    // collector
+    const collectorContent = `Collector file content`;
+    fs.writeFileSync(path.join(targetDir, `${normalizedPackageName}_collector.py`), collectorContent);
+    
+    // requirements.txt
+    const requirementsContent = `Requirements content`;
+    fs.writeFileSync(path.join(targetDir, 'requirements.txt'), requirementsContent);
+    
+    // config.json
+    const configContent = `# Replace with actual config
+
+{
+  "extension_id": "sap-monitor",
+  "extension_name": "sap-monitor",
+  "extension_version": "1.0.0",
+  "image": {
+    "registry": "quay.io",
+    "repository": "instana-collectors/sap",
+    "tag": "1.0.0"
+  },
+  "configuration": {
+    "interval": 60,
+    "timeout": 30,
+    "batch_size": 100,
+    "log_level": "INFO"
+  },
+  "metadata": {
+    "created_at": "2026-03-22T00:00:00Z",
+    "created_by": "stanctl-integration"
+  }
+}`;
+    fs.writeFileSync(path.join(targetDir, 'config.json'), configContent);
 }

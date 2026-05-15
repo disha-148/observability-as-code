@@ -3,6 +3,7 @@ import * as utils from '../utils';
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
 import fs from 'fs';
+import logger from '../logger';
 import path from 'path';
 
 // Mock dependencies
@@ -573,5 +574,78 @@ describe('Utils Module', () => {
             const result = utils.filterElementsBy(objects, ['unknown=value']);
             expect(result).toHaveLength(0);
         });
+
+    describe('generateCollectorFiles', () => {
+        it('should create all 4 collector files with content', () => {
+            const packagePath = '/test/package';
+            const packageName = '@instana-integration/test';
+            const configTypes = ['collector'];
+
+            utils.generateCollectorFiles(packagePath, packageName, configTypes);
+
+            // Verify all 4 files were created with some content
+            expect(mockedFs.writeFileSync).toHaveBeenCalledTimes(4);
+            
+            const calls = (mockedFs.writeFileSync as jest.Mock).mock.calls;
+            calls.forEach((call: any) => {
+                expect(call[1]).toBeTruthy(); // Has content
+                expect(call[1].length).toBeGreaterThan(0); // Content is not empty
+            });
+        });
+
+        it('should create Dockerfile', () => {
+            utils.generateCollectorFiles('/test/package', '@instana-integration/test', ['collector']);
+
+            expect(mockedFs.writeFileSync).toHaveBeenCalledWith(
+                expect.stringContaining('Dockerfile'),
+                expect.any(String)
+            );
+        });
+
+        it('should create Python collector file with normalized name', () => {
+            utils.generateCollectorFiles('/test/package', '@instana-integration/my-test', ['collector']);
+
+            expect(mockedFs.writeFileSync).toHaveBeenCalledWith(
+                expect.stringContaining('my-test_collector.py'),
+                expect.any(String)
+            );
+        });
+
+        it('should create requirements.txt', () => {
+            utils.generateCollectorFiles('/test/package', '@instana-integration/test', ['collector']);
+
+            expect(mockedFs.writeFileSync).toHaveBeenCalledWith(
+                expect.stringContaining('requirements.txt'),
+                expect.any(String)
+            );
+        });
+
+        it('should create config.json', () => {
+            utils.generateCollectorFiles('/test/package', '@instana-integration/test', ['collector']);
+
+            expect(mockedFs.writeFileSync).toHaveBeenCalledWith(
+                expect.stringContaining('config.json'),
+                expect.any(String)
+            );
+        });
+
+        it('should normalize package name by replacing slashes with underscores', () => {
+            utils.generateCollectorFiles('/test/package', '@instana-integration/sub/package/name', ['collector']);
+
+            expect(mockedFs.writeFileSync).toHaveBeenCalledWith(
+                expect.stringContaining('sub_package_name_collector.py'),
+                expect.any(String)
+            );
+        });
+
+        it('should handle package names without @instana-integration prefix', () => {
+            utils.generateCollectorFiles('/test/package', 'custom-package', ['collector']);
+
+            expect(mockedFs.writeFileSync).toHaveBeenCalledWith(
+                expect.stringContaining('custom-package_collector.py'),
+                expect.any(String)
+            );
+        });
+    });
     });
 });

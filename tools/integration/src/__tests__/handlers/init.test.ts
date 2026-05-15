@@ -316,5 +316,67 @@ describe('Init Handler', () => {
             const packageJson = JSON.parse(writeCall[1]);
             expect(packageJson.publishConfig).toEqual({ access: 'public' });
         });
+
+        it('should call generateCollectorFiles when collector is selected', async () => {
+            (input as jest.Mock)
+                .mockResolvedValueOnce('test-package')
+                .mockResolvedValueOnce('1.0.0')
+                .mockResolvedValueOnce('Description')
+                .mockResolvedValueOnce('')
+                .mockResolvedValueOnce('Author')
+                .mockResolvedValueOnce('MIT');
+
+            (checkbox as jest.Mock).mockResolvedValue(['dashboards', 'collector']);
+            (utils.generateReadme as jest.Mock).mockImplementation(() => {});
+            (utils.generateCollectorFiles as jest.Mock).mockImplementation(() => {});
+            (utils.printDirectoryTree as jest.Mock).mockImplementation(() => {});
+
+            await handleInit();
+
+            expect(utils.generateCollectorFiles).toHaveBeenCalledWith(
+                '/test/dir/test-package',
+                'test-package',
+                ['dashboards', 'collector']
+            );
+        });
+
+        it('should not call generateCollectorFiles when collector is not selected', async () => {
+            (input as jest.Mock)
+                .mockResolvedValueOnce('test-package')
+                .mockResolvedValueOnce('1.0.0')
+                .mockResolvedValueOnce('Description')
+                .mockResolvedValueOnce('')
+                .mockResolvedValueOnce('Author')
+                .mockResolvedValueOnce('MIT');
+
+            (checkbox as jest.Mock).mockResolvedValue(['dashboards', 'events']);
+            (utils.generateReadme as jest.Mock).mockImplementation(() => {});
+            (utils.generateCollectorFiles as jest.Mock).mockImplementation(() => {});
+            (utils.printDirectoryTree as jest.Mock).mockImplementation(() => {});
+
+            await handleInit();
+
+            expect(utils.generateCollectorFiles).not.toHaveBeenCalled();
+        });
+
+        it('should create collector folder when collector is selected', async () => {
+            (input as jest.Mock)
+                .mockResolvedValueOnce('test-package')
+                .mockResolvedValueOnce('1.0.0')
+                .mockResolvedValueOnce('Description')
+                .mockResolvedValueOnce('')
+                .mockResolvedValueOnce('Author')
+                .mockResolvedValueOnce('MIT');
+
+            (checkbox as jest.Mock).mockResolvedValue(['collector']);
+            (utils.generateReadme as jest.Mock).mockImplementation(() => {});
+            (utils.generateCollectorFiles as jest.Mock).mockImplementation(() => {});
+            (utils.printDirectoryTree as jest.Mock).mockImplementation(() => {});
+
+            await handleInit();
+
+            expect(fs.mkdirSync).toHaveBeenCalledWith('/test/dir/test-package/collector', { recursive: true });
+            expect(logger.info).toHaveBeenCalledWith('Created the integration package sub-folder: /test/dir/test-package/collector');
+        });
     });
 });

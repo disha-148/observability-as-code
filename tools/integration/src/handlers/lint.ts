@@ -27,6 +27,7 @@ export async function handleLint(argv: any): Promise<void> {
     const eventsPath = path.join(currentDirectory, 'events');
     const entitiesPath = path.join(currentDirectory, 'entities');
     const smartAlertPath = path.join(currentDirectory, 'smart-alerts');
+    const collectorPath = path.join(currentDirectory, 'collector');
 
     let embeddedDashboardRefs = new Set<string>();
 
@@ -69,6 +70,12 @@ export async function handleLint(argv: any): Promise<void> {
             validators.validateSmartAlertFiles(smartAlertPath, errors, warnings, successMessages);
         } else {
             logger.info('No smart alerts folder found for this package.');
+        }
+
+        if (fs.existsSync(collectorPath)) {
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+        } else {
+            logger.info('No collector folder found for this package.');
         }
     } catch (error) {
         errors.push(`Linting failed: ${error}`);

@@ -490,3 +490,56 @@ export function validateSmartAlertFiles(
     	}
     });
 }
+
+export function validateCollectorFiles(collectorPath: string, errors: string[], warnings: string[], successMessages: string[]): void {
+    const requiredFiles = ['Dockerfile', 'requirements.txt', 'config.json'];
+    
+    try {
+        const files = fs.readdirSync(collectorPath);
+        
+        if (files.length === 0) {
+            errors.push('No files found in the collector folder.');
+            return;
+        }
+        
+        const foundFiles: string[] = [];
+        
+        // Check for required files
+        requiredFiles.forEach(requiredFile => {
+            if (!files.includes(requiredFile)) {
+                errors.push(`Missing required collector file: ${requiredFile}`);
+            } else {
+                const filePath = path.join(collectorPath, requiredFile);
+                const stats = fs.statSync(filePath);
+                if (stats.size === 0) {
+                    warnings.push(`Collector file is empty: ${requiredFile}`);
+                } else {
+                    foundFiles.push(requiredFile);
+                }
+            }
+        });
+        
+        // Check for Python collector file (should end with _collector.py)
+        const pythonCollectorFiles = files.filter(file => file.endsWith('_collector.py'));
+        if (pythonCollectorFiles.length === 0) {
+            warnings.push('Missing Python collector file (should end with _collector.py)');
+        } else {
+            const collectorFile = pythonCollectorFiles[0];
+            const filePath = path.join(collectorPath, collectorFile);
+            const stats = fs.statSync(filePath);
+            if (stats.size === 0) {
+                warnings.push(`Python collector file is empty: ${collectorFile}`);
+            } else {
+                foundFiles.push(collectorFile);
+            }
+        }
+        
+        // Print all found files in one line
+        if (foundFiles.length > 0) {
+            successMessages.push(`Found collector files: ${foundFiles.join(', ')}`);
+        }
+        
+    } catch (error) {
+        errors.push(`Error validating collector files: ${error instanceof Error ? error.message : String(error)}`);
+    }
+}
