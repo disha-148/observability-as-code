@@ -265,6 +265,16 @@ export function generateReadme(packagePath: string, packageName: string, configT
 
 (Note: Write your package description here.)
 `;
+
+    if (configTypes.includes('collector')) {
+        readmeContent += `
+## Collector
+
+Below are the collectors that are currently supported by this integration package.
+`;
+
+    }
+
     if (configTypes.includes('dashboards')) {
         readmeContent += `
 ## Dashboards
@@ -398,4 +408,37 @@ $ stanctl-integration import --package ${packageName} \\
     const readmeFilePath = path.join(packagePath, 'README.md');
     fs.writeFileSync(readmeFilePath, readmeContent);
     logger.info(`Created the package README file at ${readmeFilePath}`);
+}
+
+/**
+ * Generate collector template files
+*/
+export function generateCollectorFiles(packagePath: string, packageName: string, configTypes: string[]) {
+    const normalizedPackageName = packageName
+        .replace(/^@instana-integration\//, '')
+        .split('/')
+        .filter(Boolean)
+        .join('_');
+
+    const targetDir = path.join(packagePath, 'collector');
+    const templatesDir = __dirname.includes('/dist')
+        ? path.join(__dirname, '..', 'src', 'templates', 'collector')
+        : path.join(__dirname, 'templates', 'collector');
+
+    // Dockerfile template
+    let dockerfileContent = fs.readFileSync(path.join(templatesDir, 'Dockerfile'), 'utf-8');
+    dockerfileContent = dockerfileContent.replace(/\{\{COLLECTOR_NAME\}\}/g, normalizedPackageName);
+    fs.writeFileSync(path.join(targetDir, 'Dockerfile'), dockerfileContent);
+    
+    // collector file template
+    const collectorContent = fs.readFileSync(path.join(templatesDir, 'collector.py'), 'utf-8');
+    fs.writeFileSync(path.join(targetDir, `${normalizedPackageName}_collector.py`), collectorContent);
+    
+    // requirements.txt template
+    const requirementsContent = fs.readFileSync(path.join(templatesDir, 'requirements.txt'), 'utf-8');
+    fs.writeFileSync(path.join(targetDir, 'requirements.txt'), requirementsContent);
+    
+    // config.json template
+    const configContent = fs.readFileSync(path.join(templatesDir, 'config.json'), 'utf-8');
+    fs.writeFileSync(path.join(targetDir, 'config.json'), configContent);
 }

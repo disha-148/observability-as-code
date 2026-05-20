@@ -1,0 +1,1 @@
+Collector file content

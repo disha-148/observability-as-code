@@ -1047,9 +1047,128 @@ describe('validators', () => {
             expect(errors).toHaveLength(0);
         });
     });
-   });
-   
-   describe('validateServerAddress', () => {
+
+    describe('validateCollectorFiles', () => {
+        it('should validate all required files are present', () => {
+            const collectorPath = '/test/collector';
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors).toHaveLength(0);
+            expect(warnings).toHaveLength(0);
+        });
+
+        it('should report error when Dockerfile is missing', () => {
+            const collectorPath = '/test/collector';
+            mockedFs.readdirSync.mockReturnValue(['requirements.txt', 'config.json', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors).toContain('Missing required collector file: Dockerfile');
+        });
+
+        it('should report error when requirements.txt is missing', () => {
+            const collectorPath = '/test/collector';
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'config.json', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors).toContain('Missing required collector file: requirements.txt');
+        });
+
+        it('should report error when config.json is missing', () => {
+            const collectorPath = '/test/collector';
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors).toContain('Missing required collector file: config.json');
+        });
+
+        it('should warn when Python collector file is missing', () => {
+            const collectorPath = '/test/collector';
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(warnings).toContain('Missing Python collector file (.py)');
+        });
+
+        it('should warn when files are empty', () => {
+            const collectorPath = '/test/collector';
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 0 } as any);
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(warnings).toContain('Collector file is empty: Dockerfile');
+            expect(warnings).toContain('Collector file is empty: requirements.txt');
+            expect(warnings).toContain('Collector file is empty: config.json');
+            expect(warnings).toContain('Python collector file is empty: test_collector.py');
+        });
+
+        it('should report error when collector directory is empty', () => {
+            const collectorPath = '/test/collector';
+            mockedFs.readdirSync.mockReturnValue([] as any);
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors).toContain('No files found in the collector folder.');
+        });
+
+        it('should handle errors gracefully', () => {
+            const collectorPath = '/test/collector';
+            mockedFs.readdirSync.mockImplementation(() => {
+                throw new Error('Permission denied');
+            });
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors).toContain('Error validating collector files: Permission denied');
+        });
+
+        it('should accept Python collector files with different names', () => {
+            const collectorPath = '/test/collector';
+            mockedFs.readdirSync.mockReturnValue([
+                'Dockerfile',
+                'requirements.txt',
+                'config.json',
+                'my_custom_collector.py'
+            ] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors).toHaveLength(0);
+            expect(warnings).toHaveLength(0);
+        });
+
+        it('should validate mixed file sizes correctly', () => {
+            const collectorPath = '/test/collector';
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json', 'test_collector.py'] as any);
+            
+            // Mock different file sizes
+            let callCount = 0;
+            mockedFs.statSync.mockImplementation(() => {
+                callCount++;
+                return { size: callCount === 2 ? 0 : 100 } as any; // Second file (requirements.txt) is empty
+            });
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(warnings).toContain('Collector file is empty: requirements.txt');
+            expect(warnings).toHaveLength(1);
+        });
+    });
+});
+
+describe('validateServerAddress', () => {
     it('should accept valid server addresses without protocol', () => {
     	expect(() => validateServerAddress('example.com')).not.toThrow();
     	expect(() => validateServerAddress('api.example.com')).not.toThrow();
@@ -1061,31 +1180,31 @@ describe('validators', () => {
    
     it('should reject server addresses with http:// protocol', () => {
     	expect(() => validateServerAddress('http://example.com')).toThrow(
-    		'Invalid server address: Do not include protocol (http:// or https://). Please use only the hostname, e.g., "example.com" instead of "http://example.com"'
+    		'Invalid server address: Do not include protocol (http:// or https://). Please use only the hostname.'
     	);
     });
    
     it('should reject server addresses with https:// protocol', () => {
     	expect(() => validateServerAddress('https://example.com')).toThrow(
-    		'Invalid server address: Do not include protocol (http:// or https://). Please use only the hostname, e.g., "example.com" instead of "https://example.com"'
+    		'Invalid server address: Do not include protocol (http:// or https://). Please use only the hostname.'
     	);
     });
    
     it('should reject server addresses with https:// protocol and port', () => {
     	expect(() => validateServerAddress('https://example.com:8080')).toThrow(
-    		'Invalid server address: Do not include protocol (http:// or https://). Please use only the hostname, e.g., "example.com" instead of "https://example.com:8080"'
+    		'Invalid server address: Do not include protocol (http:// or https://). Please use only the hostname.'
     	);
     });
    
     it('should reject server addresses with other protocols', () => {
     	expect(() => validateServerAddress('ftp://example.com')).toThrow(
-    		'Invalid server address: Protocol prefix detected. Please use only the hostname, e.g., "example.com" instead of "ftp://example.com"'
+    		'Invalid server address: Protocol prefix detected. Please use only the hostname.'
     	);
     });
    
     it('should handle server addresses with whitespace', () => {
     	expect(() => validateServerAddress('  https://example.com  ')).toThrow(
-    		'Invalid server address: Do not include protocol (http:// or https://). Please use only the hostname, e.g., "example.com" instead of "https://example.com"'
+    		'Invalid server address: Do not include protocol (http:// or https://). Please use only the hostname.'
     	);
     });
    
@@ -1120,8 +1239,7 @@ describe('validators', () => {
     		{ type: 'dashboard', conditions: [], explicitlyTyped: true },
     		{ type: 'event', conditions: [], explicitlyTyped: true },
     		{ type: 'entity', conditions: [], explicitlyTyped: true },
-    		{ type: 'smart-alert', conditions: [], explicitlyTyped: true },
-    		{ type: 'all', conditions: [], explicitlyTyped: true }
+    		{ type: 'smart-alert', conditions: [], explicitlyTyped: true }
     	];
     	expect(() => validateIncludeTypes(validIncludes)).not.toThrow();
     });
@@ -1139,7 +1257,7 @@ describe('validators', () => {
     		{ type: 'dashboards', conditions: [], explicitlyTyped: true }
     	];
     	expect(() => validateIncludeTypes(invalidIncludes)).toThrow(
-    		'Invalid --include type value(s): "dashboards". Valid types are: "dashboard", "event", "entity", "smart-alert", "all"'
+    		'Invalid --include type value(s): "dashboards". Valid types are: "dashboard", "event", "entity", "smart-alert"'
     	);
     });
    
@@ -1148,7 +1266,7 @@ describe('validators', () => {
     		{ type: 'events', conditions: [], explicitlyTyped: true }
     	];
     	expect(() => validateIncludeTypes(invalidIncludes)).toThrow(
-    		'Invalid --include type value(s): "events". Valid types are: "dashboard", "event", "entity", "smart-alert", "all"'
+    		'Invalid --include type value(s): "events". Valid types are: "dashboard", "event", "entity", "smart-alert"'
     	);
     });
    
@@ -1157,7 +1275,7 @@ describe('validators', () => {
     		{ type: 'entities', conditions: [], explicitlyTyped: true }
     	];
     	expect(() => validateIncludeTypes(invalidIncludes)).toThrow(
-    		'Invalid --include type value(s): "entities". Valid types are: "dashboard", "event", "entity", "smart-alert", "all"'
+    		'Invalid --include type value(s): "entities". Valid types are: "dashboard", "event", "entity", "smart-alert"'
     	);
     });
    
@@ -1166,7 +1284,7 @@ describe('validators', () => {
     		{ type: 'invalid-type', conditions: [], explicitlyTyped: true }
     	];
     	expect(() => validateIncludeTypes(invalidIncludes)).toThrow(
-    		'Invalid --include type value(s): "invalid-type". Valid types are: "dashboard", "event", "entity", "smart-alert", "all"'
+    		'Invalid --include type value(s): "invalid-type". Valid types are: "dashboard", "event", "entity", "smart-alert"'
     	);
     });
    
@@ -1177,7 +1295,7 @@ describe('validators', () => {
     		{ type: 'dashboards', conditions: [], explicitlyTyped: true } // duplicate
     	];
     	expect(() => validateIncludeTypes(invalidIncludes)).toThrow(
-    		'Invalid --include type value(s): "dashboards", "events". Valid types are: "dashboard", "event", "entity", "smart-alert", "all"'
+    		'Invalid --include type value(s): "dashboards", "events". Valid types are: "dashboard", "event", "entity", "smart-alert"'
     	);
     });
    
@@ -1201,6 +1319,6 @@ describe('validators', () => {
     });
    
     it('should have correct valid types constant', () => {
-    	expect(VALID_INCLUDE_TYPES).toEqual(['dashboard', 'event', 'entity', 'smart-alert', 'all']);
+    	expect(VALID_INCLUDE_TYPES).toEqual(['dashboard', 'event', 'entity', 'smart-alert']);
     });
-   });
+});
