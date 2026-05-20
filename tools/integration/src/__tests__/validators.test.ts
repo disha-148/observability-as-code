@@ -1057,7 +1057,7 @@ describe('validators', () => {
             validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
 
             expect(errors).toHaveLength(0);
-            expect(successMessages).toContain('Found collector files: Dockerfile, requirements.txt, config.json, test_collector.py');
+            expect(warnings).toHaveLength(0);
         });
 
         it('should report error when Dockerfile is missing', () => {
@@ -1097,7 +1097,7 @@ describe('validators', () => {
 
             validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
 
-            expect(warnings).toContain('Missing Python collector file (should end with _collector.py)');
+            expect(warnings).toContain('Missing Python collector file (.py)');
         });
 
         it('should warn when files are empty', () => {
@@ -1146,7 +1146,7 @@ describe('validators', () => {
             validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
 
             expect(errors).toHaveLength(0);
-            expect(successMessages).toContain('Found collector files: Dockerfile, requirements.txt, config.json, my_custom_collector.py');
+            expect(warnings).toHaveLength(0);
         });
 
         it('should validate mixed file sizes correctly', () => {
@@ -1163,7 +1163,7 @@ describe('validators', () => {
             validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
 
             expect(warnings).toContain('Collector file is empty: requirements.txt');
-            expect(successMessages).toContain('Found collector files: Dockerfile, config.json, test_collector.py');
+            expect(warnings).toHaveLength(1);
         });
     });
 });

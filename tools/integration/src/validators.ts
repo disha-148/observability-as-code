@@ -502,8 +502,6 @@ export function validateCollectorFiles(collectorPath: string, errors: string[], 
             return;
         }
         
-        const foundFiles: string[] = [];
-        
         // Check for required files
         requiredFiles.forEach(requiredFile => {
             if (!files.includes(requiredFile)) {
@@ -513,30 +511,21 @@ export function validateCollectorFiles(collectorPath: string, errors: string[], 
                 const stats = fs.statSync(filePath);
                 if (stats.size === 0) {
                     warnings.push(`Collector file is empty: ${requiredFile}`);
-                } else {
-                    foundFiles.push(requiredFile);
                 }
             }
         });
         
-        // Check for Python collector file (should end with _collector.py)
-        const pythonCollectorFiles = files.filter(file => file.endsWith('_collector.py'));
+        // Check for Python collector file
+        const pythonCollectorFiles = files.filter(file => file.endsWith('.py'));
         if (pythonCollectorFiles.length === 0) {
-            warnings.push('Missing Python collector file (should end with _collector.py)');
+            warnings.push('Missing Python collector file (.py)');
         } else {
             const collectorFile = pythonCollectorFiles[0];
             const filePath = path.join(collectorPath, collectorFile);
             const stats = fs.statSync(filePath);
             if (stats.size === 0) {
                 warnings.push(`Python collector file is empty: ${collectorFile}`);
-            } else {
-                foundFiles.push(collectorFile);
             }
-        }
-        
-        // Print all found files in one line
-        if (foundFiles.length > 0) {
-            successMessages.push(`Found collector files: ${foundFiles.join(', ')}`);
         }
         
     } catch (error) {

@@ -270,7 +270,7 @@ export function generateReadme(packagePath: string, packageName: string, configT
         readmeContent += `
 ## Collector
 
-Below are the collector configurations that are currently supported by this integration package.
+Below are the collectors that are currently supported by this integration package.
 `;
 
     }
@@ -421,65 +421,24 @@ export function generateCollectorFiles(packagePath: string, packageName: string,
         .join('_');
 
     const targetDir = path.join(packagePath, 'collector');
+    const templatesDir = __dirname.includes('/dist')
+        ? path.join(__dirname, '..', 'src', 'templates', 'collector')
+        : path.join(__dirname, 'templates', 'collector');
 
-    // Dockerfile
-    const dockerfileContent = `# Multi-stage build for Python collector
-FROM python:3.9-slim as builder
-
-WORKDIR /app
-
-# Copy requirements and install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir --user -r requirements.txt
-
-# Final stage
-FROM python:3.9-slim
-
-WORKDIR /app
-
-# Copy installed dependencies from builder
-COPY --from=builder /root/.local /root/.local
-COPY ${normalizedPackageName}_collector.py .
-COPY config.json .
-
-# Make sure scripts in .local are usable
-ENV PATH=/root/.local/bin:$PATH
-
-# Run the collector
-CMD ["python", "${normalizedPackageName}_collector.py"]
-`;
+    // Dockerfile template
+    let dockerfileContent = fs.readFileSync(path.join(templatesDir, 'Dockerfile'), 'utf-8');
+    dockerfileContent = dockerfileContent.replace(/\{\{COLLECTOR_NAME\}\}/g, normalizedPackageName);
     fs.writeFileSync(path.join(targetDir, 'Dockerfile'), dockerfileContent);
     
-    // collector
-    const collectorContent = `Collector file content`;
+    // collector file template
+    const collectorContent = fs.readFileSync(path.join(templatesDir, 'collector.py'), 'utf-8');
     fs.writeFileSync(path.join(targetDir, `${normalizedPackageName}_collector.py`), collectorContent);
     
-    // requirements.txt
-    const requirementsContent = `Requirements content`;
+    // requirements.txt template
+    const requirementsContent = fs.readFileSync(path.join(templatesDir, 'requirements.txt'), 'utf-8');
     fs.writeFileSync(path.join(targetDir, 'requirements.txt'), requirementsContent);
     
-    // config.json
-    const configContent = `# Replace with actual config
-
-{
-  "extension_id": "sap-monitor",
-  "extension_name": "sap-monitor",
-  "extension_version": "1.0.0",
-  "image": {
-    "registry": "quay.io",
-    "repository": "instana-collectors/sap",
-    "tag": "1.0.0"
-  },
-  "configuration": {
-    "interval": 60,
-    "timeout": 30,
-    "batch_size": 100,
-    "log_level": "INFO"
-  },
-  "metadata": {
-    "created_at": "2026-03-22T00:00:00Z",
-    "created_by": "stanctl-integration"
-  }
-}`;
+    // config.json template
+    const configContent = fs.readFileSync(path.join(templatesDir, 'config.json'), 'utf-8');
     fs.writeFileSync(path.join(targetDir, 'config.json'), configContent);
 }
