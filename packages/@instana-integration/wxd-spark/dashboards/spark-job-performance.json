@@ -43,7 +43,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_jobs_succeededJobs_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_appStatus_jobs_succeededJobs_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -74,7 +74,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_jobs_failedJobs_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_appStatus_jobs_failedJobs_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -130,7 +130,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_DAGScheduler_job_activeJobs",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_DAGScheduler_job_activeJobs",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -161,7 +161,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_DAGScheduler_stage_runningStages",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_DAGScheduler_stage_runningStages",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -192,7 +192,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_DAGScheduler_stage_waitingStages",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_DAGScheduler_stage_waitingStages",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -248,7 +248,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_fileCacheHits_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_HiveExternalCatalog_fileCacheHits_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -279,7 +279,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_filesDiscovered_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_HiveExternalCatalog_filesDiscovered_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -310,7 +310,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_partitionsFetched_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_HiveExternalCatalog_partitionsFetched_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -341,7 +341,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_hiveClientCalls_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_HiveExternalCatalog_hiveClientCalls_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -372,7 +372,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_HiveExternalCatalog_parallelListingJobCount_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_HiveExternalCatalog_parallelListingJobCount_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -428,7 +428,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_tasks_completedTasks_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_appStatus_tasks_completedTasks_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -459,7 +459,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_tasks_failedTasks_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_appStatus_tasks_failedTasks_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -490,7 +490,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/driver_appStatus_tasks_killedTasks_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_driver_appStatus_tasks_killedTasks_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -546,7 +546,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleTotalBytesRead_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_executor_shuffleTotalBytesRead_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -577,7 +577,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleBytesWritten_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_executor_shuffleBytesWritten_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -608,7 +608,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleRecordsRead_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_executor_shuffleRecordsRead_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -639,7 +639,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleRecordsWritten_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_executor_shuffleRecordsWritten_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -670,7 +670,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_shuffleRemoteBytesReadToDisk_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_executor_shuffleRemoteBytesReadToDisk_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -726,7 +726,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_bytesRead_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_executor_bytesRead_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -757,7 +757,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_bytesWritten_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_executor_bytesWritten_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -788,7 +788,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_recordsRead_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_executor_recordsRead_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
@@ -819,7 +819,7 @@
               "formatter": "number.detailed",
               "unit": "number",
               "regex": true,
-              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/executor_recordsWritten_count",
+              "metric": "metrics.gauges.github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver/spark_executor_recordsWritten_count",
               "timeShift": 0,
               "tagFilterExpression": {
                 "logicalOperator": "AND",
