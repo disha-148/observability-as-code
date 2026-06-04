@@ -37,6 +37,13 @@ Export integration elements:
   ${execName} export --server example.com --include type=smart-alert title="exampleTitle" --location ./my-package
 `;
 
+const examplesForBuild = `
+Examples:
+
+Build collector Docker image from integration package:
+  ${execName} build --package @instana-integration/my-collector
+`;
+
 /**
  * Configure and return the yargs CLI instance
  * @param handlers Object containing all command handler functions
@@ -48,6 +55,7 @@ export function configureCLI(handlers: {
     handleInit: () => Promise<void>;
     handlePublish: (argv: any) => Promise<void>;
     handleLint: (argv: any) => Promise<void>;
+    handleBuild: (argv: any) => Promise<void>;
 }) {
     return yargs
         .wrap(160) // Set the desired width here
@@ -195,6 +203,22 @@ export function configureCLI(handlers: {
                     default: false
                 });
         }, handlers.handleLint)
+        .command('build', 'Build collector Docker image', (yargs) => {
+            return yargs
+                .option('package', {
+                    alias: 'p',
+                    describe: 'The package name or path to the package',
+                    type: 'string',
+                    demandOption: true
+                })
+                .option('debug', {
+                    alias: 'd',
+                    describe: 'Enable debug mode',
+                    type: 'boolean',
+                    default: false
+                })
+                .epilog(examplesForBuild);
+        }, handlers.handleBuild)
         .demandCommand(1, 'You need at least one command before moving on')
         .help()
         .alias('help', 'h')

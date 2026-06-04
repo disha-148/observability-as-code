@@ -41,6 +41,7 @@ describe('CLI Module', () => {
                 handleInit: async () => {},
                 handlePublish: async () => {},
                 handleLint: async () => {},
+                handleBuild: async () => {},
             };
 
             // Should not throw when called with valid handlers
@@ -68,6 +69,7 @@ describe('CLI Module', () => {
                 handleInit: async () => Promise.resolve(),
                 handlePublish: async (argv: any) => Promise.resolve(),
                 handleLint: async (argv: any) => Promise.resolve(),
+                handleBuild: async (argv: any) => Promise.resolve(),
             };
 
             // TypeScript compilation ensures type safety
@@ -101,6 +103,7 @@ describe('CLI Module', () => {
             expect(cliContent).toContain('examplesForDownload');
             expect(cliContent).toContain('examplesForImport');
             expect(cliContent).toContain('examplesForExport');
+            expect(cliContent).toContain('examplesForBuild');
             expect(cliContent).toContain('Examples:');
         });
 
@@ -117,6 +120,7 @@ describe('CLI Module', () => {
             expect(cliContent).toContain("'init'");
             expect(cliContent).toContain("'publish'");
             expect(cliContent).toContain("'lint'");
+            expect(cliContent).toContain("'build'");
         });
 
         it('should define command descriptions', async () => {
@@ -131,6 +135,7 @@ describe('CLI Module', () => {
             expect(cliContent).toContain('Initialize a new integration package');
             expect(cliContent).toContain('Publish the local integration package');
             expect(cliContent).toContain('Provides linting for package');
+            expect(cliContent).toContain('Build collector Docker image');
         });
 
         it('should configure yargs with proper settings', async () => {
@@ -217,6 +222,19 @@ describe('CLI Module', () => {
             expect(cliContent).toContain("'path'");
             expect(cliContent).toContain("'strict-mode'");
         });
+
+        it('should define build command options', async () => {
+            const fs = require('fs');
+            const path = require('path');
+            const cliPath = path.join(__dirname, '../cli.ts');
+            const cliContent = fs.readFileSync(cliPath, 'utf-8');
+            
+            // Verify build options
+            expect(cliContent).toContain("'package'");
+            expect(cliContent).toContain("'debug'");
+            expect(cliContent).toContain("alias: 'p'");
+            expect(cliContent).toContain("alias: 'd'");
+        });
     });
 
     describe('Handler Integration', () => {
@@ -233,6 +251,7 @@ describe('CLI Module', () => {
             expect(cliContent).toContain('handlers.handleInit');
             expect(cliContent).toContain('handlers.handlePublish');
             expect(cliContent).toContain('handlers.handleLint');
+            expect(cliContent).toContain('handlers.handleBuild');
         });
 
         it('should define handler parameter types', async () => {
@@ -248,6 +267,7 @@ describe('CLI Module', () => {
             expect(cliContent).toContain('handleInit: () => Promise<void>');
             expect(cliContent).toContain('handlePublish: (argv: any) => Promise<void>');
             expect(cliContent).toContain('handleLint: (argv: any) => Promise<void>');
+            expect(cliContent).toContain('handleBuild: (argv: any) => Promise<void>');
         });
     });
 

@@ -1,1 +1,2 @@
-Requirements content
+# Python dependencies for collector
+# Add your required packages here
