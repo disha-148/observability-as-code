@@ -1,2 +1,5 @@
 # Python dependencies for collector
 # Add your required packages here
+# Example:
+# requests>=2.28.0
+# prometheus-client>=0.16.0

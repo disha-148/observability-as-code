@@ -42,6 +42,10 @@ Examples:
 
 Build collector Docker image from integration package:
   ${execName} build --package @instana-integration/my-collector
+  ${execName} build --package @instana-integration/my-collector --platform linux/amd64
+  ${execName} build --package @instana-integration/my-collector --build-arg PYTHON_VERSION=3.11 --build-arg APP_VERSION=1.0.0
+  ${execName} build --package @instana-integration/my-collector --noCache
+  ${execName} build --package @instana-integration/my-collector --network host
 `;
 
 /**
@@ -210,6 +214,26 @@ export function configureCLI(handlers: {
                     describe: 'The package name or path to the package',
                     type: 'string',
                     demandOption: true
+                })
+                .option('platform', {
+                    describe: 'Target platform for the build (e.g., linux/amd64, linux/arm64)',
+                    type: 'string',
+                    demandOption: false
+                })
+                .option('build-arg', {
+                    describe: 'Build-time variables (can be specified multiple times)',
+                    type: 'array',
+                    demandOption: false
+                })
+                .option('noCache', {
+                    describe: 'Do not use cache when building the image',
+                    type: 'boolean',
+                    default: false
+                })
+                .option('network', {
+                    describe: 'Set the networking mode for RUN instructions during build',
+                    type: 'string',
+                    demandOption: false
                 })
                 .option('debug', {
                     alias: 'd',

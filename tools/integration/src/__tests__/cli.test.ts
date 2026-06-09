@@ -231,9 +231,19 @@ describe('CLI Module', () => {
             
             // Verify build options
             expect(cliContent).toContain("'package'");
+            expect(cliContent).toContain("'platform'");
+            expect(cliContent).toContain("'build-arg'");
+            expect(cliContent).toContain("'noCache'");
+            expect(cliContent).toContain("'network'");
             expect(cliContent).toContain("'debug'");
             expect(cliContent).toContain("alias: 'p'");
             expect(cliContent).toContain("alias: 'd'");
+            
+            // Verify build option descriptions
+            expect(cliContent).toContain('Target platform for the build');
+            expect(cliContent).toContain('Build-time variables');
+            expect(cliContent).toContain('Do not use cache when building the image');
+            expect(cliContent).toContain('Set the networking mode for RUN instructions during build');
         });
     });
 

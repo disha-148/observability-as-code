@@ -1051,8 +1051,18 @@ describe('validators', () => {
     describe('validateCollectorFiles', () => {
         it('should validate all required files are present', () => {
             const collectorPath = '/test/collector';
+            const validConfig = {
+                extension_id: 'test-collector',
+                image: {
+                    registry: 'quay.io',
+                    repository: 'instana-collectors/test',
+                    tag: '1.0.0'
+                }
+            };
+            
             mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json', 'test_collector.py'] as any);
             mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify(validConfig));
 
             validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
 
@@ -1135,6 +1145,15 @@ describe('validators', () => {
 
         it('should accept Python collector files with different names', () => {
             const collectorPath = '/test/collector';
+            const validConfig = {
+                extension_id: 'test-collector',
+                image: {
+                    registry: 'quay.io',
+                    repository: 'instana-collectors/test',
+                    tag: '1.0.0'
+                }
+            };
+            
             mockedFs.readdirSync.mockReturnValue([
                 'Dockerfile',
                 'requirements.txt',
@@ -1142,6 +1161,7 @@ describe('validators', () => {
                 'my_custom_collector.py'
             ] as any);
             mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify(validConfig));
 
             validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
 
@@ -1164,6 +1184,155 @@ describe('validators', () => {
 
             expect(warnings).toContain('Collector file is empty: requirements.txt');
             expect(warnings).toHaveLength(1);
+        });
+
+        it('should validate config.json with valid image section', () => {
+            const collectorPath = '/test/collector';
+            const validConfig = {
+                extension_id: 'test-collector',
+                image: {
+                    registry: 'quay.io',
+                    repository: 'instana-collectors/test',
+                    tag: '1.0.0'
+                }
+            };
+            
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify(validConfig));
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors).toHaveLength(0);
+            expect(successMessages).toContain('Collector config.json image section is valid');
+        });
+
+        it('should report error when config.json is missing image section', () => {
+            const collectorPath = '/test/collector';
+            const invalidConfig = {
+                extension_id: 'test-collector'
+            };
+            
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify(invalidConfig));
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors).toContain('Collector config.json is missing required "image" section');
+        });
+
+        it('should report error when config.json has invalid registry format', () => {
+            const collectorPath = '/test/collector';
+            const invalidConfig = {
+                extension_id: 'test-collector',
+                image: {
+                    registry: 'invalid_registry!',
+                    repository: 'instana-collectors/test',
+                    tag: '1.0.0'
+                }
+            };
+            
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify(invalidConfig));
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('image.registry (invalid hostname format)'))).toBe(true);
+        });
+
+        it('should report error when config.json has invalid repository format', () => {
+            const collectorPath = '/test/collector';
+            const invalidConfig = {
+                extension_id: 'test-collector',
+                image: {
+                    registry: 'quay.io',
+                    repository: 'INVALID-REPO',
+                    tag: '1.0.0'
+                }
+            };
+            
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify(invalidConfig));
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('image.repository (invalid format'))).toBe(true);
+        });
+
+        it('should report error when config.json has invalid tag format', () => {
+            const collectorPath = '/test/collector';
+            const invalidConfig = {
+                extension_id: 'test-collector',
+                image: {
+                    registry: 'quay.io',
+                    repository: 'instana-collectors/test',
+                    tag: 'invalid tag with spaces'
+                }
+            };
+            
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify(invalidConfig));
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('image.tag (invalid format'))).toBe(true);
+        });
+
+        it('should report error when config.json has missing image fields', () => {
+            const collectorPath = '/test/collector';
+            const invalidConfig = {
+                extension_id: 'test-collector',
+                image: {
+                    registry: 'quay.io'
+                    // missing repository and tag
+                }
+            };
+            
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify(invalidConfig));
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('image.repository'))).toBe(true);
+            expect(errors.some(e => e.includes('image.tag'))).toBe(true);
+        });
+
+        it('should report error when config.json is not valid JSON', () => {
+            const collectorPath = '/test/collector';
+            
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+            mockedFs.readFileSync.mockReturnValue('{ invalid json }');
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            expect(errors.some(e => e.includes('Collector config.json is not valid JSON'))).toBe(true);
+        });
+
+        it('should report error when config.json has empty string values', () => {
+            const collectorPath = '/test/collector';
+            const invalidConfig = {
+                extension_id: 'test-collector',
+                image: {
+                    registry: '',
+                    repository: 'instana-collectors/test',
+                    tag: '1.0.0'
+                }
+            };
+            
+            mockedFs.readdirSync.mockReturnValue(['Dockerfile', 'requirements.txt', 'config.json', 'test_collector.py'] as any);
+            mockedFs.statSync.mockReturnValue({ size: 100 } as any);
+            mockedFs.readFileSync.mockReturnValue(JSON.stringify(invalidConfig));
+
+            validators.validateCollectorFiles(collectorPath, errors, warnings, successMessages);
+
+            // Empty string is treated as missing field
+            expect(errors.some(e => e.includes('missing required fields') && e.includes('image.registry'))).toBe(true);
         });
     });
 });

@@ -1,11 +1,24 @@
 # The Instana CLI for Integration Package Management
 
-The Instana CLI for Integration Package Management is used to manage the lifecycle of Instana integration package. For example, you can use this CLI to download the integration package from public website to your local machine, then install the package into an existing Instana environment.
+The Instana CLI for Integration Package Management is used to manage the lifecycle of Instana integration packages. For example, you can use this CLI to download integration packages from public websites to your local machine, then install the packages into an existing Instana environment, or build custom collector Docker images.
 
 ## Requirements
 
-- **For binary users**: No Node.js installation required. The binary includes an embedded Node.js 18 runtime.
-- **For developers**: Node.js 18 or higher is required when running from source code.
+### For Binary Users
+- No Node.js installation required. The binary includes an embedded Node.js 18 runtime.
+
+### For Developers
+- Node.js 18 or higher is required when running from source code.
+
+### For Building Collectors
+
+- Docker or Podman must be installed and running on your system.
+- The CLI automatically detects which container runtime is available.
+- Required for the `build` command to create collector Docker images.
+
+For installation instructions, refer to:
+- Docker: https://www.docker.com/get-started
+- Podman: https://podman.io/getting-started/installation
 
 ## For end users
 
