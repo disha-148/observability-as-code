@@ -1,0 +1,25 @@
+{
+  "name": "@instana/stanctl-fleet",
+  "version": "1.0.0",
+  "description": "Fleet support for stanctl",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "stanctl-fleet": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "dev": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.1",
+    "@types/node": "^20.0.0",
+    "@types/yargs": "^17.0.32"
+  }
+}
