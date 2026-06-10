@@ -263,7 +263,7 @@ describe('handleBuild', () => {
         await handleBuild({
             package: mockPackagePath,
             platform: 'linux/amd64',
-            noCache: true
+            'no-cache': true
         });
 
         expect(mockChildProcess.spawn).toHaveBeenCalledWith(

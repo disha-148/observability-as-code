@@ -1,6 +1,6 @@
 # The Instana CLI for Integration Package Management
 
-The Instana CLI for Integration Package Management is used to manage the lifecycle of Instana integration packages. For example, you can use this CLI to download integration packages from public websites to your local machine, then install the packages into an existing Instana environment, or build custom collector Docker images.
+The Instana CLI for Integration Package Management is used to manage the lifecycle of Instana integration packages. For example, you can use this CLI to download integration packages from public websites to your local machine, then install the packages into an existing Instana environment, or build custom collector as container images.
 
 ## Requirements
 

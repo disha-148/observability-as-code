@@ -122,28 +122,33 @@ export async function handleBuild(argv: any): Promise<void> {
     logger.info(`Extension Name: ${config.extension_name || 'N/A'}`);
     logger.info(`Image Tag: ${imageTag}`);
 
-    // Build Docker Image
+    // Build container image
     if (argv.debug) {
-        logger.info('=== Docker Build Debug Information ===');
+        logger.info(`=== ${containerRuntime} Build Debug Information ===`);
         logger.info(`Build Context: ${collectorPath}`);
         logger.info(`Image Tag: ${imageTag}`);
         logger.info(`Registry: ${config.image.registry}`);
         logger.info(`Repository: ${config.image.repository}`);
         logger.info(`Tag: ${config.image.tag}`);
         logger.info(`Dockerfile: ${path.join(collectorPath, 'Dockerfile')}`);
-        logger.info(`Build Command: docker build -t ${imageTag} ${collectorPath}`);
+        logger.info(`Build Command: ${containerRuntime} build -t ${imageTag} ${collectorPath}`);
         logger.info('======================================');
     }
     
-    // Prepare Docker build arguments
+    // Prepare container runtime build arguments
     const dockerArgs = ['build', '-t', imageTag];
-    
+
+    const effectiveOptions = {
+        platform: argv.platform ?? config.build_options?.platform,
+        noCache: argv.cache === false || argv['no-cache'] === true || config.build_options?.no_cache === true,
+        network: argv.network ?? config.build_options?.network,
+    };
+
     // Add platform
-    const platform = argv.platform || config.build_options?.platform;
-    if (platform) {
-        dockerArgs.push('--platform', platform);
+    if (effectiveOptions.platform) {
+        dockerArgs.push('--platform', effectiveOptions.platform);
         if (argv.debug) {
-            logger.info(`Using platform: ${platform} (from ${argv.platform ? 'CLI' : 'config'})`);
+            logger.info(`Using platform: ${effectiveOptions.platform} (from ${argv.platform ? 'CLI' : 'config'})`);
         }
     }
     
@@ -164,22 +169,20 @@ export async function handleBuild(argv: any): Promise<void> {
             }
         });
     }
-    
-    // Add no-cache flag
-    const noCache = argv.noCache || config.build_options?.no_cache;
-    if (noCache === true) {
+
+	// Add no-cache flag
+    if (effectiveOptions.noCache) {
         dockerArgs.push('--no-cache');
         if (argv.debug) {
-            logger.info(`Using --no-cache flag (from ${argv.noCache ? 'CLI' : 'config'})`);
+            logger.info('Disabling Docker cache (--no-cache)');
         }
     }
     
     // Add network setting
-    const network = argv.network || config.build_options?.network;
-    if (network) {
-        dockerArgs.push('--network', network);
+    if (effectiveOptions.network) {
+        dockerArgs.push('--network', effectiveOptions.network);
         if (argv.debug) {
-            logger.info(`Using network: ${network} (from ${argv.network ? 'CLI' : 'config'})`);
+            logger.info(`Using network: ${effectiveOptions.network} (from ${argv.network ? 'CLI' : 'config'})`);
         }
     }
     
@@ -202,7 +205,7 @@ export async function handleBuild(argv: any): Promise<void> {
             });
 
             dockerBuild.on('error', (error) => {
-                reject(new Error(`Failed to execute docker build: ${error.message}`));
+                reject(new Error(`Failed to execute ${containerRuntime} build: ${error.message}`));
             });
         });
     } catch (error) {
@@ -213,9 +216,9 @@ export async function handleBuild(argv: any): Promise<void> {
         );
     }
 
-    logger.info(`Successfully built Docker image: ${imageTag}`);
+    logger.info(`Successfully built container image: ${imageTag}`);
     logger.info('To run the collector locally:');
-    logger.info(`  docker run ${imageTag}`);
+    logger.info(`  ${containerRuntime} run ${imageTag}`);
     logger.info('To view the image:');
     logger.info(`  docker images | grep ${config.image.repository}`);
 }

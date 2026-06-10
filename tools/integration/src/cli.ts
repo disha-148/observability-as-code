@@ -225,10 +225,10 @@ export function configureCLI(handlers: {
                     type: 'array',
                     demandOption: false
                 })
-                .option('noCache', {
-                    describe: 'Do not use cache when building the image',
+                .option('cache', {
+                    describe: 'Use cache when building the image',
                     type: 'boolean',
-                    default: false
+                    default: true
                 })
                 .option('network', {
                     describe: 'Set the networking mode for RUN instructions during build',
