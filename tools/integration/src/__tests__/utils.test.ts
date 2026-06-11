@@ -576,6 +576,28 @@ describe('Utils Module', () => {
         });
 
     describe('generateCollectorFiles', () => {
+        beforeEach(() => {
+            // Mock fs.readFileSync to return template content
+            (mockedFs.readFileSync as jest.Mock).mockImplementation((filePath: any) => {
+                if (filePath.includes('Dockerfile')) {
+                    return 'FROM python:3.9\nCOPY {{COLLECTOR_NAME}}_collector.py /app/';
+                }
+                if (filePath.includes('collector.py')) {
+                    return 'print("{{COLLECTOR_NAME}} collector")';
+                }
+                if (filePath.includes('requirements.txt')) {
+                    return 'requests==2.28.0';
+                }
+                if (filePath.includes('config.json')) {
+                    return '{"extension_id": "{{PACKAGE_NAME}}"}';
+                }
+                return '';
+            });
+            
+            // Mock fs.mkdirSync
+            (mockedFs.mkdirSync as jest.Mock).mockImplementation(() => {});
+        });
+
         it('should create all 4 collector files with content', () => {
             const packagePath = '/test/package';
             const packageName = '@instana-integration/test';
@@ -645,6 +667,21 @@ describe('Utils Module', () => {
                 expect.stringContaining('custom-package_collector.py'),
                 expect.any(String)
             );
+        });
+
+        it('should replace {{PACKAGE_NAME}} placeholder in config.json', () => {
+            const packageName = '@instana-integration/my-test';
+            utils.generateCollectorFiles('/test/package', packageName, ['collector']);
+
+            // Find the config.json write call
+            const calls = (mockedFs.writeFileSync as jest.Mock).mock.calls;
+            const configCall = calls.find((call: any) => call[0].includes('config.json'));
+            
+            expect(configCall).toBeDefined();
+            if (configCall) {
+                expect(configCall[1]).toContain('my-test');
+                expect(configCall[1]).not.toContain('{{PACKAGE_NAME}}');
+            }
         });
     });
     });

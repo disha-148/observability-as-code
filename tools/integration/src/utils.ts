@@ -439,6 +439,7 @@ export function generateCollectorFiles(packagePath: string, packageName: string,
     fs.writeFileSync(path.join(targetDir, 'requirements.txt'), requirementsContent);
     
     // config.json template
-    const configContent = fs.readFileSync(path.join(templatesDir, 'config.json'), 'utf-8');
+    let configContent = fs.readFileSync(path.join(templatesDir, 'config.json'), 'utf-8');
+    configContent = configContent.replace(/\{\{PACKAGE_NAME\}\}/g, normalizedPackageName);
     fs.writeFileSync(path.join(targetDir, 'config.json'), configContent);
 }

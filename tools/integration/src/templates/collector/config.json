@@ -1,12 +1,10 @@
-# Replace with actual config
-
 {
-  "extension_id": "sap-monitor",
-  "extension_name": "sap-monitor",
+  "extension_id": "{{PACKAGE_NAME}}",
+  "extension_name": "{{PACKAGE_NAME}}",
   "extension_version": "1.0.0",
   "image": {
     "registry": "quay.io",
-    "repository": "instana-collectors/sap",
+    "repository": "instana-collectors/{{PACKAGE_NAME}}",
     "tag": "1.0.0"
   },
   "configuration": {

@@ -37,6 +37,17 @@ Export integration elements:
   ${execName} export --server example.com --include type=smart-alert title="exampleTitle" --location ./my-package
 `;
 
+const examplesForBuild = `
+Examples:
+
+Build collector container image from integration package:
+  ${execName} build --package @instana-integration/my-collector
+  ${execName} build --package @instana-integration/my-collector --platform linux/amd64
+  ${execName} build --package @instana-integration/my-collector --build-arg PYTHON_VERSION=3.11 --build-arg APP_VERSION=1.0.0
+  ${execName} build --package @instana-integration/my-collector --noCache
+  ${execName} build --package @instana-integration/my-collector --network host
+`;
+
 /**
  * Configure and return the yargs CLI instance
  * @param handlers Object containing all command handler functions
@@ -48,6 +59,7 @@ export function configureCLI(handlers: {
     handleInit: () => Promise<void>;
     handlePublish: (argv: any) => Promise<void>;
     handleLint: (argv: any) => Promise<void>;
+    handleBuild: (argv: any) => Promise<void>;
 }) {
     return yargs
         .wrap(160) // Set the desired width here
@@ -195,6 +207,42 @@ export function configureCLI(handlers: {
                     default: false
                 });
         }, handlers.handleLint)
+        .command('build', 'Build collector container image', (yargs) => {
+            return yargs
+                .option('package', {
+                    alias: 'p',
+                    describe: 'The package name or path to the package',
+                    type: 'string',
+                    demandOption: true
+                })
+                .option('platform', {
+                    describe: 'Target platform for the build (e.g., linux/amd64, linux/arm64)',
+                    type: 'string',
+                    demandOption: false
+                })
+                .option('build-arg', {
+                    describe: 'Build-time variables (can be specified multiple times)',
+                    type: 'array',
+                    demandOption: false
+                })
+                .option('cache', {
+                    describe: 'Use cache when building the image',
+                    type: 'boolean',
+                    default: true
+                })
+                .option('network', {
+                    describe: 'Set the networking mode for RUN instructions during build',
+                    type: 'string',
+                    demandOption: false
+                })
+                .option('debug', {
+                    alias: 'd',
+                    describe: 'Enable debug mode',
+                    type: 'boolean',
+                    default: false
+                })
+                .epilog(examplesForBuild);
+        }, handlers.handleBuild)
         .demandCommand(1, 'You need at least one command before moving on')
         .help()
         .alias('help', 'h')

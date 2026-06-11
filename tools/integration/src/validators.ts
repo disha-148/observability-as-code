@@ -528,6 +528,71 @@ export function validateCollectorFiles(collectorPath: string, errors: string[], 
             }
         }
         
+        // Validate config.json content if it exists
+        const configPath = path.join(collectorPath, 'config.json');
+        if (files.includes('config.json')) {
+            try {
+                const configContent = fs.readFileSync(configPath, 'utf-8');
+                const config = JSON.parse(configContent);
+                
+                // Validate image section exists
+                if (!config.image) {
+                    errors.push('Collector config.json is missing required "image" section');
+                    return;
+                }
+                
+                // Validate required image fields
+                const missingImageFields: string[] = [];
+                const invalidImageFields: string[] = [];
+                
+                // Validate registry
+                if (!config.image.registry) {
+                    missingImageFields.push('image.registry');
+                } else if (typeof config.image.registry !== 'string' || config.image.registry.trim() === '') {
+                    invalidImageFields.push('image.registry (must be a non-empty string)');
+                } else if (!/^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(config.image.registry)) {
+                    invalidImageFields.push('image.registry (invalid hostname format)');
+                }
+                
+                // Validate repository
+                if (!config.image.repository) {
+                    missingImageFields.push('image.repository');
+                } else if (typeof config.image.repository !== 'string' || config.image.repository.trim() === '') {
+                    invalidImageFields.push('image.repository (must be a non-empty string)');
+                } else if (!/^[a-z0-9]+([._-][a-z0-9]+)*(\/[a-z0-9]+([._-][a-z0-9]+)*)*$/.test(config.image.repository)) {
+                    invalidImageFields.push('image.repository (invalid format, must be non-empty, use lowercase alphanumeric characters with optional separators and slashes)');
+                }
+                
+                // Validate tag
+                if (!config.image.tag) {
+                    missingImageFields.push('image.tag');
+                } else if (typeof config.image.tag !== 'string' || config.image.tag.trim() === '') {
+                    invalidImageFields.push('image.tag (must be a non-empty string)');
+                } else if (!/^[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127}$/.test(config.image.tag)) {
+                    invalidImageFields.push('image.tag (invalid format, must be alphanumeric with dots, dashes, underscores, max 128 chars)');
+                }
+                
+                if (missingImageFields.length > 0) {
+                    errors.push(`Collector config.json is missing required fields: ${missingImageFields.join(', ')}`);
+                }
+                
+                if (invalidImageFields.length > 0) {
+                    errors.push(`Collector config.json has invalid fields: ${invalidImageFields.join(', ')}`);
+                }
+                
+                if (missingImageFields.length === 0 && invalidImageFields.length === 0) {
+                    successMessages.push('Collector config.json image section is valid');
+                }
+                
+            } catch (error) {
+                if (error instanceof SyntaxError) {
+                    errors.push(`Collector config.json is not valid JSON: ${error.message}`);
+                } else {
+                    errors.push(`Error validating collector config.json: ${error instanceof Error ? error.message : String(error)}`);
+                }
+            }
+        }
+        
     } catch (error) {
         errors.push(`Error validating collector files: ${error instanceof Error ? error.message : String(error)}`);
     }

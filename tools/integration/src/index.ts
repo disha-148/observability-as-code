@@ -11,6 +11,7 @@ import Handlebars from 'handlebars';
 import { configureCLI } from './cli';
 import fs from 'fs';
 import { globSync } from 'glob';
+import { handleBuild } from './handlers/build';
 import { handleDownload } from './handlers/download';
 import { handleExport } from './handlers/export';
 import { handleImport } from './handlers/import';
@@ -44,5 +45,6 @@ configureCLI({
     handleExport,
     handleInit,
     handlePublish,
-    handleLint
+    handleLint,
+    handleBuild
 });
