@@ -135,7 +135,7 @@ describe('CLI Module', () => {
             expect(cliContent).toContain('Initialize a new integration package');
             expect(cliContent).toContain('Publish the local integration package');
             expect(cliContent).toContain('Provides linting for package');
-            expect(cliContent).toContain('Build collector Docker image');
+            expect(cliContent).toContain('Build collector container image');
         });
 
         it('should configure yargs with proper settings', async () => {

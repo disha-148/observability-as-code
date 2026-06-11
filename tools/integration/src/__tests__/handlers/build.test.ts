@@ -211,7 +211,7 @@ describe('handleBuild', () => {
         setupMockSpawn(1); // Exit code 1 = failure
 
         await expect(handleBuild({ package: mockPackagePath }))
-            .rejects.toThrow('Docker build failed');
+            .rejects.toThrow('Container image build failed');
     });
 
     it('should throw error if docker command fails to execute', async () => {
@@ -237,7 +237,7 @@ describe('handleBuild', () => {
         }, 10);
 
         await expect(handleBuild({ package: mockPackagePath }))
-            .rejects.toThrow('Docker build failed');
+            .rejects.toThrow('Container image build failed');
     });
 
     it('should use CLI build options over config options', async () => {

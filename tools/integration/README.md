@@ -14,7 +14,7 @@ The Instana CLI for Integration Package Management is used to manage the lifecyc
 
 - Docker or Podman must be installed and running on your system.
 - The CLI automatically detects which container runtime is available.
-- Required for the `build` command to create collector Docker images.
+- Required for the `build` command to create collector container images.
 
 For installation instructions, refer to:
 - Docker: https://www.docker.com/get-started

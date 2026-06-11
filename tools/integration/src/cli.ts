@@ -40,7 +40,7 @@ Export integration elements:
 const examplesForBuild = `
 Examples:
 
-Build collector Docker image from integration package:
+Build collector container image from integration package:
   ${execName} build --package @instana-integration/my-collector
   ${execName} build --package @instana-integration/my-collector --platform linux/amd64
   ${execName} build --package @instana-integration/my-collector --build-arg PYTHON_VERSION=3.11 --build-arg APP_VERSION=1.0.0
@@ -207,7 +207,7 @@ export function configureCLI(handlers: {
                     default: false
                 });
         }, handlers.handleLint)
-        .command('build', 'Build collector Docker image', (yargs) => {
+        .command('build', 'Build collector container image', (yargs) => {
             return yargs
                 .option('package', {
                     alias: 'p',

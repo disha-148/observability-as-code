@@ -29,7 +29,7 @@ function detectContainerRuntime(): string {
 }
 
 /**
- * Handler for building collector Docker images
+ * Handler for building collector container images
  * Validates package structure and collector configuration
  */
 export async function handleBuild(argv: any): Promise<void> {
@@ -89,7 +89,7 @@ export async function handleBuild(argv: any): Promise<void> {
         logger.info('Required collector files exist');
     }
 
-    // Read config.json to get image information for Docker build
+    // Read config.json to get image information for container image build
     const configPath = path.join(collectorPath, 'config.json');
     let config: any;
     try {
@@ -106,13 +106,13 @@ export async function handleBuild(argv: any): Promise<void> {
     // Construct image tag (validation already done by validateCollectorFiles)
     const imageTag = `${config.image.registry}/${config.image.repository}:${config.image.tag}`;
 
-    // Validate the constructed image tag against Docker naming conventions
+    // Validate the constructed image tag against container image naming conventions
     const imageTagPattern = /^[a-z0-9]([a-z0-9._-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9._-]*[a-z0-9])?)*\/[a-z0-9]+([._-][a-z0-9]+)*(\/[a-z0-9]+([._-][a-z0-9]+)*)*:[a-zA-Z0-9][a-zA-Z0-9._-]*$/;
     
     if (!imageTagPattern.test(imageTag)) {
         throw new Error(
-            `Invalid Docker image tag format: "${imageTag}". ` +
-            `Image tag must follow Docker naming conventions: ` +
+            `Invalid container image tag format: "${imageTag}". ` +
+            `Image tag must follow container image naming conventions: ` +
             `lowercase alphanumeric with allowed separators (-, ., _), no consecutive special characters.`
         );
     }
@@ -174,7 +174,7 @@ export async function handleBuild(argv: any): Promise<void> {
     if (effectiveOptions.noCache) {
         dockerArgs.push('--no-cache');
         if (argv.debug) {
-            logger.info('Disabling Docker cache (--no-cache)');
+            logger.info(`Disabling ${containerRuntime} cache (--no-cache)`);
         }
     }
     
@@ -198,7 +198,7 @@ export async function handleBuild(argv: any): Promise<void> {
 
             dockerBuild.on('close', (code) => {
                 if (code !== 0) {
-                    reject(new Error(`Docker build failed with exit code ${code}`));
+                    reject(new Error(`Container image build failed with exit code ${code}`));
                 } else {
                     resolve();
                 }
@@ -210,7 +210,7 @@ export async function handleBuild(argv: any): Promise<void> {
         });
     } catch (error) {
         throw new Error(
-            `Docker build failed: ${
+            `Container image build failed: ${
                 error instanceof Error ? error.message : String(error)
             }`
         );
@@ -220,5 +220,5 @@ export async function handleBuild(argv: any): Promise<void> {
     logger.info('To run the collector locally:');
     logger.info(`  ${containerRuntime} run ${imageTag}`);
     logger.info('To view the image:');
-    logger.info(`  docker images | grep ${config.image.repository}`);
+    logger.info(`  ${containerRuntime} images | grep ${config.image.repository}`);
 }
