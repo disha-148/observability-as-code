@@ -8,63 +8,50 @@ const path_1 = __importDefault(require("path"));
 const yargs_1 = __importDefault(require("yargs"));
 /**
  * CLI Configuration Module
- * Contains all yargs command definitions and configurations
  */
-// Dynamically determine the executable name
 const execName = path_1.default.basename(process.argv[1]);
-// Example texts for each command
-const examplesForList = `
-Examples:
-
-List all fleets:
-  ${execName} list
-`;
-const examplesForCreate = `
-Examples:
-
-Create a new fleet:
-  ${execName} create --name my-fleet
-`;
-/**
- * Configure and return the yargs CLI instance
- * @param handlers Object containing all command handler functions
- */
 function configureCLI(handlers) {
     return yargs_1.default
-        .wrap(160) // Set the desired width here
-        .usage(`The Instana CLI for fleet management\n\nUsage: ${execName} <command> <options>`)
-        .command('list', 'List all fleets', (yargs) => {
+        .wrap(160)
+        .usage(`Stanctl Fleet CLI\n\nUsage: ${execName} <command> <options>`)
+        .command('restart', 'Restart collector', (yargs) => {
         return yargs
-            .option('debug', {
-            alias: 'd',
-            describe: 'Enable debug mode',
-            type: 'boolean',
-            default: false
+            .option('server', {
+            describe: 'Server hostname (no http/https)',
+            type: 'string',
+            demandOption: false
         })
-            .epilog(examplesForList);
-    }, handlers.handleList)
-        .command('create', 'Create a new fleet', (yargs) => {
-        return yargs
-            .option('name', {
-            alias: 'n',
-            describe: 'The fleet name',
+            .option('token', {
+            describe: 'API token',
+            type: 'string',
+            demandOption: false
+        })
+            .option('type', {
+            describe: 'Agent type (idot | instanaagent | extension)',
             type: 'string',
             demandOption: true
         })
+            .option('tag', {
+            describe: 'Tags key-value map',
+            type: 'array',
+            demandOption: false
+        })
+            .option('group', {
+            describe: 'Groups list',
+            type: 'array',
+            demandOption: false
+        })
             .option('debug', {
-            alias: 'd',
-            describe: 'Enable debug mode',
+            describe: 'Enable debug logging',
             type: 'boolean',
             default: false
-        })
-            .epilog(examplesForCreate);
-    }, handlers.handleCreate)
-        .demandCommand(1, 'You need at least one command before moving on')
+        });
+    }, handlers.handleRestart)
+        .demandCommand(1, 'You need at least one command')
         .help()
-        .alias('help', 'h')
+        .alias('h', 'help')
         .version()
-        .alias('version', 'v')
+        .alias('v', 'version')
         .strict()
         .parse();
 }
-// Made with Bob

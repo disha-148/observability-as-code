@@ -11,15 +11,19 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "test": "jest"
   },
   "dependencies": {
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.19.43",
+    "@types/yargs": "^17.0.32",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
     "ts-node": "^10.9.1",
-    "@types/node": "^20.0.0",
-    "@types/yargs": "^17.0.32"
+    "typescript": "^5.0.0"
   }
 }
