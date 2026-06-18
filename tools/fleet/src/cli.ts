@@ -19,31 +19,37 @@ export function configureCLI(handlers: {
             (yargs) => {
                 return yargs
                     .option('server', {
+						alias: 's',
                         describe: 'Server hostname (no http/https)',
                         type: 'string',
                         demandOption: false
                     })
                     .option('token', {
+						alias: 'A',
                         describe: 'API token',
                         type: 'string',
                         demandOption: false
                     })
                     .option('type', {
-                        describe: 'Agent type (idot | instanaagent | extension)',
+						alias: 'T',
+                        describe: 'Instance type ( collector, agent, custom collector)',
                         type: 'string',
                         demandOption: true
                     })
                     .option('tag', {
+						alias: 't',
                         describe: 'Tags key-value map',
                         type: 'array',
                         demandOption: false
                     })
                     .option('group', {
+						alias: 'g',
                         describe: 'Groups list',
                         type: 'array',
                         demandOption: false
                     })
                     .option('debug', {
+						alias: 'd',
                         describe: 'Enable debug logging',
                         type: 'boolean',
                         default: false

@@ -1,6 +1,6 @@
 # The Instana CLI for Collector Instance Management Actions
 
-The Instana CLI provides tools for managing Collector instances. For example, you can use it to restart, configure or update configurations, and deploy collector.
+The Instana CLI provides tools for managing instances. For example, you can use it to restart, configure or update configurations, and deploy instances.
 
 ## Requirements
 
