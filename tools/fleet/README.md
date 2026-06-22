@@ -1,6 +1,6 @@
-# The Instana CLI for Collector Instance Management Actions
+# The Instana CLI for Agent Fleet Management
 
-The Instana CLI provides tools for managing instances. For example, you can use it to restart, configure or update configurations, and deploy instances.
+The Instana CLI provides fleet management for agent instances including Instana agents, IDOTs (Instana Distro of OpenTelemetry Collectors), Instana Custom Collectors based on OpenTelemetry. For example, you can use it to restart agent instances, configure or update agent configurations, etc.
 
 ## Requirements
 
