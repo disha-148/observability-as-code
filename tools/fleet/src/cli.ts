@@ -37,8 +37,8 @@ export function configureCLI(handlers: {
                         demandOption: false
                     })
                     .option('token', {
-						alias: 't',
-                        describe: 'API token to export the integration elements',
+                        alias: 't',
+                        describe: 'API token for authenticating agent restart requests',
                         type: 'string',
                         demandOption: false
                     })

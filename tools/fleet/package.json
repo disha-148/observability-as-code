@@ -36,10 +36,11 @@
     "observability",
     "as",
     "code",
-    "integration",
-    "package"
+    "agent",
+    "fleet",
+    "management"
   ],
-  "author": "morningspace",
+  "author": "IBM",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/instana/observability-as-code/issues"
