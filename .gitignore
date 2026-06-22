@@ -1,5 +1,7 @@
 tools/integration/dist/
+tools/fleet/dist/
 tools/integration/node_modules/
+tools/fleet/node_modules/
 packages/node_modules/
 
 # Test coverage
