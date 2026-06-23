@@ -1,0 +1,66 @@
+{
+  "name": "@instana/stanctl-fleet",
+  "version": "1.0.0",
+  "description": "The Instana CLI for agent fleet management",
+  "main": "./dist/index.js",
+  "scripts": {
+    "debug": "ts-node  src/index.ts  export --server sample.instana.io --token **TOKEN**  --include annotation='SHARED' ",
+    "build": "tsc",
+    "pkg": "pkg . --output dist/stanctl-fleet",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose"
+  },
+  "bin": {
+    "stanctl-fleet": "./dist/index.js"
+  },
+  "pkg": {
+    "assets": [
+      "dist/**/*.js",
+      "node_modules/**/*"
+    ],
+    "targets": [
+      "node18-macos",
+      "node18-linux",
+      "node18-win"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/instana/observability-as-code.git"
+  },
+  "keywords": [
+    "instana",
+    "cli",
+    "observability",
+    "as",
+    "code",
+    "agent",
+    "fleet",
+    "management"
+  ],
+  "author": "IBM",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/instana/observability-as-code/issues"
+  },
+  "homepage": "https://github.com/instana/observability-as-code#readme",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "winston": "^3.13.0",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@jest/globals": "^30.2.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.14.2",
+    "@types/winston": "^2.4.4",
+    "@types/yargs": "^17.0.32",
+    "jest": "^30.2.0",
+    "pkg": "^5.8.1",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
