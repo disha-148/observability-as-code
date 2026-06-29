@@ -1,20 +1,28 @@
 {
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Extension Base Configuration - This file defines the reusable, environment-agnostic configuration that gets imported to the Instana backend via 'stanctl-integration import'. It does NOT contain endpoints (those are deployment-specific and added via UI/API).",
+  
   "extension_id": "{{PACKAGE_NAME}}",
   "extension_name": "{{PACKAGE_NAME}}",
   "extension_version": "1.0.0",
+  
   "image": {
     "registry": "quay.io",
-    "repository": "instana-collectors/{{PACKAGE_NAME}}",
+    "repository": "instana-collectors/{{PACKAGE_NAME_LOWER}}",
     "tag": "1.0.0"
   },
+  
   "configuration": {
     "interval": 60,
     "timeout": 30,
     "batch_size": 100,
     "log_level": "INFO"
   },
+  
   "metadata": {
-    "created_at": "2026-03-22T00:00:00Z",
-    "created_by": "stanctl-integration"
+    "created_at": "{{CREATED_AT}}",
+    "created_by": "stanctl-integration",
+    "package_name": "{{PACKAGE_NAME}}",
+    "package_version": "1.0.0"
   }
 }

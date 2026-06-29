@@ -440,6 +440,9 @@ export function generateCollectorFiles(packagePath: string, packageName: string,
     
     // config.json template
     let configContent = fs.readFileSync(path.join(templatesDir, 'config.json'), 'utf-8');
+    const createdAt = new Date().toISOString();
     configContent = configContent.replace(/\{\{PACKAGE_NAME\}\}/g, normalizedPackageName);
+    configContent = configContent.replace(/\{\{PACKAGE_NAME_LOWER\}\}/g, normalizedPackageName.toLowerCase());
+    configContent = configContent.replace(/\{\{CREATED_AT\}\}/g, createdAt);
     fs.writeFileSync(path.join(targetDir, 'config.json'), configContent);
 }

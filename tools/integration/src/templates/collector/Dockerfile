@@ -1,34 +1,34 @@
-# Global ARG for Python version (can be overridden with --build-arg)
-ARG PYTHON_VERSION=3.9
+# Extension Runtime Base Image
+# Base image includes:
+# - Python 3.12 LTS runtime
+# - tini as PID 1 init process (signal forwarding, zombie reaping)
+# - OpenTelemetry SDK (API, SDK, OTLP/gRPC exporter)
+# - Extension Base Library (extension_base) pre-installed
+# - Runtime utilities (entrypoint.sh, healthcheck.sh)
 
-# Multi-stage build for Python collector
-FROM python:${PYTHON_VERSION}-slim as builder
+# Change runtime image version if needed
+# Override via CLI: stanctl-integration build --package <pkg> --build-arg RUNTIME_TAG=1.0.0
+ARG RUNTIME_TAG=latest
+FROM icr.io/instana/collector-extension-runtime-python:${RUNTIME_TAG}
 
-# Re-declare ARG inside builder stage
-ARG PYTHON_VERSION=3.9
+WORKDIR /opt/instana/custom-collector
 
-WORKDIR /app
+# Python path is already set in base image, but ensure it's available
+ENV PYTHONPATH=/opt/instana/custom-collector:$PYTHONPATH
+
+# Copy extension code
+COPY {{COLLECTOR_NAME}}_collector.py /opt/instana/custom-collector/extensions/collector.py
 
 # Copy requirements and install dependencies
 COPY requirements.txt .
-RUN mkdir -p /root/.local && \
-    pip install --no-cache-dir --user -r requirements.txt || true
+RUN if [ -f requirements.txt ] && [ -s requirements.txt ]; then \
+      pip install --no-cache-dir -r requirements.txt; \
+    fi
 
-# Final stage
-FROM python:${PYTHON_VERSION}-slim
+# NOTE: Do NOT copy config.json into the image
+# The config.json file is used by 'stanctl-integration import' to create
+# the Extension Base Configuration in the Instana backend.
+# At runtime, the Supervisor generates and mounts the actual configuration
+# to /opt/instana/custom-collector/config/extension-config.json
 
-# Re-declare ARG inside final stage
-ARG PYTHON_VERSION=3.9
-
-WORKDIR /app
-
-# Copy installed dependencies from builder
-COPY --from=builder /root/.local /root/.local
-COPY {{COLLECTOR_NAME}}_collector.py .
-COPY config.json .
-
-# Make sure scripts in .local are usable
-ENV PATH=/root/.local/bin:$PATH
-
-# Run the collector
-CMD ["python", "{{COLLECTOR_NAME}}_collector.py"]
+# Use base image entrypoint and healthcheck (no need to override)
