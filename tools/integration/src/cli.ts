@@ -43,8 +43,9 @@ Examples:
 Build collector container image from integration package:
   ${execName} build --package @instana-integration/my-collector
   ${execName} build --package @instana-integration/my-collector --platform linux/amd64
-  ${execName} build --package @instana-integration/my-collector --build-arg PYTHON_VERSION=3.11 --build-arg APP_VERSION=1.0.0
-  ${execName} build --package @instana-integration/my-collector --noCache
+  ${execName} build --package @instana-integration/my-collector --build-arg RUNTIME_TAG=1.0.0
+  ${execName} build --package @instana-integration/my-collector --build-arg APP_VERSION=1.0.0
+  ${execName} build --package @instana-integration/my-collector --no-cache
   ${execName} build --package @instana-integration/my-collector --network host
 `;
 

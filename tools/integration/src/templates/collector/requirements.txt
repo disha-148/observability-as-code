@@ -1,5 +1,36 @@
-# Python dependencies for collector
-# Add your required packages here
-# Example:
-# requests>=2.28.0
-# prometheus-client>=0.16.0
+# Python dependencies for {{COLLECTOR_NAME}} collector
+#
+# NOTE: The following packages are already available in the base image:
+
+# Python Runtime
+# Python 3.12.x (LTS)
+
+# OpenTelemetry SDK
+# - opentelemetry-api==1.24.0
+# - opentelemetry-sdk==1.24.0
+# - opentelemetry-exporter-otlp==1.24.0
+
+# Extension Base Library
+# extension-base==1.0.0
+
+# Add your additional required packages below.
+# Examples:
+
+# HTTP client for API calls
+# requests>=2.31.0
+
+# Prometheus client for scraping metrics
+# prometheus-client>=0.19.0
+
+# Database connectors
+# psycopg2-binary>=2.9.9  # PostgreSQL
+# pymongo>=4.6.0          # MongoDB
+# redis>=5.0.0            # Redis
+
+# Data processing
+# pandas>=2.1.0
+# numpy>=1.26.0
+
+# Additional utilities
+# pyyaml>=6.0.1
+# python-dateutil>=2.8.2
